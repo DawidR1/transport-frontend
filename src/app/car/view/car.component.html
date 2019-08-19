@@ -1,0 +1,29 @@
+<div>
+  <table class="table table-hover">
+    <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Pesel</th>
+      <th scope="col">Brand</th>
+      <th scope="col">Model</th>
+      <th scope="col"></th>
+      <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let car of cars; let i= index">
+      <th scope="row">{{i}}</th>
+      <td>{{car.plate}}</td>
+      <td>{{car.brand}}</td>
+      <td>{{car.model}}</td>
+      <td>
+        <button type="button" class="btn btn-outline-success btn-block">Update</button>
+      </td>
+      <td>
+        <button type="button" class="btn btn-outline-success btn-block">Show Details</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <button type="button" routerLink="/driver-form" class="nav-link btn btn-outline-primary btn-block">Add new car</button>
+</div>

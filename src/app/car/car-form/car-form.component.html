@@ -1,0 +1,22 @@
+<div class="container">
+  <h2>Car Registration</h2>
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="form-group">
+      <label for="plate">Plate:</label>
+      <input type="text" class="form-control" id="plate" placeholder="Enter plate" formControlName="plate">
+      <div *ngIf="form.get('plate').invalid && form.get('plate').dirty">Required</div>
+      <div *ngIf="form.get('plate').errors && form.get('plate').errors.pattern">Pattern is not valid in Poland</div>
+    </div>
+    <div class="form-group">
+      <label for="brand">Brand:</label>
+      <input type="text" class="form-control" id="brand" placeholder="Enter brand" formControlName="brand">
+      <div *ngIf="form.get('brand').invalid && form.get('brand').dirty">Required</div>
+    </div>
+    <div class="form-group">
+      <label for="model">Model:</label>
+      <input type="text" class="form-control" id="model" placeholder="Enter model" formControlName="model">
+      <div *ngIf="form.get('model').invalid && form.get('model').dirty">Required</div>
+    </div>
+    <button type="submit" class="btn btn-primary">Save Car</button>
+  </form>
+</div>

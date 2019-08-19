@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { DriverService } from '../driver.service';
-import { HttpErrorResponse } from '@angular/common/http';
+import {Component, OnInit} from '@angular/core';
+import {DriverService, ResourceDriver} from '../driver.service';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({
   selector: 'app-driver',
@@ -17,23 +17,22 @@ export class DriverComponent implements OnInit {
 
   ngOnInit() {
     this.driverService.getDriver().subscribe(resourceDriver => {
-      console.log(resourceDriver._embedded.driverDtoes);
-      resourceDriver._embedded.driverDtoes.forEach(driver => {
-        this.drivers.push(driver);
-      });
-     },
+        this.populateFields(resourceDriver);
+      },
       (error: HttpErrorResponse) => {
         console.log(error.status);
       }
     );
+  }
 
+  populateFields(resourceDriver: ResourceDriver): void {
+    resourceDriver._embedded.driverDtoes.forEach(driver => {
+
+      driver._links.image != null ? driver.imageUrl = driver._links.image.href : driver.imageUrl = '';
+
+      this.drivers.push(driver);
+    });
   }
 }
-export interface Driver {
-
-  pesel?: string;
-  lastName?: string;
-  firstName?: string;
 
 
-}

@@ -8,18 +8,25 @@ import { MainNavsComponent } from './main-navs/main-navs.component';
 import { DriverService } from './driver/driver.service';
 import { DriverComponent } from './driver/component/driver.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { CarComponent } from './car/view/car.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {CarFormComponent} from './car/car-form/car-form.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    DriverComponent,
     NavbarComponent,
-    MainNavsComponent
+    MainNavsComponent,
+    DriverComponent,
+    CarComponent,
+    CarFormComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [DriverService, HttpClient],
   bootstrap: [AppComponent]

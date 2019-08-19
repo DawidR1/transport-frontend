@@ -1,21 +1,14 @@
-<div>
-  <table class="table table-hover">
-    <thead class="thead-dark">
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Pesel</th>
-        <th scope="col">First Name</th>
-        <th scope="col">Last Name</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let driver of drivers; let i= index">
-        <th scope="row">i</th>
-        <td>{{driver.pesel}}</td>
-        <td>{{driver.firstName}}</td>
-        <td>{{driver.lastName}}</td>
-      </tr>
-    </tbody>
-  </table>
-
+<div class="row card-group">
+  <div class="col-md-2 border border-success pd" *ngFor="let driver of drivers; let i= index">
+    <img src={{driver.imageUrl}} class="card-img-top" alt="...">
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">Pesel: {{driver.pesel}}</li>
+      <li class="list-group-item">First Name: {{driver.firstName}}</li>
+      <li class="list-group-item">Last Name: {{driver.lastName}}</li>
+    </ul>
+    <div class="row card-body">
+      <a href="#" class="card-link btn btn-outline-primary btn-sm">Show details</a>
+      <a href="#" class="card-link btn btn-outline-primary btn-sm">Update</a>
+    </div>
+  </div>
 </div>
