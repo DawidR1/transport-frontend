@@ -1,0 +1,31 @@
+<div class="container">
+  <h2>Driver Registration</h2>
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="form-group">
+      <label for="pesel">Pesel:</label>
+      <input type="text" class="form-control" id="pesel" placeholder="Enter pesel" formControlName="pesel">
+      <div *ngIf="form.get('pesel').invalid && form.get('pesel').dirty" class="alert alert-danger">Required</div>
+      <div *ngIf="form.get('pesel').errors && form.get('pesel').errors.pattern" class="alert alert-danger">Pesel should includes 12 digit</div>
+    </div>
+    <div class="form-group">
+      <label for="firstName">FirstName:</label>
+      <input type="text" class="form-control" id="firstName" placeholder="Enter firstName" formControlName="firstName">
+      <div *ngIf="form.get('firstName').invalid && form.get('firstName').dirty" class="alert alert-danger">Required</div>
+    </div>
+    <div class="form-group">
+      <label for="lastName">LastName:</label>
+      <input type="text" class="form-control" id="lastName" placeholder="Enter lastName" formControlName="lastName">
+      <div *ngIf="form.get('lastName').invalid && form.get('lastName').dirty" class="alert alert-danger">Required</div>
+    </div>
+    <label for="file">Picture:</label>
+    <div class="custom-file">
+      <label class="custom-file-label" for="file">{{fileName}}</label>
+      <input type="file" class="custom-file-input" id="file" (change)="onFileChange($event)" required >
+    </div>
+    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Save Driver</button>
+  </form>
+  <p class="p-md-1"></p>
+  <div *ngIf="response.alertType != null"  [ngClass]="['row alert ', response.alertType]"  role="alert">
+    {{response.message}}
+  </div>
+</div>

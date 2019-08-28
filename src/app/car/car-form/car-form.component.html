@@ -1,22 +1,29 @@
 <div class="container">
   <h2>Car Registration</h2>
+  <div class="row">
   <form [formGroup]="form" (ngSubmit)="submit()">
+    <input type="hidden" formControlName="id" id="id">
     <div class="form-group">
       <label for="plate">Plate:</label>
       <input type="text" class="form-control" id="plate" placeholder="Enter plate" formControlName="plate">
-      <div *ngIf="form.get('plate').invalid && form.get('plate').dirty">Required</div>
-      <div *ngIf="form.get('plate').errors && form.get('plate').errors.pattern">Pattern is not valid in Poland</div>
-    </div>
+      <div *ngIf="form.get('plate').invalid && form.get('plate').dirty" class="alert alert-danger">Required</div>
+      <div *ngIf="form.get('plate').errors && form.get('plate').errors.pattern" class="alert alert-danger">Pattern is not valid in Poland</div>
+      </div>
     <div class="form-group">
       <label for="brand">Brand:</label>
       <input type="text" class="form-control" id="brand" placeholder="Enter brand" formControlName="brand">
-      <div *ngIf="form.get('brand').invalid && form.get('brand').dirty">Required</div>
+      <div *ngIf="form.get('brand').invalid && form.get('brand').dirty" class="alert alert-danger">Required</div>
     </div>
     <div class="form-group">
       <label for="model">Model:</label>
       <input type="text" class="form-control" id="model" placeholder="Enter model" formControlName="model">
-      <div *ngIf="form.get('model').invalid && form.get('model').dirty">Required</div>
+      <div *ngIf="form.get('model').invalid && form.get('model').dirty" class="alert alert-danger">Required</div>
     </div>
-    <button type="submit" class="btn btn-primary">Save Car</button>
+    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Save Car</button>
   </form>
+  </div>
+  <p class="p-md-1"></p>
+  <div *ngIf="response.alertType != null"  [ngClass]="['row alert ', response.alertType]"  role="alert">
+    {{response.message}}
+  </div>
 </div>

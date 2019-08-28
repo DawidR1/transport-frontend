@@ -6,11 +6,12 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { MainNavsComponent } from './main-navs/main-navs.component';
 import { DriverService } from './driver/driver.service';
-import { DriverComponent } from './driver/component/driver.component';
+import { DriverComponent } from './driver/view/driver.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CarComponent } from './car/view/car.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CarFormComponent} from './car/car-form/car-form.component';
+import {DriverFormComponent} from './driver/driver-form/driver-form.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import {CarFormComponent} from './car/car-form/car-form.component';
     MainNavsComponent,
     DriverComponent,
     CarComponent,
-    CarFormComponent
+    CarFormComponent,
+    DriverFormComponent
   ],
   imports: [
     BrowserModule,

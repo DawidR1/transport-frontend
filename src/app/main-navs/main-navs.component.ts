@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-main-navs',
   templateUrl: './main-navs.component.html',
-  styleUrls: ['./main-navs.component.css']
+  styleUrls: ['./main-navs.component.css'],
 })
 export class MainNavsComponent implements OnInit {
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
   }

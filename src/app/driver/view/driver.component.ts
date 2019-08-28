@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {DriverService, ResourceDriver} from '../driver.service';
+import {Driver, DriverService, ResourceDriver} from '../driver.service';
 import {HttpErrorResponse} from '@angular/common/http';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-driver',
@@ -12,11 +13,11 @@ export class DriverComponent implements OnInit {
 
   drivers = [];
 
-  constructor(private driverService: DriverService) {
+  constructor(private service: DriverService, private router: Router) {
   }
 
   ngOnInit() {
-    this.driverService.getDriver().subscribe(resourceDriver => {
+    this.service.getDriver().subscribe(resourceDriver => {
         this.populateFields(resourceDriver);
       },
       (error: HttpErrorResponse) => {
@@ -32,6 +33,11 @@ export class DriverComponent implements OnInit {
 
       this.drivers.push(driver);
     });
+  }
+
+  saveInService(driver: Driver) {
+    this.service.driverUpdate = driver;
+    this.router.navigate(['driver-form-update']);
   }
 }
 

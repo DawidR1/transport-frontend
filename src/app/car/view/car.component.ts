@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { CarService } from '../car.service';
+import {Car, CarService} from '../car.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-car',
@@ -11,7 +12,7 @@ export class CarComponent implements OnInit {
 
   cars = [];
 
-  constructor(private service: CarService) {
+  constructor(private service: CarService, private router: Router) {
   }
 
   ngOnInit() {
@@ -24,6 +25,11 @@ export class CarComponent implements OnInit {
         console.log(error.status);
       }
     );
+  }
+
+  saveInService(car: Car) {
+    this.service.addCar(car);
+    this.router.navigate(['car-form-update']);
   }
 }
 
