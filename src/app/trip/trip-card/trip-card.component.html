@@ -1,0 +1,14 @@
+<div *ngFor="let trip of tripsView" class="card border-primary mb-3" style="max-width: 20rem;">
+  <button class="btn btn-light text-left">
+  <div class="card-header"><h4>Trip ID: {{trip.id}}</h4></div>
+  <div class="card-body text-primary">
+    <h5 class="card-title">Status: {{trip.status}}</h5>
+    <ul class="card-text">
+      <li>Destination: {{trip.destination.city}} {{trip.destination.country}}</li>
+      <li>Start Date: {{trip.dateStart}}</li>
+      <li *ngIf="trip.dateFinish != null">Finish Date: {{trip.dateFinish}}</li>
+      <li *ngIf="trip.placeFinish != null">Finish place: {{trip.destination.city}} {{trip.destination.country}}</li>
+    </ul>
+  </div>
+  </button>
+</div>

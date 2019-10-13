@@ -1,5 +1,6 @@
+<input class="form-control form-control-sm w-25" [(ngModel)]="filter" type="search" placeholder="Search" aria-label="Search">
 <div class="row card-group">
-  <div class="col-md-2 border border-success pd" *ngFor="let driver of drivers; let i= index">
+  <div class="col-md-2 border border-success pd" *ngFor="let driver of driversView; let i= index">
     <img src={{driver.imageUrl}} class="card-img-top" alt="...">
     <ul class="list-group list-group-flush">
       <li class="list-group-item">Pesel: {{driver.pesel}}</li>

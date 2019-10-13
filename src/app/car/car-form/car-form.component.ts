@@ -40,7 +40,8 @@ export class CarFormComponent implements OnInit {
     this.car.brand = this.form.get('brand').value;
     this.car.model = this.form.get('model').value;
     console.log(this.car);
-    this.service.sendCar(this.car).subscribe(resource => {
+    this.service.sendObject(this.car, CarService.CAR_URL).subscribe(resource => {
+      console.log(resource.headers.get('Location'));
         this.response.alertType = 'alert-success';
         this.response.message = 'Done';
         this.form.reset();

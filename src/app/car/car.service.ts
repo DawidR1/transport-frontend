@@ -1,27 +1,13 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpResponse} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {AppService} from '../app.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CarService {
+export class CarService extends AppService {
 
+  public static CAR_URL = AppService.WEB_URL + 'car';
   private carUpdate: Car;
-
-  constructor(private http: HttpClient) {
-  }
-
-  getCar(): Observable<ResourceCar> {
-    return this.http.get<ResourceCar>('http://localhost:8080/car');
-  }
-
-  sendCar(car: Car): Observable<HttpResponse<any>> {
-    if (car.id != null) {
-      return this.http.put<HttpResponse<any>>('http://localhost:8080/car/' + car.id, car, {observe: 'response'});
-    }
-    return this.http.post<HttpResponse<any>>('http://localhost:8080/car', car, {observe: 'response'});
-  }
 
   addCar(car: Car) {
     this.carUpdate = car;

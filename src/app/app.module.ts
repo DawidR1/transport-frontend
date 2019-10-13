@@ -12,6 +12,8 @@ import { CarComponent } from './car/view/car.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CarFormComponent} from './car/car-form/car-form.component';
 import {DriverFormComponent} from './driver/driver-form/driver-form.component';
+import { TripComponent } from './trip/trip.component';
+import { TripCardComponent } from './trip/trip-card/trip-card.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,9 @@ import {DriverFormComponent} from './driver/driver-form/driver-form.component';
     DriverComponent,
     CarComponent,
     CarFormComponent,
-    DriverFormComponent
+    DriverFormComponent,
+    TripComponent,
+    TripCardComponent
   ],
   imports: [
     BrowserModule,

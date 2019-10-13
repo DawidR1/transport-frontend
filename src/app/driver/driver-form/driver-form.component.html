@@ -1,6 +1,7 @@
 <div class="container">
   <h2>Driver Registration</h2>
   <form [formGroup]="form" (ngSubmit)="submit()">
+    <input type="hidden" formControlName="id" id="id">
     <div class="form-group">
       <label for="pesel">Pesel:</label>
       <input type="text" class="form-control" id="pesel" placeholder="Enter pesel" formControlName="pesel">

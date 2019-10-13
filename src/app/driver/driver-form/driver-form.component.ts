@@ -21,14 +21,14 @@ export class DriverFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    const driverUpdate = this.service.driverUpdate;
+    const driverUpdate = this.service.getAndRemoveCarForUpdate();
     driverUpdate != null ? this.populateFormCell(driverUpdate) : this.populateFormCell(new Driver());
   }
 
   submit() {
     console.log(this.form);
     this.populateDriver();
-    this.service.sendDriver(this.driver).subscribe(response => {
+    this.service.sendObject(this.driver, DriverService.DRIVER_URL).subscribe(response => {
         const id = this.retrieveIdFromResponse(response);
 
         if (this.fileForm == null) {
@@ -56,6 +56,7 @@ export class DriverFormComponent implements OnInit {
   }
 
   private populateDriver() {
+    this.driver.id = this.form.get('id').value;
     this.driver.pesel = this.form.get('pesel').value;
     this.driver.firstName = this.form.get('firstName').value;
     this.driver.lastName = this.form.get('lastName').value;

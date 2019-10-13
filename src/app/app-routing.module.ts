@@ -4,6 +4,7 @@ import {DriverComponent} from './driver/view/driver.component';
 import {CarComponent} from './car/view/car.component';
 import {CarFormComponent} from './car/car-form/car-form.component';
 import {DriverFormComponent} from './driver/driver-form/driver-form.component';
+import {TripComponent} from './trip/trip.component';
 
 const routes: Routes = [{
   path: '',
@@ -33,6 +34,10 @@ const routes: Routes = [{
   {
     path: 'car-form-update',
     component: CarFormComponent
+  },
+  {
+    path: 'trip',
+    component: TripComponent
   }
 ];
 
