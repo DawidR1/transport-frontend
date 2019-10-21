@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {TripService} from '../trip.service';
+import {Component, Input, OnInit} from '@angular/core';
+import {TripService, TripView} from '../trip.service';
 import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({
@@ -11,11 +11,14 @@ export class TripCardComponent implements OnInit {
 
   trips = [];
   tripsView = [];
+  trip: TripView;
+  isDetails: boolean;
 
   constructor(private service: TripService) {
   }
 
   ngOnInit() {
+    this.isDetails = false;
     this.service.getObject(TripService.TRIP_URL)
       .subscribe(resourceTrip => {
           this.populateFields(resourceTrip);
@@ -27,9 +30,15 @@ export class TripCardComponent implements OnInit {
   }
 
   populateFields(resourceTrip): void {
-    resourceTrip._embedded.tripDtoes.forEach(driver => {
-      this.trips.push(driver);
+    resourceTrip._embedded.tripDtoes.forEach(trip => {
+      this.trips.push(trip);
     });
   }
 
+
+  openDetails(trip: TripView) {
+    this.trip = trip;
+    console.log(trip);
+    this.isDetails = true;
+  }
 }

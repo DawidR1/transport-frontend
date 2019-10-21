@@ -5,10 +5,10 @@ import {AppService} from '../app.service';
 import {Car} from '../car/car.service';
 
 @Injectable()
-export class DriverService extends AppService{
+export class DriverService extends AppService {
 
   public static DRIVER_URL = AppService.WEB_URL + 'driver/';
-
+  public static DRIVER_NARROW_URL = DriverService.DRIVER_URL + '/narrow';
   private driverUpdate: Driver;
 
   // constructor(private http: HttpClient) {

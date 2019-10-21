@@ -14,6 +14,9 @@ import {CarFormComponent} from './car/car-form/car-form.component';
 import {DriverFormComponent} from './driver/driver-form/driver-form.component';
 import { TripComponent } from './trip/trip.component';
 import { TripCardComponent } from './trip/trip-card/trip-card.component';
+import { TripFormComponent } from './trip/trip-form/trip-form.component';
+import { TripViewComponent } from './trip/trip-view/trip-view.component';
+import { ToStringPipe } from './to-string.pipe';
 
 @NgModule({
   declarations: [
@@ -25,7 +28,10 @@ import { TripCardComponent } from './trip/trip-card/trip-card.component';
     CarFormComponent,
     DriverFormComponent,
     TripComponent,
-    TripCardComponent
+    TripCardComponent,
+    TripFormComponent,
+    TripViewComponent,
+    ToStringPipe
   ],
   imports: [
     BrowserModule,

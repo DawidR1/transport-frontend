@@ -7,6 +7,7 @@ import {AppService} from '../app.service';
 export class CarService extends AppService {
 
   public static CAR_URL = AppService.WEB_URL + 'car';
+  public static CAR_NARROW_URL = CarService.CAR_URL + '/narrow';
   private carUpdate: Car;
 
   addCar(car: Car) {
