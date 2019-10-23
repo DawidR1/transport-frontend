@@ -17,6 +17,7 @@ import { TripCardComponent } from './trip/trip-card/trip-card.component';
 import { TripFormComponent } from './trip/trip-form/trip-form.component';
 import { TripViewComponent } from './trip/trip-view/trip-view.component';
 import { ToStringPipe } from './to-string.pipe';
+import { DriverParserPipe } from './driver-parser.pipe';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { ToStringPipe } from './to-string.pipe';
     TripCardComponent,
     TripFormComponent,
     TripViewComponent,
-    ToStringPipe
+    ToStringPipe,
+    DriverParserPipe
   ],
   imports: [
     BrowserModule,

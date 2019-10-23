@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {TripService, TripView} from '../trip.service';
+import {TripDto, TripService} from '../trip.service';
 import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({
@@ -11,7 +11,7 @@ export class TripCardComponent implements OnInit {
 
   trips = [];
   tripsView = [];
-  trip: TripView;
+  trip: TripDto;
   isDetails: boolean;
 
   constructor(private service: TripService) {
@@ -36,9 +36,12 @@ export class TripCardComponent implements OnInit {
   }
 
 
-  openDetails(trip: TripView) {
+  openDetails(trip: TripDto) {
     this.trip = trip;
-    console.log(trip);
     this.isDetails = true;
+  }
+
+  removeUpdateTrip() {
+    this.service.getAndRemoveTripForUpdate();
   }
 }

@@ -1,10 +1,10 @@
 <div class="row">
 <div class="col-md-3" style="max-width: 20rem;">
-  <button type="button" class="nav-link btn btn-outline-primary btn-block" routerLink="/trip-form">Add new</button>
-  <div *ngFor="let trip of tripsView" class="card border-primary" style="max-width: 20rem;">
+  <button type="button" class="nav-link btn btn-outline-primary btn-block" routerLink="/trip-form" (click)="removeUpdateTrip()">Add new</button>
+  <div *ngFor="let trip of tripsView" class="card" style="max-width: 20rem;">
     <button class="btn btn-light text-left" (click)="openDetails(trip)">
       <div class="card-header"><h4>Trip ID: {{trip.id}}</h4></div>
-      <div class="card-body text-primary">
+      <div class="card-body ">
         <h5 class="card-title">Status: {{trip.status}}</h5>
         <ul class="card-text">
           <li>Destination: {{trip.destination.city}} {{trip.destination.country}}</li>

@@ -23,11 +23,4 @@ export class AppService {
     }
     return this.http.post<HttpResponse<any>>(url, object, {observe: 'response'});
   }
-
-  // sendDriver(driver: Driver): Observable<HttpResponse<any>> {
-  //   if (driver.id != null) {
-  //     return this.http.put<HttpResponse<any>>(DriverService.DRIVER_URL + '/' + driver.id, driver, {observe: 'response'});
-  //   }
-  //   return this.http.post<HttpResponse<any>>(DriverService.DRIVER_URL, driver, {observe: 'response'});
-  // }
 }

@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {Cargo, LoadingPlace, LoadingPlaceForm, Location, TripDto, TripForm, TripService, TripStatus, TripView} from '../trip.service';
+import {Cargo, LoadingPlace, Location, TripDto, TripForm, TripService, TripStatus} from '../trip.service';
 import {HttpErrorResponse} from '@angular/common/http';
-import {DriverService} from '../../driver/driver.service';
-import {CarService} from '../../car/car.service';
-import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
+import {Driver, DriverService} from '../../driver/driver.service';
+import {CarService, CustomResponse} from '../../car/car.service';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 
 @Component({
@@ -13,11 +13,12 @@ import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
 })
 export class TripFormComponent implements OnInit {
 
-  tripForm: TripForm = new TripForm();
+  tripFormWholeData: TripForm = new TripForm();
   tripDto: TripDto = new TripDto();
   tripStatus: TripStatus[] = [TripStatus.OPEN, TripStatus.FINISHED, TripStatus.IN_PROGRESS];
   form: FormGroup;
-
+  response = new CustomResponse();
+  done: boolean = false;
   constructor(private service: TripService, private fd: FormBuilder) {
   }
 
@@ -30,113 +31,68 @@ export class TripFormComponent implements OnInit {
           return;
         }
       );
-    this.service.getObject(DriverService.DRIVER_NARROW_URL)
-      .subscribe(driverNarrow => {
-          this.tripForm.employee = this.getMap(driverNarrow);
+    this.service.getObject(DriverService.DRIVER_URL)
+      .subscribe(resource => {
+          this.tripFormWholeData.drivers = new Array<Driver>();
+          resource._embedded.driverDtoes.forEach(driver => this.tripFormWholeData.drivers.push(driver));
         }, (error: HttpErrorResponse) => {
           console.log(error.status);
           return;
         }
       );
-    this.service.getObject(CarService.CAR_NARROW_URL)
-      .subscribe(carNarrow => {
-          this.tripForm.car = this.getMap(carNarrow);
+    this.service.getObject(CarService.CAR_URL)
+      .subscribe(resource => {
+          this.tripFormWholeData.car = resource._embedded.carDtoes;
         }, (error: HttpErrorResponse) => {
           console.log(error.status);
           return;
         }
       );
     const tripUpdate = this.service.getAndRemoveTripForUpdate();
-    tripUpdate != null ? this.populateFormCell(tripUpdate) : this.populateFormCell(new TripView());
-  }
-
-  private getMap(driverNarrow: any): Map<number, string> {
-    const idByName = new Map<number, string>();
-    for (let t in driverNarrow) {
-      idByName.set(Number(t), driverNarrow[t]);
-    }
-    return idByName;
+    tripUpdate != null ? this.populateFormCell(tripUpdate) : this.populateFormCell(new TripDto());
   }
 
   private populateLocation(locations: Array<Location>) {
-    let idByName: Map<number, string> = new Map<number, string>();
-    locations.forEach(value => {
-      idByName.set(value.id, value.postalCode + ' ' + value.streetAddress + ' ' + value.city + ' ' + value.country);
-    });
-    this.tripForm.destination = idByName;
-    this.tripForm.placeFinish = idByName;
-    this.tripForm.placeStart = idByName;
+    this.tripFormWholeData.destinations = locations;
+    this.tripFormWholeData.placeFinish = locations;
+    this.tripFormWholeData.placeStart = locations;
   }
 
   submit() {
-    this.populateTrip();
+    this.tripDto = this.form.value;
     this.service.sendObject(this.tripDto, TripService.TRIP_URL).subscribe(response => {
         console.log(response);
+        this.done = true;
       }, (error: HttpErrorResponse) => {
-        console.log(error.status);
-        return;
+        this.sendFailureToView(error);
       }
     );
   }
 
-  private populateTrip() {
-    this.tripDto.status = this.form.get('status').value;
-    this.tripDto.carId = this.form.get('carId').value;
-    this.tripDto.employeeId = this.form.get('driverId').value;
-    this.tripDto.cost = this.form.get('cost').value;
-    this.tripDto.destinationId = this.form.get('destinationId').value;
-    this.tripDto.dateFinish = this.form.get('dateFinish').value;
-    this.tripDto.distance = this.form.get('distance').value;
-    this.tripDto.dateStart = this.form.get('dateStart').value;
-    this.tripDto.driverSalary = this.form.get('driverSalary').value;
-    this.tripDto.income = this.form.get('income').value;
-    this.tripDto.fuel = this.form.get('fuel').value;
-    this.tripDto.placeFinishId = this.form.get('placeFinishId').value;
-    this.tripDto.placeStartId = this.form.get('placeStartId').value;
 
-    const loadingPlaceControls = this.form.get('loadingPlaces').value;
-    this.tripDto.loadingPlaces = new Array<LoadingPlaceForm>();
-
-    loadingPlaceControls.forEach(loadingPlaceControl => {
-      const loadingPlace = new LoadingPlaceForm();
-      loadingPlace.nr = loadingPlaceControl.nr;
-      loadingPlace.date = loadingPlaceControl.date;
-      loadingPlace.locationId = loadingPlaceControl.locationId;
-      loadingPlace.income = loadingPlaceControl.income;
-      loadingPlace.cargo = new Array<Cargo>();
-      loadingPlaceControl.cargos.forEach(cargoControl => {
-        const cargo = new Cargo();
-        cargo.companyName = cargoControl.companyName;
-        cargo.numberOfPallets = cargoControl.numberOfPallets;
-        cargo.weight = cargoControl.weight;
-        loadingPlace.cargo.push(cargo);
-      });
-      this.tripDto.loadingPlaces.push(loadingPlace);
-    });
-    console.log(this.tripDto);
-  }
-
-  private populateFormCell(trip: TripView) {
+  private populateFormCell(trip: TripDto) {
     const formLoadingPlaceGroups = trip.loadingPlaces == null ? [] : this.populateLoadingPlaces(trip.loadingPlaces);
+    console.log('dupa');
+    console.log(trip);
+
     this.form = this.fd.group({
       id: trip.id,
-      status: trip.status,
-      dateStart: trip.dateStart,
+      status: [trip.status, Validators.required],
+      dateStart: [trip.dateStart, Validators.required],
       dateFinish: trip.dateFinish,
       income: trip.income,
       cost: trip.cost,
       fuel: trip.fuel,
       driverSalary: trip.driverSalary,
       distance: trip.distance,
-      destinationId: trip.destination == null ? '' : trip.destination.id,
-      placeFinishId: trip.placeFinish == null ? '' : trip.placeFinish.id,
-      placeStartId: trip.placeStart == null ? '' : trip.placeStart.id,
-      driverId: trip.employee == null ? '' : trip.employee.id,
-      carId: trip.car == null ? '' : trip.car.id,
+      destination: [trip.destination, Validators.required],
+      placeFinish: trip.placeFinish,
+      placeStart: [trip.placeStart, Validators.required],
+      driver: [trip.driver, Validators.required],
+      car: [trip.car, Validators.required],
       loadingPlaces: this.fd.array(formLoadingPlaceGroups)
     });
-    console.log('sdad');
-    console.log(trip);
+    console.log(this.form);
   }
 
   private populateLoadingPlaces(loadingPlaces: Array<LoadingPlace>) {
@@ -155,9 +111,9 @@ export class TripFormComponent implements OnInit {
       id: loadingPlace.id,
       nr: loadingPlace.nr,
       date: loadingPlace.date,
-      locationId: loadingPlace.location == null ? '' : loadingPlace.location.id,
+      location: loadingPlace.location,
       income: loadingPlace.income,
-      cargos: this.fd.array(cargosGroup)
+      cargo: this.fd.array(cargosGroup)
     });
   }
 
@@ -177,9 +133,22 @@ export class TripFormComponent implements OnInit {
   addCargo(nr: number) {
     const mainForm = this.form.get('loadingPlaces')['controls'] as FormArray;
     console.log(nr);
-    const cos = mainForm[nr].get('cargos');
-    console.log(cos)
+    const cos = mainForm[nr].get('cargo');
+    console.log(cos);
     cos.push(this.getCargos(new Cargo()));
   }
 
+  compareById(o1, o2) {
+    if (o1 == null || o2 == null) {
+      return false;
+    }
+    return o1.id === o2.id;
+  }
+
+  private sendFailureToView(error: HttpErrorResponse) {
+    console.log(error.error.errors);
+    this.response.alertType = 'alert-danger';
+    this.response.message = error.error.errors.map(er => er.message).toString();
+    // this.response.message = error.error.errors.f;
+  }
 }

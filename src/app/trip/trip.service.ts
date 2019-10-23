@@ -10,13 +10,13 @@ export class TripService extends AppService {
 
   public static TRIP_URL = AppService.WEB_URL + 'trip/';
   static LOCATION_URL = AppService.WEB_URL + 'location/';
-  tripUpdate: TripView;
+  tripUpdate: TripDto;
 
-  public addTripToUpdateForm(trip: TripView) {
+  public addTripToUpdateForm(trip: TripDto) {
     this.tripUpdate = trip;
   }
 
-  getAndRemoveTripForUpdate(): TripView {
+  getAndRemoveTripForUpdate(): TripDto {
       const trip = this.tripUpdate;
       this.tripUpdate = null;
       return trip;
@@ -37,37 +37,18 @@ export class Location {
   }
 }
 
-export class TripDto {
-  constructor(public id?: number,
-              public status?: TripStatus,
-              public destinationId?: number,
-              public dateStart?: string,
-              public dateFinish?: string,
-              public placeFinishId?: number,
-              public carId?: number,
-              public employeeId?: number,
-              public placeStartId?: number,
-              public income?: number,
-              public loadingPlaces?: Array<LoadingPlaceForm>,
-              public distance?: number,
-              public fuel?: number,
-              public cost?: number,
-              public driverSalary?: number) {
-  }
-}
-
 export class TripForm {
   constructor(public id?: number,
               public status?: TripStatus,
-              public destination?: Map<number, string>,
+              public destinations?: Array<Location>,
               public dateStart?: string,
               public dateFinish?: string,
-              public placeFinish?: Map<number, string>,
-              public car?: Map<number, string>,
-              public employee?: Map<number, string>,
-              public placeStart?: Map<number, string>,
+              public placeFinish?: Array<Location>,
+              public car?: Array<Car>,
+              public drivers?: Array<Driver>,
+              public placeStart?: Array<Location>,
               public income?: number,
-              public loadingPlaces?: Map<number, string>,
+              public loadingPlaces?: Array<LoadingPlace>,
               public distance?: number,
               public fuel?: number,
               public cost?: number,
@@ -75,7 +56,25 @@ export class TripForm {
   }
 }
 
-export class TripView {
+// export class TripForm {
+//   constructor(public id?: number,
+//               public status?: TripStatus,
+//               public destination?: Map<number, string>,
+//               public dateStart?: string,
+//               public dateFinish?: string,
+//               public placeFinish?: Map<number, string>,
+//               public car?: Map<number, string>,
+//               public employee?: Map<number, string>,
+//               public placeStart?: Map<number, string>,
+//               public income?: number,
+//               public loadingPlaces?: Map<number, string>,
+//               public distance?: number,
+//               public fuel?: number,
+//               public cost?: number,
+//               public driverSalary?: number) {
+//   }
+// }
+export class TripDto {
   constructor(public id?: number,
               public status?: TripStatus,
               public destination?: Location,
@@ -83,7 +82,7 @@ export class TripView {
               public dateFinish?: string,
               public placeFinish?: Location,
               public car?: Car,
-              public employee?: Driver,
+              public driver?: Driver,
               public placeStart?: Location,
               public income?: number,
               public loadingPlaces?: Array<LoadingPlace>,
@@ -93,6 +92,25 @@ export class TripView {
               public driverSalary?: number) {
   }
 }
+
+// export class TripView {
+//   constructor(public id?: number,
+//               public status?: TripStatus,
+//               public destination?: Location,
+//               public dateStart?: string,
+//               public dateFinish?: string,
+//               public placeFinish?: Location,
+//               public car?: Car,
+//               public employee?: Driver,
+//               public placeStart?: Location,
+//               public income?: number,
+//               public loadingPlaces?: Array<LoadingPlace>,
+//               public distance?: number,
+//               public fuel?: number,
+//               public cost?: number,
+//               public driverSalary?: number) {
+//   }
+// }
 
 export enum TripStatus {
   IN_PROGRESS = 'IN_PROGRESS',
@@ -110,15 +128,15 @@ export enum TripStatus {
 //   }
 // }
 
-export class LoadingPlaceForm {
-  constructor(public id?: number,
-              public nr?: number,
-              public date?: string,
-              public locationId?: number,
-              public income?: number,
-              public cargo?: Array<Cargo>) {
-  }
-}
+// export class LoadingPlaceForm {
+//   constructor(public id?: number,
+//               public nr?: number,
+//               public date?: string,
+//               public locationId?: number,
+//               public income?: number,
+//               public cargo?: Array<Cargo>) {
+//   }
+// }
 
 export class LoadingPlace {
   constructor(public id?: number,
