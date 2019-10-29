@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
 import {AppService} from '../app.service';
 import {Car} from '../car/car.service';
 import {Driver} from '../driver/driver.service';
+import {Injectable} from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
@@ -56,24 +56,6 @@ export class TripForm {
   }
 }
 
-// export class TripForm {
-//   constructor(public id?: number,
-//               public status?: TripStatus,
-//               public destination?: Map<number, string>,
-//               public dateStart?: string,
-//               public dateFinish?: string,
-//               public placeFinish?: Map<number, string>,
-//               public car?: Map<number, string>,
-//               public employee?: Map<number, string>,
-//               public placeStart?: Map<number, string>,
-//               public income?: number,
-//               public loadingPlaces?: Map<number, string>,
-//               public distance?: number,
-//               public fuel?: number,
-//               public cost?: number,
-//               public driverSalary?: number) {
-//   }
-// }
 export class TripDto {
   constructor(public id?: number,
               public status?: TripStatus,
@@ -93,50 +75,11 @@ export class TripDto {
   }
 }
 
-// export class TripView {
-//   constructor(public id?: number,
-//               public status?: TripStatus,
-//               public destination?: Location,
-//               public dateStart?: string,
-//               public dateFinish?: string,
-//               public placeFinish?: Location,
-//               public car?: Car,
-//               public employee?: Driver,
-//               public placeStart?: Location,
-//               public income?: number,
-//               public loadingPlaces?: Array<LoadingPlace>,
-//               public distance?: number,
-//               public fuel?: number,
-//               public cost?: number,
-//               public driverSalary?: number) {
-//   }
-// }
-
 export enum TripStatus {
   IN_PROGRESS = 'IN_PROGRESS',
   FINISHED = 'FINISHED',
   OPEN = 'OPEN'
 }
-
-// export class LoadingPlaceForm {
-//   constructor(public id?: number,
-//               public nr?: number,
-//               public date?: string,
-//               public locationId?: number,
-//               public income?: number,
-//               public cargo?: Array<Cargo>) {
-//   }
-// }
-
-// export class LoadingPlaceForm {
-//   constructor(public id?: number,
-//               public nr?: number,
-//               public date?: string,
-//               public locationId?: number,
-//               public income?: number,
-//               public cargo?: Array<Cargo>) {
-//   }
-// }
 
 export class LoadingPlace {
   constructor(public id?: number,

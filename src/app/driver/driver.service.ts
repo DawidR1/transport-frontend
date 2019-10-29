@@ -11,20 +11,6 @@ export class DriverService extends AppService {
   public static DRIVER_NARROW_URL = DriverService.DRIVER_URL + '/narrow';
   private driverUpdate: Driver;
 
-  // constructor(private http: HttpClient) {
-  // }
-
-  // getDriver(): Observable<ResourceDriver> {
-  //   return this.http.get<ResourceDriver>(DriverService.DRIVER_URL);
-  // }
-
-  // sendDriver(driver: Driver): Observable<HttpResponse<any>> {
-  //   if (driver.id != null) {
-  //     return this.http.put<HttpResponse<any>>(DriverService.DRIVER_URL + '/' + driver.id, driver, {observe: 'response'});
-  //   }
-  //   return this.http.post<HttpResponse<any>>(DriverService.DRIVER_URL, driver, {observe: 'response'});
-  // }
-
   sendFile(form: FormData, id: string): Observable<HttpResponse<any>> {
     return this.http.post<HttpResponse<any>>('http://localhost:8080/file/driver/' + id, form, {observe: 'response'});
   }

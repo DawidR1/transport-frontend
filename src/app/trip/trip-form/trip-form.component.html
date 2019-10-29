@@ -38,7 +38,6 @@
               [compareWith]="compareById">
         <option [ngValue]="driver" *ngFor="let driver of tripFormWholeData.drivers "
         >{{driver.firstName}} {{driver.lastName}}</option>
-        <!--                        [selected]="form.get('driver') != null && driver.id == form.get('driver').value.id"-->
       </select>
       <label>Car</label>
       <select class="custom-select my-1 mr-sm-2" required id="car-select" formControlName="car"

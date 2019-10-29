@@ -1,0 +1,58 @@
+<ng-template #companyContent let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Provide details about report</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="form">
+      <div class="form-group">
+        <label for="startDate">Start Date</label>
+        <div class="input-group">
+          <input id="startDate" class="form-control" placeholder="yyyy-mm-dd" name="dp" type="date" formControlName="start">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary calendar" type="button"></button>
+          </div>
+        </div>
+        <p></p>
+        <label for="endDate">End Date</label>
+        <div class="input-group">
+          <input id="endDate" class="form-control" placeholder="yyyy-mm-dd" name="dp" type="date" formControlName="end">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary calendar" type="button"></button>
+          </div>
+        </div>
+        <div [hidden]="isDisabled">
+        <label>Driver</label>
+        <select class="custom-select my-1 mr-sm-2" required id="driver-select" formControlName="driver">
+          <option [ngValue]="driver.id" *ngFor="let driver of drivers"
+          >{{driver.firstName}} {{driver.lastName}}</option>
+        </select>
+        </div>
+        <p></p>
+        <div>
+        <label id="example-radio-group-label">Choose the format</label>
+        <mat-radio-group class="radio-group" formControlName="format" aria-labelledby="example-radio-group-label">
+          <mat-radio-button class="radio-button"  value="PDF">PDF</mat-radio-button>
+          <mat-radio-button class="radio-button" value="JSON">JSON</mat-radio-button>
+        </mat-radio-group>
+        </div>
+        </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button"  class="btn btn-outline-dark" (click)="modal.close() ">Show</button>
+  </div>
+</ng-template>
+<button class="btn btn-lg btn-outline-primary" (click)="openDriver(companyContent)">Generate Report For Driver</button>
+<button class="btn btn-lg btn-outline-primary" (click)="openCompany(companyContent)">Generate Report Company Driver</button>
+<div *ngIf="showReport">
+<app-company-report [report]="reportCompany" ></app-company-report>
+</div>
+<div *ngIf="showReportDriver">
+  <app-driver-report [report]="reportDriver" ></app-driver-report>
+</div>
+
+
+

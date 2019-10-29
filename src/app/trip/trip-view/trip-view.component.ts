@@ -1,5 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
 import {TripDto, TripService} from '../trip.service';
+import {Component, Input, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 
 @Component({

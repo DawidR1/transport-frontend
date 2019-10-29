@@ -7,6 +7,8 @@ import {DriverFormComponent} from './driver/driver-form/driver-form.component';
 import {TripComponent} from './trip/trip.component';
 import {TripFormComponent} from './trip/trip-form/trip-form.component';
 import {TripViewComponent} from './trip/trip-view/trip-view.component';
+import {ReportComponent} from './report/report.component';
+import {CompanyReportComponent} from './report/company-report/company-report.component';
 
 const routes: Routes = [{
   path: '',
@@ -48,6 +50,14 @@ const routes: Routes = [{
   {
     path: 'trip-view',
     component: TripViewComponent
+  },
+  {
+    path: 'report',
+    component: ReportComponent
+  },
+  {
+    path: 'company-report',
+    component: CompanyReportComponent
   }
 ];
 

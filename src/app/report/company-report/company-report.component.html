@@ -1,0 +1,66 @@
+<div>
+  <p class="p-md-1"></p>
+  <div class="row">
+
+  <div class="col-md-12 d-flex justify-content-center">
+    <h1>REPORT</h1><br/>
+  </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12 d-flex justify-content-center">
+      <h3>Period: {{report.start}} - {{report.end}}</h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6 d-flex justify-content-center">
+      <h4>Number Of Trips: {{report.companyNumberOfTrips}}</h4>
+    </div>
+    <div class="col-md-6 d-flex justify-content-center">
+      <h4>Income: {{report.companyIncome}}</h4>
+    </div>
+  </div>
+<!--  <div>-->
+<!--  </div>-->
+  <p class="p-md-1"></p>
+  <div class="row">
+  <mat-card class="card" *ngFor="let driverReport of report.reportDrivers" style="margin: 15px">
+    <mat-card-header>
+      <div mat-card-avatar class="example-header-image"></div>
+      <mat-card-title>{{driverReport.driverDto.firstName}} {{driverReport.driverDto.lastName}}</mat-card-title>
+      <mat-card-subtitle>{{driverReport.driverDto.pesel}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="row" style="margin: 15px">
+      <div class="col-md-6">
+      <h5>Number Of trips: {{driverReport.numberOfTrips}}</h5>
+      </div>
+      <div class="col-md-6">
+        <h5 style="text-align: right">Salary: {{driverReport.salary}}</h5>
+      </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  </div>
+  <div class="row">
+    <table class="table table-hover">
+      <thead class="thead-dark">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Destination</th>
+        <th scope="col">Date Start</th>
+        <th scope="col">Date Finish</th>
+        <th scope="col">Status</th>
+      </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let trip of trips; let i= index">
+        <th scope="row">{{i}}</th>
+        <td>{{trip.destination.city}} {{trip.destination.country}}</td>
+        <td>{{trip.dateStart}}</td>
+        <td>{{trip.dateFinish}}</td>
+          <td>{{trip.status}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

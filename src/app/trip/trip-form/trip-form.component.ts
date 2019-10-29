@@ -72,7 +72,6 @@ export class TripFormComponent implements OnInit {
 
   private populateFormCell(trip: TripDto) {
     const formLoadingPlaceGroups = trip.loadingPlaces == null ? [] : this.populateLoadingPlaces(trip.loadingPlaces);
-    console.log('dupa');
     console.log(trip);
 
     this.form = this.fd.group({
