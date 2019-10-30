@@ -21,7 +21,15 @@ import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule, MatRadioModule, MatTableModule} from '@angular/material';
+import {
+  MatButtonModule,
+  MatCardModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatPaginatorModule, MatProgressSpinnerModule,
+  MatRadioModule,
+  MatTableModule
+} from '@angular/material';
 import { CompanyReportComponent } from './report/company-report/company-report.component';
 import { DriverReportComponent } from './report/driver-report/driver-report.component';
 
@@ -57,7 +65,9 @@ import { DriverReportComponent } from './report/driver-report/driver-report.comp
     MatInputModule,
     MatRadioModule,
     MatCardModule,
-    MatTableModule
+    MatTableModule,
+    MatPaginatorModule,
+    MatProgressSpinnerModule
   ],
   entryComponents: [
     ReportComponent

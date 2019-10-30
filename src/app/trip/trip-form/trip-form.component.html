@@ -43,6 +43,7 @@
       <select class="custom-select my-1 mr-sm-2" required id="car-select" formControlName="car"
               [compareWith]="compareById">
         <option [ngValue]="car" *ngFor="let car of tripFormWholeData.car">{{car.plate}}</option>
+        <mat-paginator [pageSize]="1" [length]="1" ></mat-paginator>
       </select>
       <label>Income</label>
       <input type="number" min="0" class="form-control" id="income" placeholder="income"

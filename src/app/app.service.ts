@@ -16,6 +16,10 @@ export class AppService {
     return this.http.get<any>(url);
   }
 
+  getObjectPage(url: string, index: number, size: number = 5): Observable<any> {
+    return this.http.get<any>(url +'?page=' + index + '&size=' + size);
+  }
+
   sendObject(object, url: string): Observable<HttpResponse<any>> {
     console.log(object);
     if (object.id != null) {

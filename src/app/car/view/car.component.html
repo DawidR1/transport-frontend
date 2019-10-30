@@ -1,5 +1,7 @@
-<div>
-  <input class="form-control form-control-sm w-25" [(ngModel)]="filter" type="search" placeholder="Search" aria-label="Search">
+<mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+<div *ngIf="!isLoadingResults">
+<div >
+  <input class="form-control form-control-sm w-25"  type="search" placeholder="Search" aria-label="Search">
   <table class="table table-hover">
     <thead class="thead-dark">
     <tr>
@@ -12,7 +14,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let car of carsView; let i= index">
+    <tr *ngFor="let car of carsView; let i= index ">
       <th scope="row">{{i}}</th>
       <td>{{car.plate}}</td>
       <td>{{car.brand}}</td>
@@ -26,5 +28,46 @@
     </tr>
     </tbody>
   </table>
-  <button type="button" routerLink="/car-form" class="nav-link btn btn-outline-primary btn-block">Add new car</button>
 </div>
+<mat-paginator [pageSize]="pageSize" [length]="totalItems" (page)="pageEvent2($event)"></mat-paginator>
+<button type="button" routerLink="/car-form" class="nav-link btn btn-outline-primary btn-block">Add new car</button>
+</div>
+
+<!--<div class="example-container mat-elevation-z8">-->
+<!--  <div class="example-loading-shade">-->
+<!--    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>-->
+<!--  </div>-->
+
+<!--  <div class="example-table-container">-->
+
+<!--    <table mat-table [dataSource]="carsView" class="example-table">-->
+<!--&lt;!&ndash;           matSort matSortActive="created" matSortDisableClear matSortDirection="desc">&ndash;&gt;-->
+<!--      &lt;!&ndash; Number Column &ndash;&gt;-->
+<!--      <ng-container matColumnDef="number">-->
+<!--        <th mat-header-cell *matHeaderCellDef>#</th>-->
+<!--        <td mat-cell *matCellDef="let car">{{car.id}}</td>-->
+<!--      </ng-container>-->
+<!--      <mat-text-column name="score"></mat-text-column>-->
+<!--      &lt;!&ndash; Title Column &ndash;&gt;-->
+<!--      <ng-container matColumnDef="title">-->
+<!--        <th mat-header-cell *matHeaderCellDef>Plate</th>-->
+<!--        <td mat-cell *matCellDef="let car">{{car.plate}}</td>-->
+<!--      </ng-container>-->
+<!--      <ng-container matColumnDef="state">-->
+<!--        <th mat-header-cell *matHeaderCellDef>Brand</th>-->
+<!--        <td mat-cell *matCellDef="let car">{{car.brand}}</td>-->
+<!--      </ng-container>-->
+<!--      <ng-container matColumnDef="state">-->
+<!--        <th mat-header-cell *matHeaderCellDef>Model</th>-->
+<!--        <td mat-cell *matCellDef="let car">{{car.model}}</td>-->
+<!--      </ng-container>-->
+
+<!--      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>-->
+<!--      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>-->
+<!--    </table>-->
+<!--  </div>-->
+
+<!--  <mat-paginator [length]="resultsLength" [pageSize]="pageSize"></mat-paginator>-->
+<!--</div>-->
+
+

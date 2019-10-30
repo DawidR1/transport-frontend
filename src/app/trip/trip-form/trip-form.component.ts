@@ -34,7 +34,7 @@ export class TripFormComponent implements OnInit {
     this.service.getObject(DriverService.DRIVER_URL)
       .subscribe(resource => {
           this.tripFormWholeData.drivers = new Array<Driver>();
-          resource._embedded.driverDtoes.forEach(driver => this.tripFormWholeData.drivers.push(driver));
+          resource._embedded.resources.forEach(driver => this.tripFormWholeData.drivers.push(driver));
         }, (error: HttpErrorResponse) => {
           console.log(error.status);
           return;
@@ -42,7 +42,7 @@ export class TripFormComponent implements OnInit {
       );
     this.service.getObject(CarService.CAR_URL)
       .subscribe(resource => {
-          this.tripFormWholeData.car = resource._embedded.carDtoes;
+          this.tripFormWholeData.car = resource._embedded.resources;
         }, (error: HttpErrorResponse) => {
           console.log(error.status);
           return;

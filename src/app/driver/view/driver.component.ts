@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {Driver, DriverService, ResourceDriver} from '../driver.service';
+import {Driver, DriverService} from '../driver.service';
 import {HttpErrorResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
+import {PageEvent} from '@angular/material';
 
 @Component({
   selector: 'app-driver',
@@ -14,26 +15,36 @@ export class DriverComponent implements OnInit {
   drivers = [];
   driversView = [];
   _filter: string;
+  pageSize: number;
+  totalItems: number;
 
   constructor(private service: DriverService, private router: Router) {
   }
 
   ngOnInit() {
-    this.service.getObject(DriverService.DRIVER_URL).subscribe(resourceDriver => {
+    this.requestDriver();
+  }
+
+  private requestDriver(index: number = 0) {
+    this.service.getObjectPage(DriverService.DRIVER_URL, index).subscribe(resourceDriver => {
         this.populateFields(resourceDriver);
       },
       (error: HttpErrorResponse) => {
         console.log(error.status);
       }
     );
-    this.driversView = this.drivers;
+    // this.driversView = this.drivers;
   }
 
-  populateFields(resourceDriver: ResourceDriver): void {
-    resourceDriver._embedded.driverDtoes.forEach(driver => {
+  populateFields(resource: any): void {
+    const data = new Array<Driver>();
+    resource._embedded.resources.forEach(driver => {
       driver._links.image != null ? driver.imageUrl = driver._links.image.href : driver.imageUrl = '';
-      this.drivers.push(driver);
+      data.push(driver);
     });
+    this.pageSize = resource.page.size;
+    this.totalItems = resource.page.totalElements;
+    this.driversView = data;
   }
 
   saveInService(driver: Driver) {
@@ -60,6 +71,9 @@ export class DriverComponent implements OnInit {
     }
   }
 
+  pageEvent2($event: PageEvent) {
+    this.requestDriver($event.pageIndex);
+  }
 }
 
 

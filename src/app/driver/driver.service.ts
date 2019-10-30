@@ -26,10 +26,6 @@ export class DriverService extends AppService {
   }
 }
 
-export interface ResourceDriver {
-  _embedded;
-}
-
 export class Driver {
   id?: string;
   pesel?: string;

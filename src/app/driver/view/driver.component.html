@@ -1,16 +1,24 @@
-<input class="form-control form-control-sm w-25" [(ngModel)]="filter" type="search" placeholder="Search" aria-label="Search">
+<input class="form-control form-control-sm w-25" [(ngModel)]="filter" type="search" placeholder="Search"
+       aria-label="Search">
 <div class="row card-group">
-  <div class="col-md-2 border border-success pd" *ngFor="let driver of driversView; let i= index">
-    <img src={{driver.imageUrl}} class="card-img-top" alt="...">
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item">Pesel: {{driver.pesel}}</li>
-      <li class="list-group-item">First Name: {{driver.firstName}}</li>
-      <li class="list-group-item">Last Name: {{driver.lastName}}</li>
-    </ul>
-    <div class="row card-body">
-      <a href="#" class="card-link btn btn-outline-primary btn-sm">Show details</a>
-      <button type="button" (click)="saveInService(driver)" class="btn btn-outline-success btn-block">Update</button>
+  <div class="col-lg-3  " *ngFor="let driver of driversView; let i= index">
+    <div class="card border border-dark pd " style="margin: 20px">
+      <img src={{driver.imageUrl}} class="card-img-top" alt="...">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">Pesel: {{driver.pesel}}</li>
+        <li class="list-group-item">First Name: {{driver.firstName}}</li>
+        <li class="list-group-item">Last Name: {{driver.lastName}}</li>
+      </ul>
+      <div class="row card-body">
+      </div>
+      <div class="card-footer">
+        <button type="button" (click)="saveInService(driver)" class="btn btn-outline-success btn-block">Update</button>
+      </div>
     </div>
   </div>
-  <button type="button" routerLink="/driver-form" class="nav-link btn btn-outline-primary btn-block">Add new driver</button>
+<!--  <p class="p-md-1"></p>-->
 </div>
+<mat-paginator [pageSize]="pageSize" [length]="totalItems" (page)="pageEvent2($event)"></mat-paginator>
+<button type="button" routerLink="/driver-form" class="nav-link btn btn-outline-primary btn-block">Add new driver
+</button>
+
