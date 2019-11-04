@@ -25,7 +25,7 @@ export class TripFormComponent implements OnInit {
   ngOnInit() {
     this.service.getObject(TripService.LOCATION_URL)
       .subscribe(resource => {
-          this.populateLocation(resource._embedded.locationDtoes);
+          this.populateLocation(resource._embedded.resources);
         }, (error: HttpErrorResponse) => {
           console.log(error.status);
           return;

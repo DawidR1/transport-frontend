@@ -25,15 +25,14 @@ export class DriverComponent implements OnInit {
     this.requestDriver();
   }
 
-  private requestDriver(index: number = 0) {
-    this.service.getObjectPage(DriverService.DRIVER_URL, index).subscribe(resourceDriver => {
+  private requestDriver(index: number = 0, size: number = 4) {
+    this.service.getObjectPage(DriverService.DRIVER_URL, index, size).subscribe(resourceDriver => {
         this.populateFields(resourceDriver);
       },
       (error: HttpErrorResponse) => {
         console.log(error.status);
       }
     );
-    // this.driversView = this.drivers;
   }
 
   populateFields(resource: any): void {
@@ -47,7 +46,7 @@ export class DriverComponent implements OnInit {
     this.driversView = data;
   }
 
-  saveInService(driver: Driver) {
+  openUpdateForm(driver: Driver) {
     this.service.addDriverToUpdateForm(driver);
     this.router.navigate(['driver-form-update']);
   }
@@ -73,6 +72,11 @@ export class DriverComponent implements OnInit {
 
   pageEvent2($event: PageEvent) {
     this.requestDriver($event.pageIndex);
+  }
+
+  openDetailsView(driver: Driver) {
+    this.service.addDriverToDetailsView(driver);
+    this.router.navigate(['driver-details-view']);
   }
 }
 

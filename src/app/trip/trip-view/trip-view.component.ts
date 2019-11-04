@@ -20,4 +20,12 @@ export class TripViewComponent implements OnInit {
     this.service.addTripToUpdateForm(tripView);
     this.router.navigate(['trip-form']);
   }
+
+  showInMaps(tripView: TripDto) {
+    const locations = [tripView.placeStart];
+    tripView.loadingPlaces.forEach(place => locations.push(place.location));
+    locations.push(tripView.placeFinish);
+    console.log(locations)
+    this.service.showInMaps(locations);
+  }
 }
