@@ -25,13 +25,17 @@ import {
   MatButtonModule,
   MatCardModule,
   MatFormFieldModule,
-  MatInputModule,
+  MatInputModule, MatListModule,
   MatPaginatorModule, MatProgressSpinnerModule,
   MatRadioModule,
   MatTableModule
 } from '@angular/material';
 import { CompanyReportComponent } from './report/company-report/company-report.component';
 import { DriverReportComponent } from './report/driver-report/driver-report.component';
+import { ToolComponent } from './tool/tool.component';
+import { LocationComponent } from './tool/location/location.component';
+import { LocationFormComponent } from './tool/location/location-form/location-form.component';
+import { DriverDetailsViewComponent } from './driver/driver-details-view/driver-details-view.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +54,11 @@ import { DriverReportComponent } from './report/driver-report/driver-report.comp
     DriverParserPipe,
     ReportComponent,
     CompanyReportComponent,
-    DriverReportComponent
+    DriverReportComponent,
+    ToolComponent,
+    LocationComponent,
+    LocationFormComponent,
+    DriverDetailsViewComponent
   ],
   imports: [
     BrowserModule,
@@ -67,7 +75,8 @@ import { DriverReportComponent } from './report/driver-report/driver-report.comp
     MatCardModule,
     MatTableModule,
     MatPaginatorModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatListModule
   ],
   entryComponents: [
     ReportComponent
