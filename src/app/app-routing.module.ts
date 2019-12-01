@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {DriverComponent} from './driver/view/driver.component';
+import {DriverComponent} from './driver/driver-view/driver.component';
 import {CarComponent} from './car/view/car.component';
 import {CarFormComponent} from './car/car-form/car-form.component';
 import {DriverFormComponent} from './driver/driver-form/driver-form.component';
