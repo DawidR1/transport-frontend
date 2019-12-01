@@ -44,7 +44,7 @@ export class ReportComponent implements OnInit {
   openDriver(content) {
     this.isDisabled = false;
     this.showReport = false;
-    this.service.getObject(DriverService.DRIVER_URL).subscribe(resource => {
+    this.service.getObject(DriverService.RESOURCE_DRIVER_URL).subscribe(resource => {
       this.drivers = resource._embedded.driverDtoes;
     });
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {

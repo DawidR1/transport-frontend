@@ -19,30 +19,31 @@ export class TripFormComponent implements OnInit {
   form: FormGroup;
   response = new CustomResponse();
   done: boolean = false;
+
   constructor(private service: TripService, private fd: FormBuilder) {
   }
 
   ngOnInit() {
-    this.service.getObject(TripService.LOCATION_URL)
+    this.service.getObject(TripService.RESOURCE_LOCATION_URL)
       .subscribe(resource => {
-          this.populateLocation(resource._embedded.resources);
+          this.populateLocation(resource._embedded.locationDtoes);
         }, (error: HttpErrorResponse) => {
           console.log(error.status);
           return;
         }
       );
-    this.service.getObject(DriverService.DRIVER_URL)
+    this.service.getObject(DriverService.RESOURCE_DRIVER_URL)
       .subscribe(resource => {
           this.tripFormWholeData.drivers = new Array<Driver>();
-          resource._embedded.resources.forEach(driver => this.tripFormWholeData.drivers.push(driver));
+          resource._embedded.driverDtoes.forEach(driver => this.tripFormWholeData.drivers.push(driver));
         }, (error: HttpErrorResponse) => {
           console.log(error.status);
           return;
         }
       );
-    this.service.getObject(CarService.CAR_URL)
+    this.service.getObject(CarService.RESOURCE_CAR_URL)
       .subscribe(resource => {
-          this.tripFormWholeData.car = resource._embedded.resources;
+          this.tripFormWholeData.car = resource._embedded.carDtoes;
         }, (error: HttpErrorResponse) => {
           console.log(error.status);
           return;
@@ -149,5 +150,9 @@ export class TripFormComponent implements OnInit {
     this.response.alertType = 'alert-danger';
     this.response.message = error.error.errors.map(er => er.message).toString();
     // this.response.message = error.error.errors.f;
+  }
+
+  loadNextDriverPage() {
+
   }
 }

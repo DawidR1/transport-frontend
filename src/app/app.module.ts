@@ -19,11 +19,11 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-import {HttpClient, HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MatButtonModule,
-  MatCardModule,
+  MatCardModule, MatDatepickerModule,
   MatFormFieldModule,
   MatInputModule, MatListModule,
   MatPaginatorModule, MatProgressSpinnerModule,
@@ -36,6 +36,10 @@ import { ToolComponent } from './tool/tool.component';
 import { LocationComponent } from './tool/location/location.component';
 import { LocationFormComponent } from './tool/location/location-form/location-form.component';
 import { DriverDetailsViewComponent } from './driver/driver-details-view/driver-details-view.component';
+import { AuthComponent } from './auth/auth.component';
+import {JwtInterceptor} from './auth/JwtFilter';
+import {ErrorInterceptor} from './auth/ErrorFilter';
+import { DriverPanelComponent } from './driver-panel/driver-panel.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +62,9 @@ import { DriverDetailsViewComponent } from './driver/driver-details-view/driver-
     ToolComponent,
     LocationComponent,
     LocationFormComponent,
-    DriverDetailsViewComponent
+    DriverDetailsViewComponent,
+    AuthComponent,
+    DriverPanelComponent
   ],
   imports: [
     BrowserModule,
@@ -76,12 +82,18 @@ import { DriverDetailsViewComponent } from './driver/driver-details-view/driver-
     MatTableModule,
     MatPaginatorModule,
     MatProgressSpinnerModule,
-    MatListModule
+    MatListModule,
+    MatDatepickerModule
   ],
   entryComponents: [
     ReportComponent
   ],
-  providers: [DriverService, HttpClient],
+  providers: [
+    DriverService,
+    HttpClient,
+    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

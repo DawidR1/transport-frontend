@@ -8,11 +8,6 @@ import {Injectable} from '@angular/core';
 })
 export class TripService extends AppService {
 
-  public static TRIP_URL = AppService.WEB_URL + 'trip/';
-  static LOCATION_URL = AppService.WEB_URL + 'location/';
-  // static MAPS_URL = 'https://www.google.com/maps/dir/3+Maja,+40-093+Katowice/Szkolna+35,+34-331+Rychwałdek';
-  static MAPS_URL = 'https://www.google.com/maps/dir/';
-
   tripUpdate: TripDto;
 
   public addTripToUpdateForm(trip: TripDto) {

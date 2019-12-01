@@ -38,6 +38,7 @@
               [compareWith]="compareById">
         <option [ngValue]="driver" *ngFor="let driver of tripFormWholeData.drivers "
         >{{driver.firstName}} {{driver.lastName}}</option>
+        <option (click)="loadNextDriverPage()">Show more</option>
       </select>
       <label>Car</label>
       <select class="custom-select my-1 mr-sm-2" required id="car-select" formControlName="car"

@@ -11,4 +11,8 @@
         </li>
       </ul>
     </div>
+    <div *ngIf="user">
+      <h3 style="float: left">{{user.username}}   </h3>
+    <button style="margin-left: 10px" type="button float-md-left" class="btn btn-danger" (click)="logout()">Logout</button>
+    </div>
   </nav>

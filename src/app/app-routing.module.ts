@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {Routes, RouterModule} from '@angular/router';
+import {RouterModule, Routes} from '@angular/router';
 import {DriverComponent} from './driver/view/driver.component';
 import {CarComponent} from './car/view/car.component';
 import {CarFormComponent} from './car/car-form/car-form.component';
@@ -12,68 +12,83 @@ import {CompanyReportComponent} from './report/company-report/company-report.com
 import {ToolComponent} from './tool/tool.component';
 import {LocationFormComponent} from './tool/location/location-form/location-form.component';
 import {DriverDetailsViewComponent} from './driver/driver-details-view/driver-details-view.component';
+import {AuthComponent} from './auth/auth.component';
+import {AuthService} from './auth/auth.service';
 
-const routes: Routes = [{
-  path: '',
-  redirectTo: 'home',
-  pathMatch: 'full'
-},
+const routes: Routes = [
   {
-    path: 'driver',
-    component: DriverComponent
+    path: '',
+    canActivate: [AuthService],
+    children: [
+      {
+        path: '',
+        redirectTo: 'home',
+        pathMatch: 'full',
+
+      },
+      {
+        path: 'driver',
+        component: DriverComponent,
+      },
+      {
+        path: 'driver-form',
+        component: DriverFormComponent
+      },
+      {
+        path: 'driver-form-update',
+        component: DriverFormComponent
+      },
+      {
+        path: 'car',
+        component: CarComponent
+      },
+      {
+        path: 'car-form',
+        component: CarFormComponent
+      },
+      {
+        path: 'car-form-update',
+        component: CarFormComponent
+      },
+      {
+        path: 'trip',
+        component: TripComponent
+      },
+      {
+        path: 'trip-form',
+        component: TripFormComponent
+      },
+      {
+        path: 'trip-view',
+        component: TripViewComponent
+      },
+      {
+        path: 'report',
+        component: ReportComponent
+      },
+      {
+        path: 'company-report',
+        component: CompanyReportComponent
+      },
+      {
+        path: 'tool',
+        component: ToolComponent
+      },
+      {
+        path: 'location-form',
+        component: LocationFormComponent
+      },
+      {
+        path: 'driver-details-view',
+        component: DriverDetailsViewComponent
+      }
+    ]
   },
   {
-    path: 'driver-form',
-    component:  DriverFormComponent
+    path: 'login',
+    component: AuthComponent
   },
-  {
-    path: 'driver-form-update',
-    component:  DriverFormComponent
-  },
-  {
-    path: 'car',
-    component: CarComponent
-  },
-  {
-    path: 'car-form',
-    component: CarFormComponent
-  },
-  {
-    path: 'car-form-update',
-    component: CarFormComponent
-  },
-  {
-    path: 'trip',
-    component: TripComponent
-  },
-  {
-    path: 'trip-form',
-    component: TripFormComponent
-  },
-  {
-    path: 'trip-view',
-    component: TripViewComponent
-  },
-  {
-    path: 'report',
-    component: ReportComponent
-  },
-  {
-    path: 'company-report',
-    component: CompanyReportComponent
-  },
-  {
-    path: 'tool',
-    component: ToolComponent
-  },
-  {
-    path: 'location-form',
-    component: LocationFormComponent
-  },
-  {
-    path: 'driver-details-view',
-    component: DriverDetailsViewComponent
-  }
+  {path: '**', redirectTo: ''}
 ];
 
 @NgModule({
