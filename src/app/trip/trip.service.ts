@@ -97,7 +97,8 @@ export class LoadingPlace {
               public date?: string,
               public location?: Location,
               public income?: number,
-              public cargo?: Array<Cargo>) {
+              public cargo?: Array<Cargo>,
+              public finished?: boolean) {
   }
 }
 

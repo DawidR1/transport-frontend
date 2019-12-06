@@ -19,7 +19,7 @@ export class AppService {
   public static DRIVER_URL = AppService.WEB_URL + 'driver/';
   public static RESOURCE_DRIVER_URL = AppService.WEB_URL + AppService.RESOURCE_URL + 'driver/';
 
-  public static CAR_URL = AppService.WEB_URL + 'car';
+  public static CAR_URL = AppService.WEB_URL + 'car/';
   public static RESOURCE_CAR_URL = AppService.WEB_URL + AppService.RESOURCE_URL + 'car';
 
   static MAPS_URL = 'https://www.google.com/maps/dir/';
@@ -42,8 +42,10 @@ export class AppService {
 
   sendObject(object, url: string): Observable<HttpResponse<any>> {
     console.log(object);
+
     if (object.id != null) {
-      return this.http.put<HttpResponse<any>>(url + '/' + object.id, object, {observe: 'response'});
+      console.log("put");
+      return this.http.put<HttpResponse<any>>(url  +  object.id, object, {observe: 'response'});
     }
     return this.http.post<HttpResponse<any>>(url, object, {observe: 'response'});
   }

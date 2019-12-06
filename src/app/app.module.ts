@@ -40,6 +40,8 @@ import { AuthComponent } from './auth/auth.component';
 import {JwtInterceptor} from './auth/JwtFilter';
 import {ErrorInterceptor} from './auth/ErrorFilter';
 import { DriverPanelComponent } from './driver-panel/driver-panel.component';
+import { MainPageComponent } from './mainPage/mainPage.component';
+import {FinishedPipe} from './finished.pipe';
 
 @NgModule({
   declarations: [
@@ -55,6 +57,7 @@ import { DriverPanelComponent } from './driver-panel/driver-panel.component';
     TripFormComponent,
     TripViewComponent,
     ToStringPipe,
+    FinishedPipe,
     DriverParserPipe,
     ReportComponent,
     CompanyReportComponent,
@@ -64,7 +67,8 @@ import { DriverPanelComponent } from './driver-panel/driver-panel.component';
     LocationFormComponent,
     DriverDetailsViewComponent,
     AuthComponent,
-    DriverPanelComponent
+    DriverPanelComponent,
+    MainPageComponent
   ],
   imports: [
     BrowserModule,

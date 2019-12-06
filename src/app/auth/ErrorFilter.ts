@@ -7,18 +7,17 @@ import {Router} from '@angular/router';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor(private authenticationService: AuthenticationService, private router: Router,) {
+  constructor(private authenticationService: AuthenticationService, private router: Router) {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     console.log('errorFilter: intercept');
-    console.log(next);
+    console.log(request.headers.get('Location'));
     return next.handle(request).pipe(catchError(err => {
       console.log(err);
-      if (err.status === 401 || err.status === 403) {
+      if (!request.url.match('auth') && (err.status === 401 || err.status === 403)) {
         console.log('errorFilter: intercept 401');
         this.authenticationService.logout();
-        // this.router.navigate(['/login']);
         location.reload(true);
       }
       const error = err.error.message || err.statusText;

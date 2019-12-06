@@ -50,10 +50,11 @@ export class AuthComponent implements OnInit {
       .pipe()
       .subscribe(
         data => {
-          this.router.navigate([this.returnUrl]);
+          console.log(this.returnUrl);
+          this.router.navigate(['main']);
         },
         error => {
-          this.error = error;
+          this.error = 'Bad username or password';
           this.loading = false;
         });
   }

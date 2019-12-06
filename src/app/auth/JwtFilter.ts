@@ -18,6 +18,9 @@ export class JwtInterceptor implements HttpInterceptor {
           Authorization: `Bearer ${currentUser.token}`
         }
       });
+      // request = request.clone({
+      //   headers: request.headers.set('Access-Control-Allow-Origin', '*')
+      // });
     }
     return next.handle(request);
   }

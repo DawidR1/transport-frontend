@@ -22,10 +22,12 @@ export class TripViewComponent implements OnInit {
   }
 
   showInMaps(tripView: TripDto) {
+    console.log(tripView);;
     const locations = [tripView.placeStart];
+    console.log(locations)
     tripView.loadingPlaces.forEach(place => locations.push(place.location));
     locations.push(tripView.placeFinish);
-    console.log(locations)
+    console.log(locations);
     this.service.showInMaps(locations);
   }
 }

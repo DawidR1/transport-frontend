@@ -14,6 +14,7 @@ import {LocationFormComponent} from './tool/location/location-form/location-form
 import {DriverDetailsViewComponent} from './driver/driver-details-view/driver-details-view.component';
 import {AuthComponent} from './auth/auth.component';
 import {AuthService} from './auth/auth.service';
+import {MainPageComponent} from './mainPage/mainPage.component';
 
 const routes: Routes = [
   {
@@ -22,7 +23,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'home',
+          redirectTo: 'home',
         pathMatch: 'full',
 
       },
@@ -81,6 +82,10 @@ const routes: Routes = [
       {
         path: 'driver-details-view',
         component: DriverDetailsViewComponent
+      },
+      {
+        path: 'main',
+        component: MainPageComponent
       }
     ]
   },

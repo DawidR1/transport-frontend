@@ -33,17 +33,22 @@ export class DriverFormComponent implements OnInit {
     this.service.sendObject(this.driver, DriverService.DRIVER_URL).subscribe(response => {
         const id = this.retrieveIdFromResponse(response);
         if (!this.fileForm.has('file')) {
+
           this.sendSuccessToView();
           return;
         }
         this.service.sendFile(this.fileForm, id).subscribe(response2 => {
+            console.log('plik');
             this.sendSuccessToView();
           },
           (error: HttpErrorResponse) => {
+            console.log('error');
+            console.log(error);
             this.sendFailureToView(error);
           });
       },
       (error: HttpErrorResponse) => {
+        console.log('error');
         this.sendFailureToView(error);
       }
     );
@@ -67,7 +72,7 @@ export class DriverFormComponent implements OnInit {
 
   private sendFailureToView(error: HttpErrorResponse) {
     this.response.alertType = 'alert-danger';
-    this.response.message = error.error.message;
+    this.response.message = error + '';
   }
 
   onFileChange(event) {
@@ -78,6 +83,7 @@ export class DriverFormComponent implements OnInit {
   }
 
   private retrieveIdFromResponse(response: HttpResponse<any>): string {
+    console.log(response.headers.get('Location'));
     const split = response.headers.get('Location').split('/');
     return split[split.length - 1];
   }

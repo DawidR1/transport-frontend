@@ -1,39 +1,93 @@
 <div>
   <div>
     <h1>Status: {{tripView.status}}</h1>
-    <ul>
-      <li><h5><b>Destination:</b> {{tripView.destination | toString}}</h5></li>
-      <li><h5><b>Date Start:</b> {{tripView.dateStart}}</h5></li>
-      <li><h5><b>Date Finish:</b> {{tripView.dateFinish}}</h5></li>
-      <li><h5><b>Place Start:</b> {{tripView.placeStart | toString}}</h5></li>
-      <li><h5><b>Place Finish:</b> {{tripView.placeFinish | toString}}</h5></li>
-      <li><h5><b>Driver:</b> {{tripView.driver.firstName}} {{tripView.driver.lastName}}</h5></li>
-      <li><h5><b>Driver Salary:</b> {{tripView.driverSalary}}</h5></li>
-      <li><h5><b>Car:</b> {{tripView.car.brand}} {{tripView.car.model}} {{tripView.car.plate}}</h5></li>
-      <li><h5><b>Income:</b> {{tripView.income}}</h5></li>
-      <li><h5><b>Distance:</b> {{tripView.distance}}</h5></li>
-      <li><h5><b>Fuel:</b> {{tripView.fuel}}</h5></li>
-    </ul>
+    <table class="table table-bordered">
+      <thead>
+      </thead>
+      <tbody>
+      <tr>
+      </tr>
+      </tbody>
+      <tr>
+        <td><b>Destination:</b></td>
+        <td> {{tripView.destination | toString}}</td>
+      </tr>
+      <tr>
+        <td><b>Date Start:</b>
+        <td> {{tripView.dateStart}}</td>
+      </tr>
+      <tr>
+        <td><b>Date Finish:</b></td>
+        <td> {{tripView.dateFinish}}</td>
+      </tr>
+      <tr>
+        <td><b>Place Start:</b></td><td> {{tripView.placeStart | toString}}</td>
+      </tr>
+      <tr>
+        <td><b>Place Finish:</b></td><td> {{tripView.placeFinish | toString}}</td>
+      </tr>
+      <tr>
+        <td><b>Driver:</b></td><td> {{tripView.driver.firstName}} {{tripView.driver.lastName}}</td>
+      </tr>
+      <tr>
+        <td><b>Driver Salary:</b></td><td> {{tripView.driverSalary}}</td>
+      </tr>
+      <tr>
+        <td><b>Car:</b></td><td> {{tripView.car.brand}} {{tripView.car.model}} {{tripView.car.plate}}</td>
+      </tr>
+      <tr>
+        <td><b>Income:</b></td><td> {{tripView.income}}</td>
+      </tr>
+      <tr>
+        <td><b>Distance:</b></td><td> {{tripView.distance}}</td>
+      </tr>
+      <tr>
+        <td><b>Fuel:</b></td><td> {{tripView.fuel}}</td>
+      </tr>
+    </table>
   </div>
-  <div *ngFor="let place of tripView.loadingPlaces; let i= index " class="border border-warning">
-    <h4>Loading Places</h4>
-    <div>-
-      <h5><b>Number:</b> {{i + 1}}</h5>
-      <ul>
-        <li><h5><b>Destination:</b> {{place.date}}</h5></li>
-        <li><h5><b>Date Start:</b> {{place.nr}}</h5></li>
-        <li><h5><b>Date Finish:</b> {{place.location | toString}}</h5></li>
-        <li><h5><b>Place Start:</b> {{place.income}}</h5></li>
-      </ul>
-    </div>
-    <div *ngFor="let cargo of place.cargo; let j= index">
-      <h5><b>Cargo Number:</b> {{j + 1}}</h5>
-      <ul>
-        <li><h5><b>Company Name: </b> {{cargo.companyName}}</h5></li>
-        <li><h5><b>Number Of Pallets: </b> {{cargo.numberOfPallets}}</h5></li>
-        <li><h5><b>Weight: </b> {{cargo.weight}}</h5></li>
-      </ul>
-    </div>
+  <h4>Loading Places</h4>
+  <div *ngFor="let place of tripView.loadingPlaces; let i= index ">
+
+      <table class="table table-bordered">
+        <tr>
+          <td><b>Number:</b></td><td> {{place.nr}}</td>
+        </tr>
+        <tr>
+          <td><b>Date:</b></td><td> {{place.date}}</td>
+        </tr>
+        <tr>
+          <td><b>Location:</b></td><td> {{place.location | toString}}</td>
+        </tr>
+        <tr>
+          <td><b>Finished:</b></td><td> {{place.finished | finished}}</td>
+        </tr>
+
+<!--      <h5><b>Number:</b> {{i + 1}}</h5>-->
+<!--      <ul>-->
+<!--        <li><h5><b>Destination:</b> {{place.date}}</h5></li>-->
+<!--        <li><h5><b>Date Start:</b> {{place.nr}}</h5></li>-->
+<!--        <li><h5><b>Date Finish:</b> {{place.location | toString}}</h5></li>-->
+<!--        <li><h5><b>Place Start:</b> {{place.income}}</h5></li>-->
+<!--      </ul>-->
+
+    <tr *ngFor="let cargo of place.cargo; let j= index">
+      <td><b>Cargo Number:</b> {{j + 1}}</td>
+        <td>
+          <table width="100%">
+      <tr>
+        <td><b>Company Name: </b> </td><td>{{cargo.companyName}}</td>
+        </tr>
+      <tr>
+        <td><b>Number Of Pallets: </b> </td><td>{{cargo.numberOfPallets}}</td>
+        </tr>
+      <tr>
+        <td><b>Weight: </b> </td><td>{{cargo.weight}} kg</td>
+    </tr>
+          </table>
+      </td>
+    </tr>
+    </table>
   </div>
   <br>
   <button type="button" class="nav-link btn btn-outline-primary btn-block" routerLink="/trip-form" (click)="updateTrip(tripView)">Update</button>

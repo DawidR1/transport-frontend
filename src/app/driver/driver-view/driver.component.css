@@ -1,4 +1,6 @@
 .card {
   margin: 20px;
-
+}
+li{
+  font-weight: bold;
 }

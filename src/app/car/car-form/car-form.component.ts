@@ -48,7 +48,7 @@ export class CarFormComponent implements OnInit {
       },
       (error: HttpErrorResponse) => {
         this.response.alertType = 'alert-danger';
-        this.response.message = error.error.message;
+        this.response.message = error +'';
       });
   }
 }
