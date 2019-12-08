@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Cargo, LoadingPlace, Location, TripDto, TripForm, TripService, TripStatus} from '../trip.service';
 import {HttpErrorResponse} from '@angular/common/http';
-import {Driver, DriverService} from '../../driver/driver.service';
+import {DriverService} from '../../driver/driver.service';
 import {CarService, CustomResponse} from '../../car/car.service';
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 
@@ -18,7 +18,7 @@ export class TripFormComponent implements OnInit {
   tripStatus: TripStatus[] = [TripStatus.OPEN, TripStatus.FINISHED, TripStatus.IN_PROGRESS];
   form: FormGroup;
   response = new CustomResponse();
-  done: boolean = false;
+  done = false;
 
   constructor(private service: TripService, private fd: FormBuilder) {
   }
@@ -28,16 +28,15 @@ export class TripFormComponent implements OnInit {
       .subscribe(resource => {
           this.populateLocation(resource._embedded.locationDtoes);
         }, (error: HttpErrorResponse) => {
-          console.log(error.status);
+          this.sendFailureToView(error);
           return;
         }
       );
     this.service.getObject(DriverService.RESOURCE_DRIVER_URL)
       .subscribe(resource => {
-          this.tripFormWholeData.drivers = new Array<Driver>();
-          resource._embedded.driverDtoes.forEach(driver => this.tripFormWholeData.drivers.push(driver));
+          this.tripFormWholeData.drivers = resource._embedded.driverDtoes;
         }, (error: HttpErrorResponse) => {
-          console.log(error.status);
+          this.sendFailureToView(error);
           return;
         }
       );
@@ -45,7 +44,7 @@ export class TripFormComponent implements OnInit {
       .subscribe(resource => {
           this.tripFormWholeData.car = resource._embedded.carDtoes;
         }, (error: HttpErrorResponse) => {
-          console.log(error.status);
+          this.sendFailureToView(error);
           return;
         }
       );
@@ -73,8 +72,6 @@ export class TripFormComponent implements OnInit {
 
   private populateFormCell(trip: TripDto) {
     const formLoadingPlaceGroups = trip.loadingPlaces == null ? [] : this.populateLoadingPlaces(trip.loadingPlaces);
-    console.log(trip);
-
     this.form = this.fd.group({
       id: trip.id,
       status: [trip.status, Validators.required],
@@ -92,13 +89,11 @@ export class TripFormComponent implements OnInit {
       car: [trip.car, Validators.required],
       loadingPlaces: this.fd.array(formLoadingPlaceGroups)
     });
-    console.log(this.form);
   }
 
   private populateLoadingPlaces(loadingPlaces: Array<LoadingPlace>) {
     return loadingPlaces.map(loadingPlace => this.getLoadingPlaces(loadingPlace));
   }
-
 
   private addLoadingPlace() {
     const mainForm = this.form.get('loadingPlaces') as FormArray;
@@ -145,14 +140,9 @@ export class TripFormComponent implements OnInit {
     return o1.id === o2.id;
   }
 
-  private sendFailureToView(error: HttpErrorResponse) {
-    console.log(error.error.errors);
+  private sendFailureToView(error: any) {
+    console.log(error);
     this.response.alertType = 'alert-danger';
-    this.response.message = error.error.errors.map(er => er.message).toString();
-    // this.response.message = error.error.errors.f;
-  }
-
-  loadNextDriverPage() {
-
+    this.response.message = error;
   }
 }

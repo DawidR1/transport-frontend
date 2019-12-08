@@ -2,65 +2,59 @@
   <h2>Main Information</h2>
   <form [formGroup]="form" (ngSubmit)="submit()">
     <div class="form-group">
-      <label>Status</label>
-      <select class="custom-select my-1 mr-sm-2" id="status-select" formControlName="status" required>
+      <label for="status-select">Status</label>
+      <select class="custom-select my-1" id="status-select" formControlName="status" required>
         <option [ngValue]="status" *ngFor="let status of tripStatus">{{status}}</option>
       </select>
-      <label>Destination</label>
-      <select class="custom-select my-1 mr-sm-2" required id="destination-select" formControlName="destination"
+      <label for="destination-select">Destination</label>
+      <select class="custom-select my-1" required id="destination-select" formControlName="destination"
               [compareWith]="compareById">
-        <option [ngValue]="location" *ngFor="let location of tripFormWholeData.destinations"
-        >{{location | toString}}</option>
+        <option [ngValue]="location"
+                *ngFor="let location of tripFormWholeData.destinations">{{location | toString}}</option>
         <div *ngIf="form.get('destination').invalid" class="alert alert-danger">Required</div>
       </select>
-      <label>Date Start</label>
-      <input type="date" required class="form-control" id="date-start" placeholder="date"
-             formControlName="dateStart"/>
-      <div *ngIf="form.get('dateStart').invalid && form.get('dateStart').dirty" class="alert alert-danger">Required</div>
-
-      <label>Date Finish</label>
-      <input type="date" class="form-control" id="date-finish" placeholder="date"
-             formControlName="dateFinish"/>
-      <label>Place Start</label>
-      <select class="custom-select my-1 mr-sm-2" required id="place-start-select" formControlName="placeStart"
-              [compareWith]="compareById">
-        <option [ngValue]="location" *ngFor="let location of tripFormWholeData.placeStart"
-        >{{location | toString}}</option>
+      <label for="date-start">Date Start</label>
+      <input type="date" class="form-control" id="date-start" placeholder="date"
+             formControlName="dateStart" required/>
+      <div *ngIf="form.get('dateStart').invalid && form.get('dateStart').dirty" class="alert alert-danger">Required
+      </div>
+      <label for="date-finish">Date Finish</label>
+      <input type="date" class="form-control" id="date-finish" placeholder="date" formControlName="dateFinish"/>
+      <label for="place-start-select">Place Start</label>
+      <select class="custom-select my-1" id="place-start-select" formControlName="placeStart"
+              [compareWith]="compareById" required>
+        <option [ngValue]="location"
+                *ngFor="let location of tripFormWholeData.placeStart">{{location | toString}}</option>
       </select>
-      <label>Place Finish</label>
-      <select class="custom-select my-1 mr-sm-2" id="place-finish-select" formControlName="placeFinish"
+      <label for="place-finish-select">Place Finish</label>
+      <select class="custom-select my-1 " id="place-finish-select" formControlName="placeFinish"
               [compareWith]="compareById">
         <option [ngValue]="location" *ngFor="let location of tripFormWholeData.placeFinish"
         >{{location | toString}}</option>
       </select>
-      <label>Driver</label>
-      <select class="custom-select my-1 mr-sm-2" required id="driver-select" formControlName="driver"
-              [compareWith]="compareById">
-        <option [ngValue]="driver" *ngFor="let driver of tripFormWholeData.drivers "
+      <label for="driver-select">Driver</label>
+      <select class="custom-select my-1 " id="driver-select" formControlName="driver"
+              [compareWith]="compareById" required>
+        <option [ngValue]="driver" *ngFor="let driver of tripFormWholeData.drivers"
         >{{driver.firstName}} {{driver.lastName}}</option>
-        <option (click)="loadNextDriverPage()">Show more</option>
       </select>
-      <label>Car</label>
-      <select class="custom-select my-1 mr-sm-2" required id="car-select" formControlName="car"
-              [compareWith]="compareById">
+      <label for="car-select">Car</label>
+      <select class="custom-select my-1 " id="car-select" formControlName="car"
+              [compareWith]="compareById" required>
         <option [ngValue]="car" *ngFor="let car of tripFormWholeData.car">{{car.plate}}</option>
-        <mat-paginator [pageSize]="1" [length]="1" ></mat-paginator>
       </select>
-      <label>Income</label>
-      <input type="number" min="0" class="form-control" id="income" placeholder="income"
-             formControlName="income" />
-      <label>Costs</label>
-      <input type="number" min="0" class="form-control" id="cost" placeholder="cost"
-             formControlName="cost" />
-      <label>Fuel (liters)</label>
-      <input type="number" min="0" class="form-control" id="fuel-liters" placeholder="liters" formControlName="fuel"
-             />
-      <label>Driver Salary</label>
-      <input type="number" min="0" class="form-control" id="driverSalary" placeholder="driverSalary"
-             formControlName="driverSalary" />
-      <label>Distance</label>
+      <label for="income">Income</label>
+      <input type="number" min="0" class="form-control" id="income" placeholder="income" formControlName="income"/>
+      <label for="cost">Costs</label>
+      <input type="number" min="0" class="form-control" id="cost" placeholder="cost" formControlName="cost"/>
+      <label for="fuel-liters">Fuel</label>
+      <input type="number" min="0" class="form-control" id="fuel-liters" placeholder="liters" formControlName="fuel"/>
+      <label for="driver-salary">Driver Salary</label>
+      <input type="number" min="0" class="form-control" id="driver-salary" placeholder="salary"
+             formControlName="driverSalary"/>
+      <label for="distance">Distance</label>
       <input type="number" min="0" class="form-control" id="distance" placeholder="distance"
-             formControlName="distance" />
+             formControlName="distance"/>
       <br>
       <h4>Loading Places</h4>
       <div formArrayName="loadingPlaces"
@@ -68,21 +62,21 @@
         <div [formGroupName]="i">
           <label><b>Loading Place</b></label><br>
           <input type="hidden" class="form-control" id="id" formControlName="id"/>
-          <label>nr</label>
+          <label for="nr">nr</label>
           <input type="number" min="0" class="form-control" id="nr" placeholder="nr"
                  formControlName="nr" required/>
-          <label>Date</label>
+          <label for="date">Date</label>
           <input type="date" min="0" class="form-control" id="date" placeholder="date"
                  formControlName="date" required/>
-          <label>Location</label>
-          <select class="custom-select my-1 mr-sm-2" required id="location-select" formControlName="location"
+          <label for="location-select">Location</label>
+          <select class="custom-select" required id="location-select" formControlName="location"
                   [compareWith]="compareById">
             <option [ngValue]="location" *ngFor="let location of tripFormWholeData.destinations"
             >{{location | toString}}</option>
           </select>
-          <label>income</label>
+          <label for="income2">income</label>
           <input type="number" min="0" class="form-control" id="income2" placeholder="income"
-                 formControlName="income" />
+                 formControlName="income"/>
           <br>
           <h4>Cargo</h4>
           <div formArrayName="cargo"
@@ -91,14 +85,14 @@
             <div [formGroupName]="j">
               <label><b>Cargo</b></label><br>
               <input type="hidden" class="form-control" formControlName="id"/>
-              <label>number of pallets</label>
-              <input type="number" min="0" class="form-control" id="numberOfPallets" placeholder="number"
-                     formControlName="numberOfPallets" />
-              <label>weight</label>
+              <label for="number-of-pallets">number of pallets</label>
+              <input type="number" min="0" class="form-control" id="number-of-pallets" placeholder="number"
+                     formControlName="numberOfPallets"/>
+              <label for="weight">weight</label>
               <input type="number" min="0" class="form-control" id="weight" placeholder="weight"
-                     formControlName="weight" />
-              <label>Company Name</label>
-              <input type="number" min="0" class="form-control" id="companyName" placeholder="name"
+                     formControlName="weight"/>
+              <label for="company-name">Company Name</label>
+              <input type="number" min="0" class="form-control" id="company-name" placeholder="name"
                      formControlName="companyName"/>
             </div>
           </div>
@@ -106,14 +100,13 @@
           <br>
         </div>
       </div>
-
       <br>
       <button type="button" class="btn btn-outline-primary" (click)="addLoadingPlace()">Add New Loading Place</button>
     </div>
     <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Save Trip</button>
   </form>
   <p class="p-md-1"></p>
-  <div *ngIf="response.alertType != null"  [ngClass]="['row alert ', response.alertType]"  role="alert">
+  <div *ngIf="response.alertType != null" [ngClass]="['row alert ', response.alertType]" role="alert">
     {{response.message}}
   </div>
 </div>
@@ -126,7 +119,8 @@
     <div class="swal2-success-fix" style="background-color: rgb(255, 255, 255);"></div>
     <div class="swal2-success-circular-line-right" style="background-color: rgb(255, 255, 255);"></div>
   </div>
-  <div class="swal2-icon swal2-error swal2-animate-error-icon" style="display: flex;"><span class="swal2-x-mark"><span class="swal2-x-mark-line-left"></span><span class="swal2-x-mark-line-right"></span></span></div>
+  <div class="swal2-icon swal2-error swal2-animate-error-icon" style="display: flex;"><span class="swal2-x-mark"><span
+    class="swal2-x-mark-line-left"></span><span class="swal2-x-mark-line-right"></span></span></div>
 </ng-template>
 
 
