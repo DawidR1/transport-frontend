@@ -47,22 +47,14 @@ export class Location {
   }
 }
 
-export class TripForm {
+export class TripFormData {
   constructor(public id?: number,
               public status?: TripStatus,
               public destinations?: Array<Location>,
-              public dateStart?: string,
-              public dateFinish?: string,
               public placeFinish?: Array<Location>,
               public car?: Array<Car>,
               public drivers?: Array<Driver>,
-              public placeStart?: Array<Location>,
-              public income?: number,
-              public loadingPlaces?: Array<LoadingPlace>,
-              public distance?: number,
-              public fuel?: number,
-              public cost?: number,
-              public driverSalary?: number) {
+              public placeStart?: Array<Location>) {
   }
 }
 

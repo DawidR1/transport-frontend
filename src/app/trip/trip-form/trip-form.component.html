@@ -7,41 +7,31 @@
         <option [ngValue]="status" *ngFor="let status of tripStatus">{{status}}</option>
       </select>
       <label for="destination-select">Destination</label>
-      <select class="custom-select my-1" required id="destination-select" formControlName="destination"
-              [compareWith]="compareById">
-        <option [ngValue]="location"
-                *ngFor="let location of tripFormWholeData.destinations">{{location | toString}}</option>
+      <select class="custom-select my-1" required id="destination-select" formControlName="destination" [compareWith]="compareById">
+        <option [ngValue]="location" *ngFor="let location of tripFormData.destinations">{{location | toString}}</option>
         <div *ngIf="form.get('destination').invalid" class="alert alert-danger">Required</div>
       </select>
       <label for="date-start">Date Start</label>
-      <input type="date" class="form-control" id="date-start" placeholder="date"
-             formControlName="dateStart" required/>
+      <input type="date" class="form-control" id="date-start" placeholder="date" formControlName="dateStart" required/>
       <div *ngIf="form.get('dateStart').invalid && form.get('dateStart').dirty" class="alert alert-danger">Required
       </div>
       <label for="date-finish">Date Finish</label>
       <input type="date" class="form-control" id="date-finish" placeholder="date" formControlName="dateFinish"/>
       <label for="place-start-select">Place Start</label>
-      <select class="custom-select my-1" id="place-start-select" formControlName="placeStart"
-              [compareWith]="compareById" required>
-        <option [ngValue]="location"
-                *ngFor="let location of tripFormWholeData.placeStart">{{location | toString}}</option>
+      <select class="custom-select my-1" id="place-start-select" formControlName="placeStart" [compareWith]="compareById" required>
+        <option [ngValue]="location" *ngFor="let location of tripFormData.placeStart">{{location | toString}}</option>
       </select>
       <label for="place-finish-select">Place Finish</label>
-      <select class="custom-select my-1 " id="place-finish-select" formControlName="placeFinish"
-              [compareWith]="compareById">
-        <option [ngValue]="location" *ngFor="let location of tripFormWholeData.placeFinish"
-        >{{location | toString}}</option>
+      <select class="custom-select my-1 " id="place-finish-select" formControlName="placeFinish" [compareWith]="compareById">
+        <option [ngValue]="location" *ngFor="let location of tripFormData.placeFinish">{{location | toString}}</option>
       </select>
       <label for="driver-select">Driver</label>
-      <select class="custom-select my-1 " id="driver-select" formControlName="driver"
-              [compareWith]="compareById" required>
-        <option [ngValue]="driver" *ngFor="let driver of tripFormWholeData.drivers"
-        >{{driver.firstName}} {{driver.lastName}}</option>
+      <select class="custom-select my-1 " id="driver-select" formControlName="driver" [compareWith]="compareById" required>
+        <option [ngValue]="driver" *ngFor="let driver of tripFormData.drivers">{{driver.firstName}} {{driver.lastName}}</option>
       </select>
       <label for="car-select">Car</label>
-      <select class="custom-select my-1 " id="car-select" formControlName="car"
-              [compareWith]="compareById" required>
-        <option [ngValue]="car" *ngFor="let car of tripFormWholeData.car">{{car.plate}}</option>
+      <select class="custom-select my-1 " id="car-select" formControlName="car" [compareWith]="compareById" required>
+        <option [ngValue]="car" *ngFor="let car of tripFormData.car">{{car.plate}}</option>
       </select>
       <label for="income">Income</label>
       <input type="number" min="0" class="form-control" id="income" placeholder="income" formControlName="income"/>
@@ -50,50 +40,39 @@
       <label for="fuel-liters">Fuel</label>
       <input type="number" min="0" class="form-control" id="fuel-liters" placeholder="liters" formControlName="fuel"/>
       <label for="driver-salary">Driver Salary</label>
-      <input type="number" min="0" class="form-control" id="driver-salary" placeholder="salary"
-             formControlName="driverSalary"/>
+      <input type="number" min="0" class="form-control" id="driver-salary" placeholder="salary" formControlName="driverSalary"/>
       <label for="distance">Distance</label>
-      <input type="number" min="0" class="form-control" id="distance" placeholder="distance"
-             formControlName="distance"/>
+      <input type="number" min="0" class="form-control" id="distance" placeholder="distance" formControlName="distance"/>
       <br>
       <h4>Loading Places</h4>
-      <div formArrayName="loadingPlaces"
-           *ngFor="let loadingPlace of form.get('loadingPlaces')['controls']; let i = index" style="padding-left:5em">
+      <div formArrayName="loadingPlaces" *ngFor="let loadingPlace of form.get('loadingPlaces')['controls']; let i = index"
+           style="padding-left:5em">
         <div [formGroupName]="i">
           <label><b>Loading Place</b></label><br>
           <input type="hidden" class="form-control" id="id" formControlName="id"/>
           <label for="nr">nr</label>
-          <input type="number" min="0" class="form-control" id="nr" placeholder="nr"
-                 formControlName="nr" required/>
+          <input type="number" min="0" class="form-control" id="nr" placeholder="nr" formControlName="nr" required/>
           <label for="date">Date</label>
-          <input type="date" min="0" class="form-control" id="date" placeholder="date"
-                 formControlName="date" required/>
+          <input type="date" min="0" class="form-control" id="date" placeholder="date" formControlName="date" required/>
           <label for="location-select">Location</label>
-          <select class="custom-select" required id="location-select" formControlName="location"
-                  [compareWith]="compareById">
-            <option [ngValue]="location" *ngFor="let location of tripFormWholeData.destinations"
-            >{{location | toString}}</option>
+          <select class="custom-select" required id="location-select" formControlName="location" [compareWith]="compareById">
+            <option [ngValue]="location" *ngFor="let location of tripFormData.destinations">{{location | toString}}</option>
           </select>
           <label for="income2">income</label>
-          <input type="number" min="0" class="form-control" id="income2" placeholder="income"
-                 formControlName="income"/>
+          <input type="number" min="0" class="form-control" id="income2" placeholder="income" formControlName="income"/>
           <br>
           <h4>Cargo</h4>
-          <div formArrayName="cargo"
-               *ngFor="let loadingPlace of loadingPlace.get('cargo')['controls']; let j = index"
+          <div formArrayName="cargo" *ngFor="let loadingPlace of loadingPlace.get('cargo')['controls']; let j = index"
                style="padding-left:5em">
             <div [formGroupName]="j">
               <label><b>Cargo</b></label><br>
               <input type="hidden" class="form-control" formControlName="id"/>
               <label for="number-of-pallets">number of pallets</label>
-              <input type="number" min="0" class="form-control" id="number-of-pallets" placeholder="number"
-                     formControlName="numberOfPallets"/>
+              <input type="number" min="0" class="form-control" id="number-of-pallets" placeholder="number" formControlName="numberOfPallets"/>
               <label for="weight">weight</label>
-              <input type="number" min="0" class="form-control" id="weight" placeholder="weight"
-                     formControlName="weight"/>
+              <input type="number" min="0" class="form-control" id="weight" placeholder="weight" formControlName="weight"/>
               <label for="company-name">Company Name</label>
-              <input type="number" min="0" class="form-control" id="company-name" placeholder="name"
-                     formControlName="companyName"/>
+              <input type="number" min="0" class="form-control" id="company-name" placeholder="name" formControlName="companyName"/>
             </div>
           </div>
           <button type="button" class="btn btn-outline-primary" (click)="addCargo(i)">Add New Cargo</button>

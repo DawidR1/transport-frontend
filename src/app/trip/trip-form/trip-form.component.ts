@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Cargo, LoadingPlace, Location, TripDto, TripForm, TripService, TripStatus} from '../trip.service';
+import {Cargo, LoadingPlace, Location, TripDto, TripFormData, TripService, TripStatus} from '../trip.service';
 import {HttpErrorResponse} from '@angular/common/http';
 import {DriverService} from '../../driver/driver.service';
 import {CarService, CustomResponse} from '../../car/car.service';
@@ -13,7 +13,7 @@ import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 })
 export class TripFormComponent implements OnInit {
 
-  tripFormWholeData: TripForm = new TripForm();
+  tripFormData: TripFormData = new TripFormData();
   tripDto: TripDto = new TripDto();
   tripStatus: TripStatus[] = [TripStatus.OPEN, TripStatus.FINISHED, TripStatus.IN_PROGRESS];
   form: FormGroup;
@@ -34,7 +34,7 @@ export class TripFormComponent implements OnInit {
       );
     this.service.getObject(DriverService.RESOURCE_DRIVER_URL)
       .subscribe(resource => {
-          this.tripFormWholeData.drivers = resource._embedded.driverDtoes;
+          this.tripFormData.drivers = resource._embedded.driverDtoes;
         }, (error: HttpErrorResponse) => {
           this.sendFailureToView(error);
           return;
@@ -42,7 +42,7 @@ export class TripFormComponent implements OnInit {
       );
     this.service.getObject(CarService.RESOURCE_CAR_URL)
       .subscribe(resource => {
-          this.tripFormWholeData.car = resource._embedded.carDtoes;
+          this.tripFormData.car = resource._embedded.carDtoes;
         }, (error: HttpErrorResponse) => {
           this.sendFailureToView(error);
           return;
@@ -53,21 +53,11 @@ export class TripFormComponent implements OnInit {
   }
 
   private populateLocation(locations: Array<Location>) {
-    this.tripFormWholeData.destinations = locations;
-    this.tripFormWholeData.placeFinish = locations;
-    this.tripFormWholeData.placeStart = locations;
+    this.tripFormData.destinations = locations;
+    this.tripFormData.placeFinish = locations;
+    this.tripFormData.placeStart = locations;
   }
 
-  submit() {
-    this.tripDto = this.form.value;
-    this.service.sendObject(this.tripDto, TripService.TRIP_URL).subscribe(response => {
-        console.log(response);
-        this.done = true;
-      }, (error: HttpErrorResponse) => {
-        this.sendFailureToView(error);
-      }
-    );
-  }
 
 
   private populateFormCell(trip: TripDto) {
@@ -144,5 +134,16 @@ export class TripFormComponent implements OnInit {
     console.log(error);
     this.response.alertType = 'alert-danger';
     this.response.message = error;
+  }
+
+  submit() {
+    this.tripDto = this.form.value;
+    this.service.sendObject(this.tripDto, TripService.TRIP_URL).subscribe(response => {
+        console.log(response);
+        this.done = true;
+      }, (error: HttpErrorResponse) => {
+        this.sendFailureToView(error);
+      }
+    );
   }
 }
