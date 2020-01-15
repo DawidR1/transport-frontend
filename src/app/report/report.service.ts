@@ -41,13 +41,13 @@ export class ReportService extends AppService {
 
   downloadCompanyInPdf(startDate: string, endDate: string, format: string) {
     const url = this.createUrlToCompanyReport(startDate, endDate, format);
-    window.open(url);
+    return this.getObjectBlob(url);
   }
 
   downloadDriverInPdf(startDate: string, endDate: string, format: string, driverId: number) {
     const url = this.createUrlToDriverReport(startDate, endDate, format, driverId);
     console.log(url);
-    window.open(url);
+    return this.getObjectBlob(url);
   }
 
   private createUrlToDriverReport(startDate: string, endDate: string, format: string, driverId: number) {

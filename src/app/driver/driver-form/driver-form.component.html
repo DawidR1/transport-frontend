@@ -24,6 +24,11 @@
       <div *ngIf=" form.get('email').dirty && form.get('email').invalid" class="alert alert-danger">wrong format</div>
     </div>
     <div class="form-group">
+      <label for="phone">Phone:</label>
+      <input type="text" class="form-control" id="phone" placeholder="000111222" formControlName="phone">
+      <div *ngIf=" form.get('phone').dirty && form.get('phone').invalid" class="alert alert-danger">wrong format</div>
+    </div>
+    <div class="form-group">
       <label for="driver-license-select">Driving License:</label>
       <select class="custom-select my-1 mr-sm-2" id="driver-license-select" formControlName="drivingLicense" required>
         <option [ngValue]="license" *ngFor="let license of driverLicenses">{{license}}</option>

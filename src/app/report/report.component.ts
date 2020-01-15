@@ -54,7 +54,12 @@ export class ReportComponent implements OnInit {
       const driverId = this.form.get('driver').value;
       if (format === 'PDF') {
         this.showReportDriver = false;
-        this.service.downloadDriverInPdf(startDate, endDate, format, driverId);
+        this.service.downloadDriverInPdf(startDate, endDate, format, driverId).subscribe(resource => {
+          console.log(resource);
+          const blob = new Blob([resource], {type: 'application/pdf'});
+          const url = URL.createObjectURL(blob);
+          window.open(url, '_blank');
+        });
       } else {
         this.service.downloadDriverInJson(startDate, endDate, format, driverId).subscribe(resource => {
           console.log(resource);
@@ -89,7 +94,11 @@ export class ReportComponent implements OnInit {
         const format = this.form.get('format').value;
         if (format === 'PDF') {
           this.showReport = false;
-          this.service.downloadCompanyInPdf(startDate, endDate, format);
+          this.service.downloadCompanyInPdf(startDate, endDate, format).subscribe(resource => {
+            const blob = new Blob([resource], {type: 'application/pdf'});
+            const url = URL.createObjectURL(blob);
+            window.open(url, '_blank');
+          });
         } else {
           this.service.downloadCompanyInJson(startDate, endDate, format).subscribe(resource => {
             console.log(resource);

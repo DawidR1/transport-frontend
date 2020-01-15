@@ -42,6 +42,7 @@ import {ErrorInterceptor} from './auth/ErrorFilter';
 import { DriverPanelComponent } from './driver-panel/driver-panel.component';
 import { MainPageComponent } from './mainPage/mainPage.component';
 import {FinishedPipe} from './finished.pipe';
+import {ScrollingModule} from '@angular/cdk/scrolling';
 
 @NgModule({
   declarations: [
@@ -87,7 +88,8 @@ import {FinishedPipe} from './finished.pipe';
     MatPaginatorModule,
     MatProgressSpinnerModule,
     MatListModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    ScrollingModule
   ],
   entryComponents: [
     ReportComponent

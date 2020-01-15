@@ -47,6 +47,7 @@ export class Driver {
   birth?: string;
   drivingLicense?: string;
   imageUrl?: string;
+  phone?: string;
 }
 
 export enum DriverLicense {

@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpResponse} from '@angular/common/http';
 import {Observable} from 'rxjs';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -11,7 +12,6 @@ export class AppService {
   public static RESOURCE_URL = 'resource/';
 
   public static TRIP_URL = AppService.WEB_URL + 'trip/';
-  public static RESOURCE_TRIP_URL = AppService.WEB_URL + AppService.RESOURCE_URL + 'trip/';
 
   public static LOCATION_URL = AppService.WEB_URL + 'location/';
   public static RESOURCE_LOCATION_URL = AppService.WEB_URL + AppService.RESOURCE_URL + 'location/';
@@ -32,6 +32,11 @@ export class AppService {
     return this.http.get<any>(url);
   }
 
+  getObjectBlob(url: string): Observable<any> {
+    // const options = {responseType: 'blob'};
+    return this.http.get(url, {responseType: 'blob'});
+  }
+
   getObjectPage(url: string, index: number, size: number = 5): Observable<any> {
     return this.http.get<any>(url + '?page=' + index + '&size=' + size);
   }
@@ -41,10 +46,7 @@ export class AppService {
   }
 
   sendObject(object, url: string): Observable<HttpResponse<any>> {
-    console.log(object);
-
     if (object.id != null) {
-      console.log("put");
       return this.http.put<HttpResponse<any>>(url  +  object.id, object, {observe: 'response'});
     }
     return this.http.post<HttpResponse<any>>(url, object, {observe: 'response'});

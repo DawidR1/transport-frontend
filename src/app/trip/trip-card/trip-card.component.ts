@@ -49,8 +49,8 @@ export class TripCardComponent implements OnInit {
   }
 
   populateFields(resource: any): void {
-    const trips =[];
-    if(resource._embedded != null){
+    const trips = [];
+    if (resource._embedded != null) {
       resource._embedded.resources.forEach(trip => {
         trips.push(trip);
       });
@@ -58,6 +58,9 @@ export class TripCardComponent implements OnInit {
     this.tripsView = trips;
     this.pageSize = resource.page.size;
     this.totalItems = resource.page.totalElements;
+    if (trips.length) {
+      this.trip = trips[0];
+    }
   }
 
 
@@ -79,7 +82,7 @@ export class TripCardComponent implements OnInit {
     const toDate = this.form.get('toDate').value;
     this.service.getObjectPageFilter(TripService.TRIP_URL, 0, 5, fromDate, toDate)
       .subscribe(resourceTrip => {
-        console.log(resourceTrip)
+          console.log(resourceTrip);
           this.tripsView = [];
           this.populateFields(resourceTrip);
         },

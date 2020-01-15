@@ -1,32 +1,35 @@
-<div class="row">
-<div class="col-md-3" style="max-width: 20rem;">
-  <form [formGroup]="form" (ngSubmit)="filterData()">
-  <label>From
-  <input (change)="showDataButton = true" type="date" class="form-control" id="date-start" placeholder="date"
-         formControlName="fromDate"/></label>
-  <label>to
-  <input (change)="showDataButton = true" type="date" class="form-control" id="date-finish" placeholder="date"
-         formControlName="toDate"/></label>
-  <button *ngIf="showDataButton && !form.invalid"  type="submit" class="btn btn-info btn-block">Show Trips</button>
-  </form>
-  <button type="button" class="nav-link btn btn-secondary btn-block" routerLink="/trip-form" (click)="removeUpdateTrip()">Add new</button>
-  <mat-paginator [pageSize]="pageSize" [length]="totalItems" (page)="pageEvent($event)"></mat-paginator>
-  <div *ngFor="let trip of tripsView" class="card" style="max-width: 20rem;">
-    <button class="btn btn-light text-left" (click)="openDetails(trip)">
-      <div class="card-header"><h4>Trip ID: {{trip.id}}</h4></div>
-      <div class="card-body ">
-        <h5 class="card-title">Status: {{trip.status}}</h5>
-        <ul class="card-text">
-          <li>Destination: {{trip.destination.city}} {{trip.destination.country}}</li>
-          <li>Start Date: {{trip.dateStart}}</li>
-          <li *ngIf="trip.dateFinish != null">Finish Date: {{trip.dateFinish}}</li>
-<!--          <li *ngIf="trip.placeFinish != null">Finish place: {{trip.destination.city}} {{trip.destination.country}}</li>-->
-        </ul>
-      </div>
+<div class="row scroll">
+  <div class="col-md-3" style="max-width: 20rem;">
+    <form [formGroup]="form" (ngSubmit)="filterData()">
+      <label>From
+        <input (change)="showDataButton = true" type="date" class="form-control" id="date-start" placeholder="date"
+               formControlName="fromDate"/></label>
+      <label>to
+        <input (change)="showDataButton = true" type="date" class="form-control" id="date-finish" placeholder="date"
+               formControlName="toDate"/></label>
+      <button *ngIf="showDataButton && !form.invalid" type="submit" class="btn btn-info btn-block">Show Trips</button>
+    </form>
+    <button type="button" class="nav-link btn btn-secondary btn-block" routerLink="/trip-form"
+            (click)="removeUpdateTrip()">Add new
     </button>
+    <mat-paginator [pageSize]="pageSize" [length]="totalItems" (page)="pageEvent($event)"></mat-paginator>
+    <div id="scroll">
+    <div *ngFor="let trip of tripsView" class="card "  style="max-width: 20rem;">
+      <button class="btn btn-light text-left" (click)="openDetails(trip)">
+        <div class="card-header"><h4>Trip ID: {{trip.id}}</h4></div>
+        <div class="card-body ">
+          <h5 class="card-title">Status: {{trip.status}}</h5>
+          <ul class="card-text">
+            <li>Destination: {{trip.destination.city}} {{trip.destination.country}}</li>
+            <li>Start Date: {{trip.dateStart}}</li>
+            <li *ngIf="trip.dateFinish != null">Finish Date: {{trip.dateFinish}}</li>
+          </ul>
+        </div>
+      </button>
+    </div>
+    </div>
   </div>
-</div>
-  <div class="col-md-7 offset-md-2 " *ngIf="isDetails">
+  <div class="col-md-7 offset-md-2" id="content" >
     <app-trip-view [tripView]="trip"></app-trip-view>
-</div>
+  </div>
 </div>

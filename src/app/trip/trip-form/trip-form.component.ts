@@ -117,10 +117,8 @@ export class TripFormComponent implements OnInit {
 
   addCargo(nr: number) {
     const mainForm = this.form.get('loadingPlaces')['controls'] as FormArray;
-    console.log(nr);
-    const cos = mainForm[nr].get('cargo');
-    console.log(cos);
-    cos.push(this.getCargos(new Cargo()));
+    const cargoList = mainForm[nr].get('cargo');
+    cargoList.push(this.getCargos(new Cargo()));
   }
 
   compareById(o1, o2) {
@@ -131,7 +129,6 @@ export class TripFormComponent implements OnInit {
   }
 
   private sendFailureToView(error: any) {
-    console.log(error);
     this.response.alertType = 'alert-danger';
     this.response.message = error;
   }
@@ -139,7 +136,6 @@ export class TripFormComponent implements OnInit {
   submit() {
     this.tripDto = this.form.value;
     this.service.sendObject(this.tripDto, TripService.TRIP_URL).subscribe(response => {
-        console.log(response);
         this.done = true;
       }, (error: HttpErrorResponse) => {
         this.sendFailureToView(error);

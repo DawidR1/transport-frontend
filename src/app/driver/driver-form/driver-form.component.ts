@@ -68,6 +68,7 @@ export class DriverFormComponent implements OnInit {
     this.driver.email = this.form.get('email').value;
     this.driver.drivingLicense = this.form.get('drivingLicense').value;
     this.driver.birth = this.form.get('birth').value;
+    this.driver.phone = this.form.get('phone').value;
   }
 
   private sendFailureToView(error: HttpErrorResponse) {
@@ -99,7 +100,8 @@ export class DriverFormComponent implements OnInit {
       lastName: new FormControl(driver.lastName, Validators.required),
       email: new FormControl(driver.email, Validators.email),
       birth: new FormControl(driver.birth, Validators.required),
-      drivingLicense: new FormControl(driver.drivingLicense, Validators.required)
+      drivingLicense: new FormControl(driver.drivingLicense, Validators.required),
+      phone: new FormControl(driver.phone, Validators.required)
     });
     this.fileName = driver.imageName;
   }
