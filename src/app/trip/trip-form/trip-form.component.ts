@@ -1,11 +1,17 @@
-import {Component, OnInit} from '@angular/core';
+///<reference path="../../../../node_modules/@types/googlemaps/index.d.ts"/>
+import {Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
 import {Cargo, LoadingPlace, Location, TripDto, TripFormData, TripService, TripStatus} from '../trip.service';
 import {HttpErrorResponse} from '@angular/common/http';
 import {DriverService} from '../../driver/driver.service';
 import {CarService, CustomResponse} from '../../car/car.service';
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MapsAPILoader, AgmGeocoder} from '@agm/core';
+// import {GoogleMap} from '@agm/core/services/google-maps-types';
+// import {google} from '@agm/core/services/google-maps-types';
 
 
+// D:\angualr\transport\transport\node_modules
+// D:\angualr\transport\transport\src\app\trip\trip-form\trip-form.component.ts
 @Component({
   selector: 'app-trip-form',
   templateUrl: './trip-form.component.html',
@@ -19,8 +25,33 @@ export class TripFormComponent implements OnInit {
   form: FormGroup;
   response = new CustomResponse();
   done = false;
+  lat ;
+  lng ;
+  cos ;
+  origin;
+  destination;
+  viewPoints = [];
+  @ViewChild('search',{static: false})
+  public searchElementRef: ElementRef;
+  transitionOption: any;
+  locationResult = [];
 
-  constructor(private service: TripService, private fd: FormBuilder) {
+
+  constructor(private service: TripService, private fd: FormBuilder,
+              private geocoder: AgmGeocoder) {
+  }
+
+  private setCurrentLocation(){
+
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        this.lat = position.coords.latitude;
+        this.lng = position.coords.longitude;
+      });
+    }else {
+      this.lat = 51.950155;
+      this.lng =  18.709522
+    }
   }
 
   ngOnInit() {
@@ -50,6 +81,11 @@ export class TripFormComponent implements OnInit {
       );
     const tripUpdate = this.service.getAndRemoveTripForUpdate();
     tripUpdate != null ? this.populateFormCell(tripUpdate) : this.populateFormCell(new TripDto());
+    this.setCurrentLocation();
+    // this.origin = 'Szkolna 35, Rychwałdek';
+    // this.destination = 'Moniuszki, Katowice';
+    console.log(this.cos)
+    this.draw();
   }
 
   private populateLocation(locations: Array<Location>) {
@@ -142,4 +178,71 @@ export class TripFormComponent implements OnInit {
       }
     );
   }
+
+
+  draw() {
+    console.log("zmiana");
+    const trip = this.form.value;
+    console.log(trip);
+
+    const placeStart = trip.placeStart;
+    const placeFinish = trip.placeFinish;
+
+    if(placeStart != null){
+      this.origin =  this.getLocationFromString(placeStart);
+    }
+    if(placeFinish != null){
+      this.destination = this.getLocationFromString(placeFinish);
+    }
+    this.viewPoints = [];
+    trip.loadingPlaces.forEach(lp => this.viewPoints.push({
+      location: this.getLocationFromString(lp.location),
+      stopover: true
+    }));
+    console.log("tutaj");
+    // const number = new google.maps.DistanceMatrixService();
+    const directionsService = new google.maps.DirectionsService();
+    directionsService.route({
+      origin: this.origin,
+      destination: this.destination,
+      waypoints: this.viewPoints,
+      travelMode: google.maps.TravelMode.DRIVING,
+      unitSystem: google.maps.UnitSystem.METRIC
+    },(result) =>{
+      console.log(result);
+      if(result.routes.length >0){
+        this.locationResult = [];
+        result.routes[0].legs.forEach(location =>{
+          const parameter = new LocationParameter(location.start_address,
+            location.end_address,
+            location.distance.text,
+            location.duration.text);
+          this.locationResult.push(parameter);
+        })
+      }
+    })
+
+  }
+
+  private getLocationFromString(location: Location){
+    console.log(location)
+    if(location == null){
+      return '';
+    }
+    return location.postalCode + ' ' +
+      location.streetAddress + ' ' +
+      location.city + ' ' +
+      location.country
+  }
+}
+
+export class LocationParameter {
+
+  constructor(private startLocation?: string,
+              private endLocation?: string,
+              private distance?:string,
+              private duration?:string){
+
+  }
+
 }

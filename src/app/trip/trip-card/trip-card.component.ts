@@ -38,7 +38,7 @@ export class TripCardComponent implements OnInit {
   }
 
   private requestTrip(index: number = 0, size: number = 5) {
-    this.service.getObjectPage(TripService.TRIP_URL, index, size)
+    this.service.getObjectPageWithSorting(TripService.TRIP_URL, index, size, 'dateStart')
       .subscribe(resourceTrip => {
           this.populateFields(resourceTrip);
         },

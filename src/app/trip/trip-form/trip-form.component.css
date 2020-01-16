@@ -1255,3 +1255,11 @@ body.swal2-no-backdrop .swal2-shown.swal2-bottom-end,body.swal2-no-backdrop .swa
     transform:rotate(360deg)
   }
 }
+
+#scroll{
+  height: 85vh;
+  overflow-y: auto;
+}
+agm-map{
+  height: 50vh;
+}

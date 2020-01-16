@@ -41,6 +41,10 @@ export class AppService {
     return this.http.get<any>(url + '?page=' + index + '&size=' + size);
   }
 
+  getObjectPageWithSorting(url: string, index: number, size: number = 5, field: string): Observable<any> {
+    return this.http.get<any>(url + '?page=' + index + '&size=' + size + '&sort='+field+',desc');
+  }
+
   getObjectPageFilter(url: string, index: number, size: number = 5, from: string, to: string): Observable<any> {
     return this.http.get<any>(url + '?page=' + index + '&size=' + size + '&fromDate=' + from + '&toDate=' + to);
   }
