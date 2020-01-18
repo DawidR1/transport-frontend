@@ -1263,3 +1263,12 @@ body.swal2-no-backdrop .swal2-shown.swal2-bottom-end,body.swal2-no-backdrop .swa
 agm-map{
   height: 50vh;
 }
+h2 {
+ text-align: center;
+}
+h5 {
+  text-align: center;
+}
+button{
+
+}

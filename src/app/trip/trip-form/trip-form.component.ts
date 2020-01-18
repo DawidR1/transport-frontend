@@ -27,14 +27,13 @@ export class TripFormComponent implements OnInit {
   done = false;
   lat ;
   lng ;
-  cos ;
   origin;
   destination;
   viewPoints = [];
-  @ViewChild('search',{static: false})
-  public searchElementRef: ElementRef;
-  transitionOption: any;
   locationResult = [];
+  isMainInformationCollapse = true;
+  isAdditionalInformationCollapse = true;
+  isLoadPlaceInformationCollapse = true;
 
 
   constructor(private service: TripService, private fd: FormBuilder,
@@ -82,10 +81,8 @@ export class TripFormComponent implements OnInit {
     const tripUpdate = this.service.getAndRemoveTripForUpdate();
     tripUpdate != null ? this.populateFormCell(tripUpdate) : this.populateFormCell(new TripDto());
     this.setCurrentLocation();
-    // this.origin = 'Szkolna 35, Rychwałdek';
-    // this.destination = 'Moniuszki, Katowice';
-    console.log(this.cos)
     this.draw();
+
   }
 
   private populateLocation(locations: Array<Location>) {
@@ -101,18 +98,18 @@ export class TripFormComponent implements OnInit {
     this.form = this.fd.group({
       id: trip.id,
       status: [trip.status, Validators.required],
+      destination: [trip.destination, Validators.required],
       dateStart: [trip.dateStart, Validators.required],
       dateFinish: trip.dateFinish,
+      placeStart: [trip.placeStart, Validators.required],
+      placeFinish: trip.placeFinish,
+      driver: [trip.driver, Validators.required],
+      car: [trip.car, Validators.required],
       income: trip.income,
       cost: trip.cost,
       fuel: trip.fuel,
       driverSalary: trip.driverSalary,
       distance: trip.distance,
-      destination: [trip.destination, Validators.required],
-      placeFinish: trip.placeFinish,
-      placeStart: [trip.placeStart, Validators.required],
-      driver: [trip.driver, Validators.required],
-      car: [trip.car, Validators.required],
       loadingPlaces: this.fd.array(formLoadingPlaceGroups)
     });
   }
@@ -122,17 +119,23 @@ export class TripFormComponent implements OnInit {
   }
 
   private addLoadingPlace() {
-    const mainForm = this.form.get('loadingPlaces') as FormArray;
-    mainForm.push(this.getLoadingPlaces(new LoadingPlace()));
+    const loadingPlaces = this.form.get('loadingPlaces') as FormArray;
+    loadingPlaces.push(this.getLoadingPlaces(new LoadingPlace()));
+    console.log(this.form.get('loadingPlaces')['controls'][0]['controls']['nr'].invalid)
+  }
+
+  removeLoadingPlace(i: number) {
+    const loadingPlaces = this.form.get('loadingPlaces') as FormArray;
+    loadingPlaces.removeAt(i);
   }
 
   private getLoadingPlaces(loadingPlace: LoadingPlace): FormGroup {
     const cargosGroup = loadingPlace.cargo == null ? [] : this.populateCargos(loadingPlace.cargo);
     return this.fd.group({
       id: loadingPlace.id,
-      nr: loadingPlace.nr,
+      nr: [loadingPlace.nr, Validators.required],
       date: loadingPlace.date,
-      location: loadingPlace.location,
+      location: [loadingPlace.location, Validators.required],
       income: loadingPlace.income,
       cargo: this.fd.array(cargosGroup)
     });
@@ -157,6 +160,12 @@ export class TripFormComponent implements OnInit {
     cargoList.push(this.getCargos(new Cargo()));
   }
 
+  removeCargo(placeNumber:number, cargoNumber: number){
+    const mainForm = this.form.get('loadingPlaces')['controls'] as FormArray;
+    const cargoList = mainForm[placeNumber].get('cargo');
+    cargoList.removeAt(cargoNumber);
+  }
+
   compareById(o1, o2) {
     if (o1 == null || o2 == null) {
       return false;
@@ -170,7 +179,14 @@ export class TripFormComponent implements OnInit {
   }
 
   submit() {
+    Object.keys(this.form.controls).forEach(key => this.form.get(key).markAsDirty());
+    this.form.get('loadingPlaces')['controls'].forEach(object => object['controls']['nr'].markAsDirty());
+    console.log(this.form)
+    if(this.form.invalid == true){
+      return;
+    }
     this.tripDto = this.form.value;
+
     this.service.sendObject(this.tripDto, TripService.TRIP_URL).subscribe(response => {
         this.done = true;
       }, (error: HttpErrorResponse) => {
@@ -181,6 +197,7 @@ export class TripFormComponent implements OnInit {
 
 
   draw() {
+
     console.log("zmiana");
     const trip = this.form.value;
     console.log(trip);
@@ -195,7 +212,11 @@ export class TripFormComponent implements OnInit {
       this.destination = this.getLocationFromString(placeFinish);
     }
     this.viewPoints = [];
-    trip.loadingPlaces.forEach(lp => this.viewPoints.push({
+
+    const sortedLoadingPlaces = trip.loadingPlaces.sort((v1,v2) => v1.nr > v2.nr);
+    console.log(sortedLoadingPlaces)
+    return;
+    sortedLoadingPlaces.forEach(lp => this.viewPoints.push({
       location: this.getLocationFromString(lp.location),
       stopover: true
     }));
@@ -234,6 +255,8 @@ export class TripFormComponent implements OnInit {
       location.city + ' ' +
       location.country
   }
+
+
 }
 
 export class LocationParameter {

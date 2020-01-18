@@ -1,124 +1,181 @@
 <div class="row" *ngIf="!done; else done_content">
-  <div class="col-md-4">
-  <h2>Main Information</h2>
-  <form [formGroup]="form" (ngSubmit)="submit()">
-    <div id="scroll">
-      <div class="form-group">
-        <label for="status-select">Status</label>
-        <select class="custom-select my-1" id="status-select" formControlName="status" required>
-          <option [ngValue]="status" *ngFor="let status of tripStatus">{{status}}</option>
-        </select>
-        <label for="destination-select">Destination</label>
-        <select class="custom-select my-1" required id="destination-select" formControlName="destination"
-                [compareWith]="compareById" >
-          <option [ngValue]="location"
-                  *ngFor="let location of tripFormData.destinations">{{location | toString}}</option>
-          <div *ngIf="form.get('destination').invalid" class="alert alert-danger">Required</div>
-        </select>
-        <label for="date-start">Date Start</label>
-        <input type="date" class="form-control" id="date-start" placeholder="date" formControlName="dateStart"
-               required/>
-        <div *ngIf="form.get('dateStart').invalid && form.get('dateStart').dirty" class="alert alert-danger">Required
-        </div>
-        <label for="date-finish">Date Finish</label>
-        <input type="date" class="form-control" id="date-finish" placeholder="date" formControlName="dateFinish"/>
-        <label for="place-start-select">Place Start</label>
-        <select class="custom-select my-1" id="place-start-select" formControlName="placeStart"
-                [compareWith]="compareById" (change)="draw()" required>
-          <option [ngValue]="location" *ngFor="let location of tripFormData.placeStart">{{location | toString}}</option>
-        </select>
-        <label for="place-finish-select">Place Finish</label>
-        <select class="custom-select my-1 " id="place-finish-select" formControlName="placeFinish"
-                [compareWith]="compareById" (change)="draw()" #placeFinish>
-          <option [ngValue]="location"
-                  *ngFor="let location of tripFormData.placeFinish">{{location | toString}}</option>
-        </select>
-        <label for="driver-select">Driver</label>
-        <select class="custom-select my-1 " id="driver-select" formControlName="driver" [compareWith]="compareById"
-                required>
-          <option [ngValue]="driver"
-                  *ngFor="let driver of tripFormData.drivers">{{driver.firstName}} {{driver.lastName}}</option>
-        </select>
-        <label for="car-select">Car</label>
-        <select class="custom-select my-1 " id="car-select" formControlName="car" [compareWith]="compareById" required>
-          <option [ngValue]="car" *ngFor="let car of tripFormData.car">{{car.plate}}</option>
-        </select>
-        <label for="income">Income</label>
-        <input type="number" min="0" class="form-control" id="income" placeholder="income" formControlName="income"/>
-        <label for="cost">Costs</label>
-        <input type="number" min="0" class="form-control" id="cost" placeholder="cost" formControlName="cost"/>
-        <label for="fuel-liters">Fuel</label>
-        <input type="number" min="0" class="form-control" id="fuel-liters" placeholder="liters" formControlName="fuel"/>
-        <label for="driver-salary">Driver Salary</label>
-        <input type="number" min="0" class="form-control" id="driver-salary" placeholder="salary"
-               formControlName="driverSalary"/>
-        <label for="distance">Distance</label>
-        <input type="number" min="0" class="form-control" id="distance" placeholder="distance"
-               formControlName="distance"/>
-        <br>
-        <h4>Loading Places</h4>
-        <div formArrayName="loadingPlaces"
-             *ngFor="let loadingPlace of form.get('loadingPlaces')['controls']; let i = index"
-             style="padding-left:5em">
-          <div [formGroupName]="i">
-            <label><b>Loading Place</b></label><br>
-            <input type="hidden" class="form-control" id="id" formControlName="id"/>
-            <label for="nr">nr</label>
-            <input type="number" min="0" class="form-control" id="nr" placeholder="nr" formControlName="nr" required/>
-            <label for="date">Date</label>
-            <input type="date" min="0" class="form-control" id="date" placeholder="date" formControlName="date"
-                   required/>
-            <label for="location-select">Location</label>
-            <select class="custom-select" required id="location-select" formControlName="location"
-                    [compareWith]="compareById" (change)="draw()" >
+  <div class="col-md-3">
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div id="scroll">
+        <h2>Main Information</h2>
+        <button (click)="isMainInformationCollapse = !isMainInformationCollapse" class="btn btn-primary btn-block "
+                type="button">
+          Open
+        </button>
+
+        <div class="form-group">
+          <br>
+          <div class="card card-body pt-md-3" id="mainInformation" [ngbCollapse]="isMainInformationCollapse">
+            <label for="status-select">Status</label>
+            <select class="custom-select my-1" id="status-select" formControlName="status" required>
+              <option [ngValue]="status" *ngFor="let status of tripStatus">{{status}}</option>
+            </select>
+            <div *ngIf="form.get('status').invalid && form.get('status').dirty" class="alert alert-danger">Required</div>
+            <label for="destination-select">Destination</label>
+            <select class="custom-select my-1" required id="destination-select" formControlName="destination"
+                    [compareWith]="compareById">
               <option [ngValue]="location"
                       *ngFor="let location of tripFormData.destinations">{{location | toString}}</option>
             </select>
-            <label for="income2">income</label>
-            <input type="number" min="0" class="form-control" id="income2" placeholder="income"
+            <div *ngIf="form.get('destination').invalid && form.get('destination').dirty" class="alert alert-danger">Required</div>
+            <label for="date-start">Date Start</label>
+            <input type="date" class="form-control" id="date-start" placeholder="date" formControlName="dateStart"
+                   required/>
+            <div *ngIf="form.get('dateStart').invalid && form.get('dateStart').dirty" class="alert alert-danger">Required</div>
+            <label for="date-finish">Date Finish</label>
+            <input type="date" class="form-control" id="date-finish" placeholder="date" formControlName="dateFinish"/>
+            <label for="place-start-select">Place Start</label>
+            <select class="custom-select my-1" id="place-start-select" formControlName="placeStart"
+                    [compareWith]="compareById" (change)="draw()" required>
+              <option [ngValue]="location"
+                      *ngFor="let location of tripFormData.placeStart">{{location | toString}}</option>
+            </select>
+            <div *ngIf="form.get('placeStart').invalid && form.get('placeStart').dirty" class="alert alert-danger">Required</div>
+
+            <label for="place-finish-select">Place Finish</label>
+            <select class="custom-select my-1 " id="place-finish-select" formControlName="placeFinish"
+                    [compareWith]="compareById" (change)="draw()" #placeFinish>
+              <option [ngValue]="location"
+                      *ngFor="let location of tripFormData.placeFinish">{{location | toString}}</option>
+            </select>
+            <label for="driver-select">Driver</label>
+            <select class="custom-select my-1 " id="driver-select" formControlName="driver" [compareWith]="compareById"
+                    required>
+              <option [ngValue]="driver"
+                      *ngFor="let driver of tripFormData.drivers">{{driver.firstName}} {{driver.lastName}}</option>
+            </select>
+            <div *ngIf="form.get('driver').invalid && form.get('driver').dirty" class="alert alert-danger">Required</div>
+
+            <label for="car-select">Car</label>
+            <select class="custom-select my-1 " id="car-select" formControlName="car" [compareWith]="compareById"
+                    required>
+              <option [ngValue]="car" *ngFor="let car of tripFormData.car">{{car.plate}}</option>
+            </select>
+            <div *ngIf="form.get('car').invalid && form.get('car').dirty" class="alert alert-danger">Required</div>
+
+          </div>
+          <br>
+          <h2>Additional Information</h2>
+          <button (click)="isAdditionalInformationCollapse = !isAdditionalInformationCollapse"
+                  class="btn btn-primary btn-block"
+                  type="button">Open
+          </button>
+          <br>
+          <div class="card card-body" [ngbCollapse]="isAdditionalInformationCollapse">
+
+            <label for="income">Income</label>
+            <input type="number" min="0" class="form-control" id="income" placeholder="income"
                    formControlName="income"/>
-            <br>
-            <h4>Cargo</h4>
-            <div formArrayName="cargo" *ngFor="let loadingPlace of loadingPlace.get('cargo')['controls']; let j = index"
-                 style="padding-left:5em">
-              <div [formGroupName]="j">
-                <label><b>Cargo</b></label><br>
-                <input type="hidden" class="form-control" formControlName="id"/>
-                <label for="number-of-pallets">number of pallets</label>
-                <input type="number" min="0" class="form-control" id="number-of-pallets" placeholder="number"
-                       formControlName="numberOfPallets"/>
-                <label for="weight">weight</label>
-                <input type="number" min="0" class="form-control" id="weight" placeholder="weight"
-                       formControlName="weight"/>
-                <label for="company-name">Company Name</label>
-                <input type="number" min="0" class="form-control" id="company-name" placeholder="name"
-                       formControlName="companyName"/>
+
+            <label for="cost">Costs</label>
+            <input type="number" min="0" class="form-control" id="cost" placeholder="cost" formControlName="cost"/>
+            <label for="fuel-liters">Fuel</label>
+            <input type="number" min="0" class="form-control" id="fuel-liters" placeholder="liters"
+                   formControlName="fuel"/>
+            <label for="driver-salary">Driver Salary</label>
+            <input type="number" min="0" class="form-control" id="driver-salary" placeholder="salary"
+                   formControlName="driverSalary"/>
+            <label for="distance">Distance</label>
+            <input type="number" min="0" class="form-control" id="distance" placeholder="distance"
+                   formControlName="distance"/>
+          </div>
+          <br>
+
+          <h2>Loading Places</h2>
+          <button (click)="isLoadPlaceInformationCollapse = !isLoadPlaceInformationCollapse"
+                  class="btn btn-primary btn-block"
+                  type="button">Open
+          </button>
+          <br>
+          <div [ngbCollapse]="isLoadPlaceInformationCollapse">
+            <div formArrayName="loadingPlaces"
+                 *ngFor="let loadingPlace of form.get('loadingPlaces')['controls']; let i = index">
+              <div [formGroupName]="i">
+                <div class="card card-body">
+                  <h5>Loading Place</h5><br>
+                  <input type="hidden" class="form-control" id="id" formControlName="id"/>
+                  <label for="nr">nr</label>
+                  <input type="number" min="0" class="form-control" id="nr" placeholder="nr" formControlName="nr"
+                         required/>
+                  <div *ngIf="form.get('loadingPlaces')['controls'][i]['controls']['nr'].invalid
+                  && form.get('loadingPlaces')['controls'][i]['controls']['nr'].dirty" class="alert alert-danger">Required</div>
+                  <label for="date">Date</label>
+                  <input type="date" min="0" class="form-control" id="date" placeholder="date" formControlName="date"
+                         required/>
+                  <label for="location-select">Location</label>
+                  <select class="custom-select" required id="location-select" formControlName="location"
+                          [compareWith]="compareById" (change)="draw()">
+                    <option [ngValue]="location"
+                            *ngFor="let location of tripFormData.destinations">{{location | toString}}</option>
+                  </select>
+                  <label for="income2">income</label>
+                  <input type="number" min="0" class="form-control" id="income2" placeholder="income"
+                         formControlName="income"/>
+                  <br>
+                  <h5>Cargo</h5>
+                  <div formArrayName="cargo"
+                       *ngFor="let loadingPlace of loadingPlace.get('cargo')['controls']; let j = index">
+                    <!--                   style="padding-left:5em"-->
+
+                    <div [formGroupName]="j">
+                      <div class="card card-body">
+                        <label><b>Cargo number {{j + 1}}</b></label><br>
+                        <input type="hidden" class="form-control" formControlName="id"/>
+                        <label for="number-of-pallets">number of pallets</label>
+                        <input type="number" min="0" class="form-control" id="number-of-pallets" placeholder="number"
+                               formControlName="numberOfPallets"/>
+                        <label for="weight">weight</label>
+                        <input type="number" min="0" class="form-control" id="weight" placeholder="weight"
+                               formControlName="weight"/>
+                        <label for="company-name">Company Name</label>
+                        <input type="number" min="0" class="form-control" id="company-name" placeholder="name"
+                               formControlName="companyName"/>
+
+                        <button type="button" class="btn btn-outline-danger mt-2 btn-block " (click)="removeCargo(i,j)">
+                          Remove Cargo
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <button type="button" class="btn btn-outline-primary my-2 btn-block " style="text-align: center"
+                          (click)="addCargo(i)">Add New Cargo
+                  </button>
+                  <button type="button" class="btn btn-outline-danger btn-block" (click)="removeLoadingPlace(i)">Remove Loading
+                    Place
+                  </button>
+                  <br>
+                </div>
               </div>
             </div>
-            <button type="button" class="btn btn-outline-primary" (click)="addCargo(i)">Add New Cargo</button>
             <br>
+            <button type="button" class="btn btn-outline-primary btn-block" (click)="addLoadingPlace()">Add New Loading
+              Place
+            </button>
           </div>
+
         </div>
-        <br>
-        <button type="button" class="btn btn-outline-primary" (click)="addLoadingPlace()">Add New Loading Place</button>
       </div>
+      <br>
+      <button type="submit" class="btn btn-success btn-block">Save Trip</button>
+    </form>
+
+
+    <p class="p-md-1"></p>
+    <div *ngIf="response.alertType != null" [ngClass]="['row alert ', response.alertType]" role="alert">
+      {{response.message}}
     </div>
-    <br>
-    <button type="submit" class="btn btn-primary btn-block" [disabled]="form.invalid">Save Trip</button>
-  </form>
-
-
-  <p class="p-md-1"></p>
-  <div *ngIf="response.alertType != null" [ngClass]="['row alert ', response.alertType]" role="alert">
-    {{response.message}}
   </div>
-  </div>
-  <div class="col-md-8">
-    <agm-map [latitude]="lat" [longitude]="lng">
-      <agm-direction [origin]="origin" [destination]="destination" [infoWindow]="cos" [waypoints]="viewPoints" [transitOptions]="transitionOption">
+  <div class="col-md-9">
+    <!--    <agm-map [latitude]="lat" [longitude]="lng">-->
+    <!--      <agm-direction [origin]="origin" [destination]="destination" [waypoints]="viewPoints" >-->
 
-      </agm-direction>
-    </agm-map>
+    <!--      </agm-direction>-->
+    <!--    </agm-map>-->
     <table class="table table-hover">
       <thead class="thead-dark">
       <tr>
