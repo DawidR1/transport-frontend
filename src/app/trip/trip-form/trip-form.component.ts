@@ -1,17 +1,15 @@
 ///<reference path="../../../../node_modules/@types/googlemaps/index.d.ts"/>
-import {Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
 import {Cargo, LoadingPlace, Location, TripDto, TripFormData, TripService, TripStatus} from '../trip.service';
 import {HttpErrorResponse} from '@angular/common/http';
 import {DriverService} from '../../driver/driver.service';
 import {CarService, CustomResponse} from '../../car/car.service';
-import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MapsAPILoader, AgmGeocoder} from '@agm/core';
-// import {GoogleMap} from '@agm/core/services/google-maps-types';
-// import {google} from '@agm/core/services/google-maps-types';
+import {Form, FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AgmGeocoder, MapsAPILoader} from '@agm/core';
+import {MapComponent} from '../../map/map.component';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {LocationComponent} from '../../tool/location/location.component';
 
-
-// D:\angualr\transport\transport\node_modules
-// D:\angualr\transport\transport\src\app\trip\trip-form\trip-form.component.ts
 @Component({
   selector: 'app-trip-form',
   templateUrl: './trip-form.component.html',
@@ -25,32 +23,24 @@ export class TripFormComponent implements OnInit {
   form: FormGroup;
   response = new CustomResponse();
   done = false;
-  lat ;
-  lng ;
-  origin;
-  destination;
-  viewPoints = [];
-  locationResult = [];
   isMainInformationCollapse = true;
   isAdditionalInformationCollapse = true;
   isLoadPlaceInformationCollapse = true;
 
+  private searchAddress: string;
+  @ViewChild('location', {static: false})
+  searchEl: ElementRef;
 
-  constructor(private service: TripService, private fd: FormBuilder,
-              private geocoder: AgmGeocoder) {
-  }
+  @ViewChild(MapComponent,{static: false}) mapComponent:MapComponent;
+  private zip_code: string;
+  private locations: Array<Location>;
+  locationForm: FormGroup;
 
-  private setCurrentLocation(){
-
-    if ('geolocation' in navigator) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        this.lat = position.coords.latitude;
-        this.lng = position.coords.longitude;
-      });
-    }else {
-      this.lat = 51.950155;
-      this.lng =  18.709522
-    }
+  constructor(private service: TripService,
+              private fd: FormBuilder,
+              private mapsAPILoader: MapsAPILoader,
+              private ngZone: NgZone,
+              private modalService: NgbModal) {
   }
 
   ngOnInit() {
@@ -80,15 +70,27 @@ export class TripFormComponent implements OnInit {
       );
     const tripUpdate = this.service.getAndRemoveTripForUpdate();
     tripUpdate != null ? this.populateFormCell(tripUpdate) : this.populateFormCell(new TripDto());
-    this.setCurrentLocation();
-    this.draw();
+    // this.findAdress();
+  }
 
+  findAdress(){
+    this.mapsAPILoader.load().then(() => {
+      let autocomplete = new google.maps.places.Autocomplete(this.searchEl.nativeElement);
+      autocomplete.addListener("place_changed", () => {
+        this.ngZone.run(() => {
+        let place: google.maps.places.PlaceResult = autocomplete.getPlace();
+        this.searchAddress = place.formatted_address;
+        this.zip_code = place.address_components[place.address_components.length - 1].long_name;
+        });
+      });
+    });
   }
 
   private populateLocation(locations: Array<Location>) {
     this.tripFormData.destinations = locations;
     this.tripFormData.placeFinish = locations;
     this.tripFormData.placeStart = locations;
+    this.locations = locations;
   }
 
 
@@ -127,6 +129,7 @@ export class TripFormComponent implements OnInit {
   removeLoadingPlace(i: number) {
     const loadingPlaces = this.form.get('loadingPlaces') as FormArray;
     loadingPlaces.removeAt(i);
+    this.mapComponent.draw(this.form.value);
   }
 
   private getLoadingPlaces(loadingPlace: LoadingPlace): FormGroup {
@@ -179,9 +182,22 @@ export class TripFormComponent implements OnInit {
   }
 
   submit() {
-    Object.keys(this.form.controls).forEach(key => this.form.get(key).markAsDirty());
-    this.form.get('loadingPlaces')['controls'].forEach(object => object['controls']['nr'].markAsDirty());
-    console.log(this.form)
+    Object.keys(this.form.controls).forEach(key => {
+      this.form.get(key).markAsDirty()
+      if(this.form.get(key).invalid){
+        this.isMainInformationCollapse = false;
+      }
+    });
+    this.form.get('loadingPlaces')['controls'].forEach(object => {
+      Object.keys(object['controls']).forEach(key => {
+        object['controls'][key].markAsDirty();
+        if(object['controls'][key].invalid){
+          this.isLoadPlaceInformationCollapse = false;
+        }
+      } )
+    });
+
+    console.log(this.form.get('loadingPlaces')['controls'])
     if(this.form.invalid == true){
       return;
     }
@@ -195,77 +211,20 @@ export class TripFormComponent implements OnInit {
     );
   }
 
+  openLocationModal(content) {
+    this.locationForm = this.fd.group({
+      streetAddress: '',
+      postalCode: '',
+      city: '',
+      country: ['', Validators.required]
+    });
+     const ngbModalRef = this.modalService.open(content, {
+      }).result.then(result => {
+        console.log('close')
 
-  draw() {
-
-    console.log("zmiana");
-    const trip = this.form.value;
-    console.log(trip);
-
-    const placeStart = trip.placeStart;
-    const placeFinish = trip.placeFinish;
-
-    if(placeStart != null){
-      this.origin =  this.getLocationFromString(placeStart);
-    }
-    if(placeFinish != null){
-      this.destination = this.getLocationFromString(placeFinish);
-    }
-    this.viewPoints = [];
-
-    const sortedLoadingPlaces = trip.loadingPlaces.sort((v1,v2) => v1.nr > v2.nr);
-    console.log(sortedLoadingPlaces)
-    return;
-    sortedLoadingPlaces.forEach(lp => this.viewPoints.push({
-      location: this.getLocationFromString(lp.location),
-      stopover: true
-    }));
-    console.log("tutaj");
-    // const number = new google.maps.DistanceMatrixService();
-    const directionsService = new google.maps.DirectionsService();
-    directionsService.route({
-      origin: this.origin,
-      destination: this.destination,
-      waypoints: this.viewPoints,
-      travelMode: google.maps.TravelMode.DRIVING,
-      unitSystem: google.maps.UnitSystem.METRIC
-    },(result) =>{
-      console.log(result);
-      if(result.routes.length >0){
-        this.locationResult = [];
-        result.routes[0].legs.forEach(location =>{
-          const parameter = new LocationParameter(location.start_address,
-            location.end_address,
-            location.distance.text,
-            location.duration.text);
-          this.locationResult.push(parameter);
-        })
-      }
-    })
-
+        this.locations.push(this.locationForm.value)
+     }, (reason) =>{
+     });
   }
-
-  private getLocationFromString(location: Location){
-    console.log(location)
-    if(location == null){
-      return '';
-    }
-    return location.postalCode + ' ' +
-      location.streetAddress + ' ' +
-      location.city + ' ' +
-      location.country
-  }
-
-
 }
 
-export class LocationParameter {
-
-  constructor(private startLocation?: string,
-              private endLocation?: string,
-              private distance?:string,
-              private duration?:string){
-
-  }
-
-}

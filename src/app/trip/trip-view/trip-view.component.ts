@@ -1,6 +1,7 @@
 import {TripDto, TripService} from '../trip.service';
 import {Component, Input, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-trip-view',
@@ -11,7 +12,7 @@ export class TripViewComponent implements OnInit {
 
   @Input()
   tripView: TripDto;
-  constructor(private service: TripService,  private router: Router) { }
+  constructor(private service: TripService,  private router: Router, private modalService: NgbModal) { }
 
   ngOnInit() {
   }
@@ -22,12 +23,15 @@ export class TripViewComponent implements OnInit {
   }
 
   showInMaps(tripView: TripDto) {
-    console.log(tripView);;
     const locations = [tripView.placeStart];
-    console.log(locations)
     tripView.loadingPlaces.forEach(place => locations.push(place.location));
     locations.push(tripView.placeFinish);
-    console.log(locations);
     this.service.showInMaps(locations);
+  }
+
+  openMap(content) {
+    this.modalService.open(content, {
+      size: 'xl'
+    });
   }
 }

@@ -1,5 +1,7 @@
 <div class="row" *ngIf="!done; else done_content">
   <div class="col-md-3">
+
+
     <form [formGroup]="form" (ngSubmit)="submit()">
       <div id="scroll">
         <h2>Main Information</h2>
@@ -12,16 +14,23 @@
           <br>
           <div class="card card-body pt-md-3" id="mainInformation" [ngbCollapse]="isMainInformationCollapse">
             <label for="status-select">Status</label>
-            <select class="custom-select my-1" id="status-select" formControlName="status" required>
-              <option [ngValue]="status" *ngFor="let status of tripStatus">{{status}}</option>
+            <div>
+            <select   class="custom-select" id="status-select" formControlName="status" required>
+              <option style="float: left" [ngValue]="status" *ngFor="let status of tripStatus">{{status}}</option>
             </select>
+            </div>
             <div *ngIf="form.get('status').invalid && form.get('status').dirty" class="alert alert-danger">Required</div>
             <label for="destination-select">Destination</label>
-            <select class="custom-select my-1" required id="destination-select" formControlName="destination"
+            <div class="input-group">
+            <select class="custom-select" required id="destination-select" formControlName="destination"
                     [compareWith]="compareById">
               <option [ngValue]="location"
-                      *ngFor="let location of tripFormData.destinations">{{location | toString}}</option>
+                      *ngFor="let location of locations">{{location | toString}}</option>
             </select>
+              <div class="input-group-prepend input-group-sm">
+                <button  class="btn btn-primary btn-block " type="button" (click)="openLocationModal(content)">+</button>
+              </div>
+            </div>
             <div *ngIf="form.get('destination').invalid && form.get('destination').dirty" class="alert alert-danger">Required</div>
             <label for="date-start">Date Start</label>
             <input type="date" class="form-control" id="date-start" placeholder="date" formControlName="dateStart"
@@ -30,19 +39,36 @@
             <label for="date-finish">Date Finish</label>
             <input type="date" class="form-control" id="date-finish" placeholder="date" formControlName="dateFinish"/>
             <label for="place-start-select">Place Start</label>
-            <select class="custom-select my-1" id="place-start-select" formControlName="placeStart"
-                    [compareWith]="compareById" (change)="draw()" required>
+
+            <div class="input-group">
+            <select class="custom-select" id="place-start-select" formControlName="placeStart"
+                    [compareWith]="compareById" (change)="this.mapComponent.draw(form.value)" required>
               <option [ngValue]="location"
-                      *ngFor="let location of tripFormData.placeStart">{{location | toString}}</option>
+                      *ngFor="let location of locations">{{location | toString}}</option>
             </select>
+              <div class="input-group-prepend input-group-sm">
+                <button  class="btn btn-primary btn-block " type="button"  (click)="openLocationModal(content)">+</button>
+              </div>
+            </div>
             <div *ngIf="form.get('placeStart').invalid && form.get('placeStart').dirty" class="alert alert-danger">Required</div>
 
+<!--            <label for="costam">Place Finish</label>-->
+<!--            <input type="text" class="form-control" id="costam"  (click)="openLocationModal(content,form.get('placeFinish'))" formControlName="placeFinish" [value]="">-->
+
             <label for="place-finish-select">Place Finish</label>
-            <select class="custom-select my-1 " id="place-finish-select" formControlName="placeFinish"
-                    [compareWith]="compareById" (change)="draw()" #placeFinish>
+
+              <div class="input-group">
+              <select class="custom-select" id="place-finish-select" formControlName="placeFinish"
+                    [compareWith]="compareById"
+                    (click)="this.mapComponent.draw(form.value)" #placeFinish>
               <option [ngValue]="location"
-                      *ngFor="let location of tripFormData.placeFinish">{{location | toString}}</option>
+                      *ngFor="let location of locations">{{location | toString}}</option>
             </select>
+
+                <div class="input-group-prepend input-group-sm">
+                  <button  class="btn btn-primary btn-block " type="button"  (click)="openLocationModal(content)">+</button>
+                </div>
+              </div>
             <label for="driver-select">Driver</label>
             <select class="custom-select my-1 " id="driver-select" formControlName="driver" [compareWith]="compareById"
                     required>
@@ -101,18 +127,30 @@
                   <input type="hidden" class="form-control" id="id" formControlName="id"/>
                   <label for="nr">nr</label>
                   <input type="number" min="0" class="form-control" id="nr" placeholder="nr" formControlName="nr"
-                         required/>
+                         required (change)="this.mapComponent.draw(form.value)" />
                   <div *ngIf="form.get('loadingPlaces')['controls'][i]['controls']['nr'].invalid
                   && form.get('loadingPlaces')['controls'][i]['controls']['nr'].dirty" class="alert alert-danger">Required</div>
                   <label for="date">Date</label>
                   <input type="date" min="0" class="form-control" id="date" placeholder="date" formControlName="date"
                          required/>
+<!--                  <label for="costam">Place Finish</label>-->
+<!--                  <input type="text" class="form-control" id="costam2"  (click)="openLocationModal(content,loadingPlace)" formControlName="location">-->
                   <label for="location-select">Location</label>
+
+                  <div class="input-group">
+
                   <select class="custom-select" required id="location-select" formControlName="location"
-                          [compareWith]="compareById" (change)="draw()">
+                          [compareWith]="compareById" (change)="this.mapComponent.draw(form.value)" >
                     <option [ngValue]="location"
-                            *ngFor="let location of tripFormData.destinations">{{location | toString}}</option>
+                            *ngFor="let location of locations">{{location | toString}}</option>
                   </select>
+
+                    <div class="input-group-prepend input-group-sm">
+                      <button  class="btn btn-primary btn-block " type="button"  (click)="openLocationModal(content)">+</button>
+                    </div>
+                  </div>
+                  <div *ngIf="form.get('loadingPlaces')['controls'][i]['controls']['location'].invalid
+                  && form.get('loadingPlaces')['controls'][i]['controls']['location'].dirty" class="alert alert-danger">Required</div>
                   <label for="income2">income</label>
                   <input type="number" min="0" class="form-control" id="income2" placeholder="income"
                          formControlName="income"/>
@@ -171,33 +209,70 @@
     </div>
   </div>
   <div class="col-md-9">
-    <!--    <agm-map [latitude]="lat" [longitude]="lng">-->
-    <!--      <agm-direction [origin]="origin" [destination]="destination" [waypoints]="viewPoints" >-->
-
-    <!--      </agm-direction>-->
-    <!--    </agm-map>-->
-    <table class="table table-hover">
-      <thead class="thead-dark">
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Start address</th>
-        <th scope="col">End address</th>
-        <th scope="col">Distance</th>
-        <th scope="col">Duration</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let location of locationResult; let i= index ">
-        <th scope="row">{{i}}</th>
-        <td>{{location.startLocation}}</td>
-        <td>{{location.endLocation}}</td>
-        <td>{{location.distance}}</td>
-        <td>{{location.duration}}</td>
-      </tr>
-      </tbody>
-    </table>
+<app-map [trip]="form.value"></app-map>
   </div>
 </div>
+
+<!--<ng-template #content let-modal>-->
+<!--  <div class="modal-header">-->
+<!--    <h4 class="modal-title">Choose location</h4>-->
+<!--    <button type="button" class="close" aria-label="Close">-->
+<!--      <span aria-hidden="true">&times;</span>-->
+<!--    </button>-->
+<!--  </div>-->
+<!--  <div class="modal-body">-->
+<!--    <form>-->
+<!--      <div class="form-group">-->
+<!--        <label>Choose from existing location</label>-->
+<!--        <div class="input-group">-->
+<!--          <select class="custom-select my-1" formControlName="destination" [compareWith]="compareById">-->
+<!--            <option [ngValue]="location"-->
+<!--                    *ngFor="let location of locations">{{location | toString}}</option>-->
+<!--          </select>-->
+<!--        <label>Provide new one</label>-->
+<!--        <input #location autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="form-control">-->
+<!--        </div>-->
+<!--        </div>-->
+<!--    </form>-->
+<!--  </div>-->
+<!--</ng-template>-->
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Location</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>  </div>
+  <div class="modal-body">
+    <h2>Location Registration</h2>
+      <form [formGroup]="locationForm">
+        <div class="form-group">
+          <label for="streetAddress">Street Address:</label>
+          <input type="text" class="form-control" id="streetAddress" placeholder="Enter streetAddress" formControlName="streetAddress">
+        </div>
+        <div class="form-group">
+          <label for="postalCode">Postal Code:</label>
+          <input type="text" class="form-control" id="postalCode" placeholder="Enter postalCode" formControlName="postalCode">
+        </div>
+        <div class="form-group">
+          <label for="city">City:</label>
+          <input type="text" class="form-control" id="city" placeholder="Enter city" formControlName="city">
+        </div>
+        <div class="form-group">
+          <label for="country">Country:</label>
+          <input type="text" class="form-control" id="country" placeholder="Enter country" formControlName="country">
+          <div *ngIf="locationForm.get('country').invalid && locationForm.get('country').dirty" class="alert alert-danger">Required</div>
+        </div>
+        <p class="p-md-1"></p>
+        <div *ngIf="response.alertType != null"  [ngClass]="['row alert ', response.alertType]"  role="alert">
+          {{response.message}}
+        </div>
+        <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" [disabled]="locationForm.invalid" (click)="modal.close('Save click')">Add location</button>
+        </div>
+      </form>
+  </div>
+</ng-template>
 
 <ng-template #done_content>
   <div class="swal2-icon swal2-success swal2-animate-success-icon" style="display: flex;">

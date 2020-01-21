@@ -22,7 +22,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-          redirectTo: 'trip-view',
+          redirectTo: 'trip',
         pathMatch: 'full',
 
       },

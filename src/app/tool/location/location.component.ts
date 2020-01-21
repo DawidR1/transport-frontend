@@ -13,9 +13,10 @@ import {PageEvent} from '@angular/material';
 })
 export class LocationComponent implements OnInit {
 
-  location: Array<Location>;
+  private locations: Array<Location>;
   private pageSize: number;
   private totalItems: number;
+  location: Location;
   constructor(private service: ToolService, private router: Router) { }
 
   ngOnInit() {
@@ -44,6 +45,6 @@ export class LocationComponent implements OnInit {
         console.log(error.status);
       }
     );
-    this.location = location;
+    this.locations = location;
   }
 }

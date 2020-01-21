@@ -1,29 +1,23 @@
-<div >
-  <input class="form-control form-control-sm w-25"  type="search" placeholder="Search" aria-label="Search">
-  <table class="table table-hover">
-    <thead class="thead-dark">
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Street Address</th>
-      <th scope="col">Postal Code</th>
-      <th scope="col">City</th>
-      <th scope="col">Country</th>
-      <th scope="col"></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let location of location; let i= index ">
-      <th scope="row">{{i}}</th>
-      <td>{{location.streetAddress}}</td>
-      <td>{{location.postalCode}}</td>
-      <td>{{location.city}}</td>
-      <td>{{location.country}}</td>
-      <td>
-        <button type="button" (click)="saveInService(location)" class="btn btn-outline-success btn-block">Update</button>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-</div>
-<mat-paginator [pageSize]="pageSize" [length]="totalItems" (page)="pageEvent($event)"></mat-paginator>
-<button type="button" routerLink="/location-form" class="nav-link btn btn-outline-primary btn-block">Add new</button>
+<!--<ng-template #content let-modal>-->
+  <div class="modal-header">
+    <h4 class="modal-title">Choose location</h4>
+    <button type="button" class="close" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+        <label>Choose from existing location</label>
+        <div class="input-group">
+          <select class="custom-select my-1" formControlName="destination">
+            <option [ngValue]="location"
+                    *ngFor="let location of locations">{{location | toString}}</option>
+          </select>
+          <label>Provide new one</label>
+          <input #location autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="form-control">
+        </div>
+      </div>
+    </form>
+  </div>
+<!--</ng-template>-->
