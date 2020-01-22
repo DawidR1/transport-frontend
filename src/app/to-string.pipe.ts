@@ -8,7 +8,7 @@ export class ToStringPipe implements PipeTransform {
 
   transform(location: Location, args?: any): string {
     if (location != null) {
-      return location.postalCode + ' ' + location.streetAddress + ' ' + location.city + ' ' + location.country;
+      return  location.streetAddress + ', ' + location.postalCode + ' ' + location.city + ', ' + location.country;
     } else {
       return '';
     }

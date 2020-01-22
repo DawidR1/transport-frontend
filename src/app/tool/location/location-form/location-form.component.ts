@@ -1,9 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {Car, CustomResponse} from '../../../car/car.service';
+import {CustomResponse} from '../../../car/car.service';
 import {ToolService} from '../../tool.service';
 import {Location, TripService} from '../../../trip/trip.service';
-import {HttpErrorResponse} from '@angular/common/http';
+import {MapsAPILoader} from '@agm/core';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-location-form',
@@ -15,40 +16,57 @@ export class LocationFormComponent implements OnInit {
   form: FormGroup;
   location: Location = new Location();
   response = new CustomResponse();
+  private searchAddress: string;
+  private zip_code: string;
+  location2: any;
 
-  constructor(private service: ToolService) {
+  @ViewChild('location', {static: false})
+  searchEl: ElementRef;
+  private place: google.maps.places.PlaceResult;
+  correctForm = false;
+
+  constructor(private service: ToolService,
+              private tripService: TripService,
+              private mapsAPILoader: MapsAPILoader,
+              private ngZone: NgZone,
+              private activeModal: NgbActiveModal) {
   }
 
   ngOnInit() {
-    const locationUpdate = this.service.getAndRemoveObjectForUpdate();
-    locationUpdate != null ? this.populateFormCell(locationUpdate) : this.populateFormCell(new Location());
+    this.findAdress();
   }
 
-  private populateFormCell(location: Location) {
-    this.form = new FormGroup({
-      id: new FormControl(location.id),
-      streetAddress: new FormControl(location.streetAddress, Validators.required),
-      postalCode: new FormControl(location.postalCode, Validators.required),
-      city: new FormControl(location.city, Validators.required),
-      country: new FormControl(location.country, Validators.required)
-    });
-  }
-
-  submit() {
-    this.location.id = this.form.get('id').value;
-    this.location.streetAddress = this.form.get('streetAddress').value;
-    this.location.postalCode = this.form.get('postalCode').value;
-    this.location.city = this.form.get('city').value;
-    this.location.country = this.form.get('country').value;
-    this.service.sendObject(this.location, TripService.LOCATION_URL).subscribe(resource => {
-        console.log(resource.headers.get('Location'));
-        this.response.alertType = 'alert-success';
-        this.response.message = 'Done';
-        this.form.reset();
-      },
-      (error: HttpErrorResponse) => {
-        this.response.alertType = 'alert-danger';
-        this.response.message = error.error.message;
+  findAdress() {
+    this.mapsAPILoader.load().then(() => {
+      let autocomplete = new google.maps.places.Autocomplete(this.searchEl.nativeElement);
+      autocomplete.addListener('place_changed', () => {
+        this.ngZone.run(() => {
+          this.correctForm = false;
+          this.place = autocomplete.getPlace();
+          const addressComponents = this.place.address_components;
+          let streetAddress = false;
+          let route = false;
+          let city = false;
+          let country = false;
+          let postalCode = false;
+          addressComponents.forEach(component => {
+            if (component.types.includes('street_number')) {
+              streetAddress = true;
+            } else if (component.types.includes('route')) {
+              route = true;
+            } else if (component.types.includes('locality')) {
+              city = true;
+            } else if (component.types.includes('country')) {
+              country = true;
+            } else if (component.types.includes('postal_code')) {
+              postalCode = true;
+            }
+          });
+          if (streetAddress && route && city && country && postalCode) {
+            this.correctForm = true;
+          }
+        });
       });
+    });
   }
 }

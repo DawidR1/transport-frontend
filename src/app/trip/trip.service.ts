@@ -39,7 +39,8 @@ export class Location {
               public streetAddress?: string,
               public postalCode?: string,
               public city?: string,
-              public country?: string) {
+              public country?: string,
+              public latLng?: string) {
   }
 
   name() {

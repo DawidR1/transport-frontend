@@ -1,14 +1,14 @@
 ///<reference path="../../../../node_modules/@types/googlemaps/index.d.ts"/>
-import {AfterViewInit, Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
+import {Component, NgZone, OnInit, ViewChild} from '@angular/core';
 import {Cargo, LoadingPlace, Location, TripDto, TripFormData, TripService, TripStatus} from '../trip.service';
 import {HttpErrorResponse} from '@angular/common/http';
 import {DriverService} from '../../driver/driver.service';
 import {CarService, CustomResponse} from '../../car/car.service';
-import {Form, FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AgmGeocoder, MapsAPILoader} from '@agm/core';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MapsAPILoader} from '@agm/core';
 import {MapComponent} from '../../map/map.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {LocationComponent} from '../../tool/location/location.component';
+import {LocationFormComponent} from '../../tool/location/location-form/location-form.component';
 
 @Component({
   selector: 'app-trip-form',
@@ -27,14 +27,10 @@ export class TripFormComponent implements OnInit {
   isAdditionalInformationCollapse = true;
   isLoadPlaceInformationCollapse = true;
 
-  private searchAddress: string;
-  @ViewChild('location', {static: false})
-  searchEl: ElementRef;
-
-  @ViewChild(MapComponent,{static: false}) mapComponent:MapComponent;
-  private zip_code: string;
+  @ViewChild(MapComponent, {static: false}) mapComponent: MapComponent;
   private locations: Array<Location>;
   locationForm: FormGroup;
+  location: any;
 
   constructor(private service: TripService,
               private fd: FormBuilder,
@@ -70,20 +66,6 @@ export class TripFormComponent implements OnInit {
       );
     const tripUpdate = this.service.getAndRemoveTripForUpdate();
     tripUpdate != null ? this.populateFormCell(tripUpdate) : this.populateFormCell(new TripDto());
-    // this.findAdress();
-  }
-
-  findAdress(){
-    this.mapsAPILoader.load().then(() => {
-      let autocomplete = new google.maps.places.Autocomplete(this.searchEl.nativeElement);
-      autocomplete.addListener("place_changed", () => {
-        this.ngZone.run(() => {
-        let place: google.maps.places.PlaceResult = autocomplete.getPlace();
-        this.searchAddress = place.formatted_address;
-        this.zip_code = place.address_components[place.address_components.length - 1].long_name;
-        });
-      });
-    });
   }
 
   private populateLocation(locations: Array<Location>) {
@@ -92,7 +74,6 @@ export class TripFormComponent implements OnInit {
     this.tripFormData.placeStart = locations;
     this.locations = locations;
   }
-
 
 
   private populateFormCell(trip: TripDto) {
@@ -123,7 +104,7 @@ export class TripFormComponent implements OnInit {
   private addLoadingPlace() {
     const loadingPlaces = this.form.get('loadingPlaces') as FormArray;
     loadingPlaces.push(this.getLoadingPlaces(new LoadingPlace()));
-    console.log(this.form.get('loadingPlaces')['controls'][0]['controls']['nr'].invalid)
+    console.log(this.form.get('loadingPlaces')['controls'][0]['controls']['nr'].invalid);
   }
 
   removeLoadingPlace(i: number) {
@@ -163,7 +144,7 @@ export class TripFormComponent implements OnInit {
     cargoList.push(this.getCargos(new Cargo()));
   }
 
-  removeCargo(placeNumber:number, cargoNumber: number){
+  removeCargo(placeNumber: number, cargoNumber: number) {
     const mainForm = this.form.get('loadingPlaces')['controls'] as FormArray;
     const cargoList = mainForm[placeNumber].get('cargo');
     cargoList.removeAt(cargoNumber);
@@ -183,22 +164,22 @@ export class TripFormComponent implements OnInit {
 
   submit() {
     Object.keys(this.form.controls).forEach(key => {
-      this.form.get(key).markAsDirty()
-      if(this.form.get(key).invalid){
+      this.form.get(key).markAsDirty();
+      if (this.form.get(key).invalid) {
         this.isMainInformationCollapse = false;
       }
     });
     this.form.get('loadingPlaces')['controls'].forEach(object => {
       Object.keys(object['controls']).forEach(key => {
         object['controls'][key].markAsDirty();
-        if(object['controls'][key].invalid){
+        if (object['controls'][key].invalid) {
           this.isLoadPlaceInformationCollapse = false;
         }
-      } )
+      });
     });
 
-    console.log(this.form.get('loadingPlaces')['controls'])
-    if(this.form.invalid == true){
+    console.log(this.form.get('loadingPlaces')['controls']);
+    if (this.form.invalid == true) {
       return;
     }
     this.tripDto = this.form.value;
@@ -218,13 +199,55 @@ export class TripFormComponent implements OnInit {
       city: '',
       country: ['', Validators.required]
     });
-     const ngbModalRef = this.modalService.open(content, {
-      }).result.then(result => {
-        console.log('close')
+    this.modalService.open(LocationFormComponent, {}).result.then(results => {
+      console.log('close');
+      console.log(results);
+      console.log('close');
+      const geocoder = new google.maps.Geocoder();
+      let location = this.locationForm.value as Location;
+      let addressComponents = results.address_components;
+      let streetAddress = '';
+      let route = '';
+      console.log(addressComponents);
+      addressComponents.forEach(component => {
+        if (component.types.includes('street_number')) {
+          streetAddress = component.long_name;
+        } else if (component.types.includes('route')) {
+          route = component.long_name;
+        } else if (component.types.includes('locality')) {
+          location.city = component.long_name;
+        } else if (component.types.includes('country')) {
+          location.country = component.long_name;
+        } else if (component.types.includes('postal_code')) {
+          location.postalCode = component.long_name;
+        }
+      });
+      location.streetAddress = route + ' ' + streetAddress;
+      console.log(location);
+      geocoder.geocode({address: this.getLocationFromString(location)}, (results2 => {
+        location.latLng = results2[0].geometry.location.lat() + ',' + results2[0].geometry.location.lng();
+        console.log(location.latLng);
+        console.log(results2);
+      }));
+      this.locations.push(this.locationForm.value);
+    }, (reason) => {
+    });
 
-        this.locations.push(this.locationForm.value)
-     }, (reason) =>{
-     });
+  }
+
+  getLocationFromString(location: Location) {
+    console.log(location);
+    if (location == null) {
+      return '';
+    }
+    return location.streetAddress + ', ' +
+      location.postalCode + ' ' +
+      location.city + ', ' +
+      location.country;
+  }
+
+  draw(value: any) {
+    this.mapComponent.draw(value);
   }
 }
 
