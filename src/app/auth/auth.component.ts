@@ -36,22 +36,21 @@ export class AuthComponent implements OnInit {
     this.returnUrl = '/';
   }
 
-  get f() {
+  get form() {
     return this.loginForm.controls;
   }
 
-  onSubmit() {
+  submit() {
     this.submitted = true;
     if (this.loginForm.invalid) {
       return;
     }
     this.loading = true;
-    this.authenticationService.login(this.f.username.value, this.f.password.value)
+    this.authenticationService.login(this.form.username.value, this.form.password.value)
       .pipe()
       .subscribe(
         data => {
-          console.log(this.returnUrl);
-          this.router.navigate(['main']);
+          this.router.navigate(['']);
         },
         error => {
           this.error = 'Bad username or password';

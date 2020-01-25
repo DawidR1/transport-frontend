@@ -30,8 +30,8 @@
             <h5 class="card-title">Status: {{trip.status}}</h5>
             <ul class="card-text">
               <li>Destination: {{trip.destination.city}} {{trip.destination.country}}</li>
-              <li>Start Date: {{trip.dateStart}}</li>
-              <li *ngIf="trip.dateFinish != null">Finish Date: {{trip.dateFinish}}</li>
+              <li>Start date: {{trip.dateStart}}</li>
+              <li *ngIf="trip.dateFinish != null">End date: {{trip.dateFinish}}</li>
             </ul>
           </div>
         </button>

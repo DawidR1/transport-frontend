@@ -13,12 +13,12 @@ import {ToolComponent} from './tool/tool.component';
 import {LocationFormComponent} from './tool/location/location-form/location-form.component';
 import {DriverDetailsViewComponent} from './driver/driver-details-view/driver-details-view.component';
 import {AuthComponent} from './auth/auth.component';
-import {AuthService} from './auth/auth.service';
+import {AuthorizationService} from './auth/Authorization.service';
 
 const routes: Routes = [
   {
     path: '',
-    canActivate: [AuthService],
+    canActivate: [AuthorizationService],
     children: [
       {
         path: '',

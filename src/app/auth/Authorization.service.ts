@@ -6,13 +6,12 @@ import {AuthenticationService} from './AuthenticationService';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService implements CanActivate {
+export class AuthorizationService implements CanActivate {
 
   constructor(private router: Router, private authenticationService: AuthenticationService) {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    console.log('AuthService: canActive');
     const currentUser = this.authenticationService.currentUserValue;
     if (currentUser) {
       return true;

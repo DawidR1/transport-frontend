@@ -11,12 +11,8 @@ export class ErrorInterceptor implements HttpInterceptor {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log('errorFilter: intercept');
-    console.log(request.headers.get('Location'));
     return next.handle(request).pipe(catchError(err => {
-      console.log(err);
       if (!request.url.match('auth') && (err.status === 401 || err.status === 403)) {
-        console.log('errorFilter: intercept 401');
         this.authenticationService.logout();
         location.reload(true);
       }

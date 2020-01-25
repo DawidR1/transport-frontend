@@ -1,7 +1,7 @@
 <div>
 <div id="scroll">
   <div>
-    <h1>Status: {{tripView.status}}</h1>
+    <h1 style="text-align: center">Status: {{tripView.status}}</h1>
     <table class="table table-bordered">
       <thead>
       </thead>
@@ -14,19 +14,19 @@
         <td> {{tripView.destination | toString}}</td>
       </tr>
       <tr>
-        <td><b>Date Start:</b>
+        <td><b>Start date:</b>
         <td> {{tripView.dateStart}}</td>
       </tr>
       <tr>
-        <td><b>Date Finish:</b></td>
+        <td><b>End date:</b></td>
         <td> {{tripView.dateFinish}}</td>
       </tr>
       <tr>
-        <td><b>Place Start:</b></td>
+        <td><b>Starting location:</b></td>
         <td> {{tripView.placeStart | toString}}</td>
       </tr>
       <tr>
-        <td><b>Place Finish:</b></td>
+        <td><b>Final location:</b></td>
         <td> {{tripView.placeFinish | toString}}</td>
       </tr>
       <tr>
@@ -34,7 +34,7 @@
         <td> {{tripView.driver.firstName}} {{tripView.driver.lastName}}</td>
       </tr>
       <tr>
-        <td><b>Driver Salary:</b></td>
+        <td><b>Driver salary:</b></td>
         <td> {{tripView.driverSalary}}</td>
       </tr>
       <tr>
@@ -55,7 +55,7 @@
       </tr>
     </table>
   </div>
-  <h4>Loading Places</h4>
+  <h4>Loading places</h4>
   <div *ngFor="let place of tripView.loadingPlaces; let i= index ">
 
     <table class="table table-bordered">
@@ -76,15 +76,15 @@
         <td> {{place.finished | finished}}</td>
       </tr>
       <tr *ngFor="let cargo of place.cargo; let j= index">
-        <td><b>Cargo Number:</b> {{j + 1}}</td>
+        <td><b>Cargo number:</b> {{j + 1}}</td>
         <td>
           <table width="100%">
             <tr>
-              <td><b>Company Name: </b></td>
+              <td><b>Company name: </b></td>
               <td>{{cargo.companyName}}</td>
             </tr>
             <tr>
-              <td><b>Number Of Pallets: </b></td>
+              <td><b>Number of pallets: </b></td>
               <td>{{cargo.numberOfPallets}}</td>
             </tr>
             <tr>
