@@ -55,6 +55,7 @@
       </tr>
     </table>
   </div>
+  <div *ngIf="tripView.loadingPlaces != null">
   <h4>Loading places</h4>
   <div *ngFor="let place of tripView.loadingPlaces; let i= index ">
 
@@ -96,14 +97,12 @@
       </tr>
     </table>
   </div>
+  </div>
 </div>
   <br>
   <button type="button" class="nav-link btn btn-outline-primary btn-block" routerLink="/trip-form"
           (click)="updateTrip(tripView)">Update
   </button>
-<!--  <button type="button" class="nav-link btn btn-outline-primary btn-block" (click)="showInMaps(tripView)">Show in google-->
-<!--    maps-->
-<!--  </button>-->
   <button type="button" class="nav-link btn btn-outline-primary btn-block" (click)="openMap(content)">Show in google
     maps
   </button>

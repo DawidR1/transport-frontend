@@ -39,6 +39,8 @@
     </div>
   </div>
   <div class="col-md-7 offset-md-1" id="content">
+    <div *ngIf="isDetails">
     <app-trip-view [tripView]="trip"></app-trip-view>
+    </div>
   </div>
 </div>

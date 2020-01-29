@@ -44,7 +44,8 @@
       <label class="custom-file-label" for="file">{{fileName}}</label>
       <input type="file" class="custom-file-input" id="file" (change)="onFileChange($event)" required >
     </div>
-    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Save Driver</button>
+    <p class="p-1"></p>
+    <button type="submit" class="btn btn-primary btn-block" [disabled]="form.invalid">Save Driver</button>
   </form>
   <p class="p-md-1"></p>
   <div *ngIf="response.alertType != null"  [ngClass]="['row alert ', response.alertType]"  role="alert">

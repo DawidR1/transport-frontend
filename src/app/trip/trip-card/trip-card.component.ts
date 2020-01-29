@@ -15,7 +15,7 @@ export class TripCardComponent implements OnInit {
   // trips = [];
   tripsView = [];
   trip: TripDto;
-  isDetails: boolean;
+  isDetails = false;
   private pageSize: number;
   private totalItems: number;
   showDataButton = false;
@@ -61,6 +61,7 @@ export class TripCardComponent implements OnInit {
     if (trips.length) {
       this.trip = trips[0];
     }
+    this.isDetails = true;
   }
 
 

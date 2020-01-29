@@ -5,9 +5,14 @@
   </div>
   <div class="modal-body">
       <h2>Location Registration</h2>
+    <div class="form-group">
       <label>Provide new one</label>
       <input #location autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="form-control">
+    <div *ngIf="response.alertType != null"  [ngClass]="['alert ', response.alertType]"  role="alert">
+      {{response.message}}
     </div>
+    </div>
+  </div>
   <div class="modal-footer">
     <button type="submit" class="btn btn-primary" [disabled]="!correctForm" (click)="activeModal.close(place)">Add location</button>
   </div>

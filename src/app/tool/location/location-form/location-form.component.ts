@@ -16,9 +16,6 @@ export class LocationFormComponent implements OnInit {
   form: FormGroup;
   location: Location = new Location();
   response = new CustomResponse();
-  private searchAddress: string;
-  private zip_code: string;
-  location2: any;
 
   @ViewChild('location', {static: false})
   searchEl: ElementRef;
@@ -38,7 +35,7 @@ export class LocationFormComponent implements OnInit {
 
   findAdress() {
     this.mapsAPILoader.load().then(() => {
-      let autocomplete = new google.maps.places.Autocomplete(this.searchEl.nativeElement);
+      const autocomplete = new google.maps.places.Autocomplete(this.searchEl.nativeElement);
       autocomplete.addListener('place_changed', () => {
         this.ngZone.run(() => {
           this.correctForm = false;
@@ -49,6 +46,7 @@ export class LocationFormComponent implements OnInit {
           let city = false;
           let country = false;
           let postalCode = false;
+          console.log(addressComponents)
           addressComponents.forEach(component => {
             if (component.types.includes('street_number')) {
               streetAddress = true;
@@ -63,7 +61,11 @@ export class LocationFormComponent implements OnInit {
             }
           });
           if (streetAddress && route && city && country && postalCode) {
+            this.response.alertType = null;
             this.correctForm = true;
+          }else {
+            this.response.alertType = 'alert-danger';
+            this.response.message = 'Please enter the full address';
           }
         });
       });

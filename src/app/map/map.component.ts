@@ -24,7 +24,8 @@ export class MapComponent implements OnInit {
   searchEl: ElementRef;
   @Output()
   event = new EventEmitter<TripDto>();
-
+  loaded = false;
+  loading: boolean;
   private optimizationWaypoints = false;
   private searchAddress: string;
 
@@ -50,10 +51,12 @@ export class MapComponent implements OnInit {
   }
 
   draw(trip, optimization = false) {
+    this.loaded = false;
     this.createMap(trip, optimization);
   }
 
   private createMap(trip, optimization) {
+    console.log('trzeci,2');
     let isCorrect = true;
     trip.loadingPlaces.forEach(place => {
       if (place.nr == null || place.location == null) {
@@ -64,15 +67,17 @@ export class MapComponent implements OnInit {
       .filter(place => place.nr != null && place.location != null)
       .sort((v1, v2) => v1.nr - v2.nr);
     if (trip.placeStart == null || !isCorrect || (trip.placeFinish == null && sortedLoadingPlaces.length === 0)) {
+      this.loaded = true;
+      this.loading = false;
       return;
     }
-    this.origin = this.getLocationInText(trip.placeStart);
-    this.viewPoints = [];
-    this.destination = trip.placeFinish != null
+    const origin = this.getLocationInText(trip.placeStart);
+    const viewPoints = [];
+    const destination = trip.placeFinish != null
       ? this.getLocationInText(trip.placeFinish)
       : this.getLocationInText(sortedLoadingPlaces.pop().location);
     sortedLoadingPlaces.forEach(lp => {
-      this.viewPoints.push({
+      viewPoints.push({
         location: this.getLocationInText(lp.location),
         stopover: true
       });
@@ -80,20 +85,30 @@ export class MapComponent implements OnInit {
     const directionsService = new google.maps.DirectionsService();
     directionsService.route({
       optimizeWaypoints: optimization,
-      origin: this.origin,
-      destination: this.destination,
-      waypoints: this.viewPoints,
+      origin: origin,
+      destination: destination,
+      waypoints: viewPoints,
       travelMode: google.maps.TravelMode.DRIVING,
       unitSystem: google.maps.UnitSystem.METRIC
-    }, (result) => {
-      this.optimizationWaypoints = optimization;
-      this.populateMapContent(result);
-      this.performOptimization(optimization, trip);
+    }, (result, status) => {
+      if(status === 'OK'){
+        console.log(result)
+        this.optimizationWaypoints = optimization;
+        this.origin = origin;
+        this.destination = destination;
+        this.viewPoints = viewPoints;
+        this.populateMapContent(result);
+        this.performOptimization(optimization, trip);
+      }else {
+        console.log('Error');
+      }
     });
+
   }
 
   private performOptimization(optimization, trip) {
     if (optimization === false) {
+      this.loaded = true;
       return;
     }
     const routes = Object.assign([], this.locationResult);
@@ -109,9 +124,11 @@ export class MapComponent implements OnInit {
       });
     }
     this.event.next(trip);
+    this.loading = false;
+    this.loaded = true;
   }
 
-  private populateMapContent( result) {
+  private populateMapContent(result) {
     let fullDistance = 0;
     let fullDuration = 0;
     if (result.routes.length > 0) {
@@ -149,6 +166,7 @@ export class MapComponent implements OnInit {
   }
 
   opt() {
+    this.loading = true;
     this.draw(this.trip, true);
   }
 

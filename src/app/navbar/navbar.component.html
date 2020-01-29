@@ -6,19 +6,19 @@
   <div class="collapse navbar-collapse w-100" id="navbarNav">
     <ul class="navbar-nav">
       <li class="nav-item active">
-        <a class="nav-link" routerLink="/main">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link nav-letter" routerLink="/main">Home <span class="sr-only">(current)</span></a>
       </li>
     </ul>
   </div>
   <div class="navbar-collapse collapse w-100">
     <ul class="navbar-nav ml-auto">
-      <li class="nav-item">
-        <span>{{user.username}}</span>
+      <li class="nav-item nav-letter">
+        <span *ngIf="user != null">{{user.username}}</span>
       </li>
     </ul>
   </div>
   <div *ngIf="user">
-    <button style="margin-left: 10px" type="button float-md-left" class="btn btn-danger" (click)="logout()">Logout
+    <button style="margin-left: 10px" type="button float-md-left" class="btn btn-danger nav-letter" (click)="logout()">Logout
     </button>
   </div>
 </nav>
