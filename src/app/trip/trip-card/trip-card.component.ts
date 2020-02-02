@@ -20,6 +20,8 @@ export class TripCardComponent implements OnInit {
   private totalItems: number;
   showDataButton = false;
   form: FormGroup;
+  isFromDataChange = false;
+  isToDataChange = false;
 
   constructor(private service: TripService, private fd: FormBuilder) {
   }
@@ -79,18 +81,20 @@ export class TripCardComponent implements OnInit {
   }
 
   filterData() {
-    const fromDate = this.form.get('fromDate').value;
-    const toDate = this.form.get('toDate').value;
-    this.service.getObjectPageFilter(TripService.TRIP_URL, 0, 5, fromDate, toDate)
-      .subscribe(resourceTrip => {
-          console.log(resourceTrip);
-          this.tripsView = [];
-          this.populateFields(resourceTrip);
-        },
-        (error: HttpErrorResponse) => {
-          this.tripsView = [];
-          console.log(error.status);
-        });
-    this.showDataButton = false;
+    if (this.isFromDataChange && this.isToDataChange) {
+      const fromDate = this.form.get('fromDate').value;
+      const toDate = this.form.get('toDate').value;
+      this.service.getObjectPageFilter(TripService.TRIP_URL, 0, 5, fromDate, toDate)
+        .subscribe(resourceTrip => {
+            console.log(resourceTrip);
+            this.tripsView = [];
+            this.populateFields(resourceTrip);
+          },
+          (error: HttpErrorResponse) => {
+            this.tripsView = [];
+            console.log(error.status);
+          });
+      this.showDataButton = false;
+    }
   }
 }

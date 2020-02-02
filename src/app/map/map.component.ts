@@ -28,6 +28,8 @@ export class MapComponent implements OnInit {
   loading: boolean;
   private optimizationWaypoints = false;
   private searchAddress: string;
+  @Input()
+  isForm = false;
 
   constructor(private mapsApiLoader: MapsAPILoader) {
   }

@@ -33,6 +33,7 @@ export class TripFormComponent implements OnInit {
   private locations: Array<Location>;
   locationForm: FormGroup;
   location: any;
+  private message: string;
 
   constructor(private service: TripService,
               private fd: FormBuilder,
@@ -190,17 +191,23 @@ export class TripFormComponent implements OnInit {
 
     this.service.sendObject(this.tripDto, TripService.TRIP_URL).subscribe(response => {
         this.done = true;
+        this.message = 'Saved';
+      this.response.alertType = 'alert-success';
+      this.modalService.open(this.contentRef);
         setTimeout(() => {
+          this.modalService.dismissAll();
           this.router.navigate(['trip']);
         }, 3000);
       }, (error: HttpErrorResponse) => {
-      this.sendFailureToView(error);
+      this.response.alertType = 'alert-danger';
+      this.message = error.message;
       this.modalService.open(this.contentRef);
       }
     );
   }
 
   openLocationModal() {
+
     this.locationForm = this.fd.group({
       streetAddress: '',
       postalCode: '',

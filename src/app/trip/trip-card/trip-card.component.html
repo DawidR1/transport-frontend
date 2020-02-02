@@ -4,17 +4,15 @@
       <div class="row">
         <div class="col-md-6">
           <label >from
-            <input (change)="showDataButton = true" type="date" class="form-control w-100" id="date-start"
+            <input  (blur)="filterData()" (change)="isFromDataChange = true" type="date" class="form-control w-100" id="date-start"
                    placeholder="date"
                    formControlName="fromDate"/></label>
         </div>
         <div class="col-md-6">
           <label>to
-            <input (change)="showDataButton = true" type="date" class="form-control w-100" id="date-finish"
+            <input (blur)="filterData()" (change)="isToDataChange = true" type="date" class="form-control w-100" id="date-finish"
                    placeholder="date"
                    formControlName="toDate"/></label>
-          <button *ngIf="showDataButton && !form.invalid" type="submit" class="btn btn-info btn-block">Show Trips
-          </button>
         </div>
       </div>
     </form>

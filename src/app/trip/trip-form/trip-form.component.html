@@ -1,4 +1,5 @@
-<div class="row" *ngIf="!done; else done_content">
+<div class="row">
+<!--  *ngIf="!done; else done_content">-->
   <div class="col-md-3">
     <form [formGroup]="form" (ngSubmit)="submit()">
       <div id="scroll">
@@ -65,7 +66,7 @@
               </select>
 
               <div class="input-group-prepend input-group-sm">
-                <button class="btn btn-primary btn-block " type="button" (click)="openLocationModal()">+</button>
+                <button class="btn btn-primary btn-block " type="button" (click)="openLocationModal(placeFinish)">+</button>
               </div>
             </div>
             <label for="driver-select">Driver</label>
@@ -216,28 +217,13 @@
     </div>
   </div>
   <div class="col-md-9">
-    <app-map [trip]="form.value" (event)="populateFormCell($event)"></app-map>
+    <app-map [trip]="form.value" [isForm]="true" (event)="populateFormCell($event)"></app-map>
   </div>
 </div>
 
-<ng-template #done_content>
-  <div class="swal2-icon swal2-success swal2-animate-success-icon" style="display: flex;">
-    <div class="swal2-success-circular-line-left" style="background-color: rgb(255, 255, 255);"></div>
-    <span class="swal2-success-line-tip"></span>
-    <span class="swal2-success-line-long"></span>
-    <div class="swal2-success-ring"></div>
-    <div class="swal2-success-fix" style="background-color: rgb(255, 255, 255);"></div>
-    <div class="swal2-success-circular-line-right" style="background-color: rgb(255, 255, 255);"></div>
-  </div>
-  <div class="swal2-icon swal2-error swal2-animate-error-icon" style="display: flex;"><span class="swal2-x-mark"><span
-    class="swal2-x-mark-line-left"></span><span class="swal2-x-mark-line-right"></span></span></div>
-</ng-template>
-
 <ng-template #content let-modal>
   <div class="modal-body">
-    <div [ngClass]="['row alert ', response.alertType]" role="alert">
-      {{response.message}}
-    </div>
+    <div [ngClass]="['alert ', response.alertType]">{{message}}</div>
   </div>
 </ng-template>
 

@@ -34,7 +34,7 @@
   </tr>
   </tbody>
 </table>
-  <button [disabled]="loading" type="button"  class="btn btn-outline-dark btn-block"  (click)="opt()">
+  <button [hidden]="!isForm" [disabled]="loading" type="button"  class="btn btn-outline-dark btn-block"  (click)="opt()">
     <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
     Optimize Trip
   </button>
