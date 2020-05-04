@@ -12,9 +12,7 @@ import {PageEvent} from '@angular/material';
 })
 export class DriverComponent implements OnInit {
 
-  drivers = [];
   driversView = [];
-  _filter: string;
   pageSize: number;
   totalItems: number;
 
@@ -51,26 +49,7 @@ export class DriverComponent implements OnInit {
     this.router.navigate(['driver-form-update']);
   }
 
-  public get filter(): string {
-    return this._filter;
-  }
-
-  public set filter(value: string) {
-    this._filter = value.toLowerCase();
-    this.filterChangingSet();
-  }
-
-  private filterChangingSet() {
-    if (this.filter === '') {
-      this.driversView = this.drivers;
-    } else {
-      this.driversView = this.drivers.filter(driver => driver.pesel.toLowerCase().includes(this.filter)
-        || driver.firstName.toLowerCase().includes(this.filter)
-        || driver.lastName.toLowerCase().includes(this.filter));
-    }
-  }
-
-  pageEvent2($event: PageEvent) {
+  naextObjectsPage($event: PageEvent) {
     this.requestDriver($event.pageIndex);
   }
 

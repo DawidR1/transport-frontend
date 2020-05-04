@@ -4,8 +4,5 @@ table td {
 
 #scroll{
   height: 80vh;
-
-  /*max-height: 150vh;*/
-  /*height: auto;*/
   overflow-y: auto;
 }

@@ -9,7 +9,6 @@ import {TripFormComponent} from './trip/trip-form/trip-form.component';
 import {TripViewComponent} from './trip/trip-view/trip-view.component';
 import {ReportComponent} from './report/report.component';
 import {CompanyReportComponent} from './report/company-report/company-report.component';
-import {ToolComponent} from './tool/tool.component';
 import {LocationFormComponent} from './tool/location/location-form/location-form.component';
 import {DriverDetailsViewComponent} from './driver/driver-details-view/driver-details-view.component';
 import {AuthComponent} from './auth/auth.component';
@@ -69,10 +68,6 @@ const routes: Routes = [
       {
         path: 'company-report',
         component: CompanyReportComponent
-      },
-      {
-        path: 'tool',
-        component: ToolComponent
       },
       {
         path: 'location-form',

@@ -4,8 +4,6 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 import {ReportCompany, ReportDriver, ReportService} from './report.service';
 import {Router} from '@angular/router';
 import {Driver, DriverService} from '../driver/driver.service';
-import {CompanyReportComponent} from './company-report/company-report.component';
-
 
 @Component({
   selector: 'app-report',
@@ -20,7 +18,6 @@ export class ReportComponent implements OnInit {
   drivers: Array<Driver>;
 
 
-  closeResult: string;
   isDisabled: boolean;
   showReport: boolean;
   showReportDriver: boolean;
@@ -47,7 +44,15 @@ export class ReportComponent implements OnInit {
     this.service.getObject(DriverService.RESOURCE_DRIVER_URL).subscribe(resource => {
       this.drivers = resource._embedded.driverDtoes;
     });
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'})
+      .result
+      .then(this.showDriverContent(), (reason) => {
+      });
+  }
+
+
+  private showDriverContent() {
+    return (result) => {
       const startDate = this.form.get('start').value;
       const endDate = this.form.get('end').value;
       const format = this.form.get('format').value;
@@ -55,7 +60,6 @@ export class ReportComponent implements OnInit {
       if (format === 'PDF') {
         this.showReportDriver = false;
         this.service.downloadDriverInPdf(startDate, endDate, format, driverId).subscribe(resource => {
-          console.log(resource);
           const blob = new Blob([resource], {type: 'application/pdf'});
           const url = URL.createObjectURL(blob);
           window.open(url, '_blank');
@@ -67,48 +71,37 @@ export class ReportComponent implements OnInit {
           this.showReportDriver = true;
         });
       }
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
-  }
-
-
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
-    }
+    };
   }
 
   openCompany(content) {
     this.isDisabled = true;
     this.showReportDriver = false;
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'})
-      .result.then((result) => {
-        const startDate = this.form.get('start').value;
-        const endDate = this.form.get('end').value;
-        const format = this.form.get('format').value;
-        if (format === 'PDF') {
-          this.showReport = false;
-          this.service.downloadCompanyInPdf(startDate, endDate, format).subscribe(resource => {
-            const blob = new Blob([resource], {type: 'application/pdf'});
-            const url = URL.createObjectURL(blob);
-            window.open(url, '_blank');
-          });
-        } else {
-          this.service.downloadCompanyInJson(startDate, endDate, format).subscribe(resource => {
-            console.log(resource);
-            this.reportCompany = resource;
-            this.showReport = true;
-          });
-        }
-      }, (reason) => {
-        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      .result.then(this.showCompanyContent(), (reason) => {
       }
     );
+  }
+
+  private showCompanyContent() {
+    return (result) => {
+      const startDate = this.form.get('start').value;
+      const endDate = this.form.get('end').value;
+      const format = this.form.get('format').value;
+      if (format === 'PDF') {
+        this.showReport = false;
+        this.service.downloadCompanyInPdf(startDate, endDate, format).subscribe(resource => {
+          const blob = new Blob([resource], {type: 'application/pdf'});
+          const url = URL.createObjectURL(blob);
+          window.open(url, '_blank');
+        });
+      } else {
+        this.service.downloadCompanyInJson(startDate, endDate, format).subscribe(resource => {
+          console.log(resource);
+          this.reportCompany = resource;
+          this.showReport = true;
+        });
+      }
+    };
   }
 }

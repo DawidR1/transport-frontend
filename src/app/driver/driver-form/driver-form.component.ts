@@ -24,31 +24,24 @@ export class DriverFormComponent implements OnInit {
   ngOnInit() {
     const driverUpdate = this.service.getAndRemoveCarForUpdate();
     driverUpdate != null ? this.populateFormCell(driverUpdate) : this.populateFormCell(new Driver());
-    console.log(driverUpdate);
   }
 
   submit() {
-    console.log(this.form);
     this.populateDriver();
     this.service.sendObject(this.driver, DriverService.DRIVER_URL).subscribe(response => {
         const id = this.retrieveIdFromResponse(response);
         if (!this.fileForm.has('file')) {
-
           this.sendSuccessToView();
           return;
         }
         this.service.sendFile(this.fileForm, id).subscribe(response2 => {
-            console.log('plik');
             this.sendSuccessToView();
           },
           (error: HttpErrorResponse) => {
-            console.log('error');
-            console.log(error);
             this.sendFailureToView(error);
           });
       },
       (error: HttpErrorResponse) => {
-        console.log('error');
         this.sendFailureToView(error);
       }
     );
@@ -84,13 +77,11 @@ export class DriverFormComponent implements OnInit {
   }
 
   private retrieveIdFromResponse(response: HttpResponse<any>): string {
-    console.log(response.headers.get('Location'));
     const split = response.headers.get('Location').split('/');
     return split[split.length - 1];
   }
 
   private populateFormCell(driver: Driver) {
-    console.log(driver.imageName);
     this.form = new FormGroup({
       id: new FormControl(driver.id),
       pesel: new FormControl(driver.pesel, {

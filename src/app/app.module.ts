@@ -32,8 +32,6 @@ import {
 } from '@angular/material';
 import { CompanyReportComponent } from './report/company-report/company-report.component';
 import { DriverReportComponent } from './report/driver-report/driver-report.component';
-import { ToolComponent } from './tool/tool.component';
-import { LocationComponent } from './tool/location/location.component';
 import { LocationFormComponent } from './tool/location/location-form/location-form.component';
 import { DriverDetailsViewComponent } from './driver/driver-details-view/driver-details-view.component';
 import { AuthComponent } from './auth/auth.component';
@@ -43,6 +41,10 @@ import { DriverPanelComponent } from './driver-panel/driver-panel.component';
 import { MainPageComponent } from './mainPage/mainPage.component';
 import {FinishedPipe} from './finished.pipe';
 import {ScrollingModule} from '@angular/cdk/scrolling';
+import {AgmCoreModule} from "@agm/core";
+import {AgmDirectionModule} from "agm-direction";
+import {MatProgressBarModule} from "@angular/material/progress-bar";
+import {MapComponent} from "./map/map.component";
 
 @NgModule({
   declarations: [
@@ -63,13 +65,12 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
     ReportComponent,
     CompanyReportComponent,
     DriverReportComponent,
-    ToolComponent,
-    LocationComponent,
     LocationFormComponent,
     DriverDetailsViewComponent,
     AuthComponent,
     DriverPanelComponent,
-    MainPageComponent
+    MainPageComponent,
+    MapComponent
   ],
   imports: [
     BrowserModule,
@@ -89,7 +90,14 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
     MatProgressSpinnerModule,
     MatListModule,
     MatDatepickerModule,
-    ScrollingModule
+    ScrollingModule,
+    AgmCoreModule.forRoot({
+      language: 'en',
+      apiKey: '',
+      libraries: ['places']
+    }),
+    AgmDirectionModule,
+    MatProgressBarModule
   ],
   entryComponents: [
     ReportComponent

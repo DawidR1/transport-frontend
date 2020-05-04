@@ -33,7 +33,6 @@ export class AppService {
   }
 
   getObjectBlob(url: string): Observable<any> {
-    // const options = {responseType: 'blob'};
     return this.http.get(url, {responseType: 'blob'});
   }
 

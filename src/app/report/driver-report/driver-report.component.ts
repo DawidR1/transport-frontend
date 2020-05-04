@@ -1,6 +1,5 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {ReportCompany, ReportDriver, ReportService} from '../report.service';
-import {TripDto} from '../../trip/trip.service';
+import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {ReportDriver, ReportService} from '../report.service';
 
 @Component({
   selector: 'app-driver-report',

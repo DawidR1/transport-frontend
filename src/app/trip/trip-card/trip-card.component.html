@@ -1,24 +1,25 @@
-<div class="row scroll">
+<div class="row scroll pl-md-3">
   <div class="col-md-6" style="max-width: 25rem;">
     <form [formGroup]="form" (ngSubmit)="filterData()">
       <div class="row">
         <div class="col-md-6">
-          <label >from
-            <input  (blur)="filterData()" (change)="isFromDataChange = true" type="date" class="form-control w-100" id="date-start"
+          <label class="justify-content-center">from
+            <input (blur)="filterData()" (change)="isFromDataChange = true" type="date" class="form-control w-100"
+                   id="date-start"
                    placeholder="date"
                    formControlName="fromDate"/></label>
         </div>
         <div class="col-md-6">
-          <label>to
-            <input (blur)="filterData()" (change)="isToDataChange = true" type="date" class="form-control w-100" id="date-finish"
+          <label class="">to
+            <input (blur)="filterData()" (change)="isToDataChange = true" type="date" class="form-control w-100"
+                   id="date-finish"
                    placeholder="date"
                    formControlName="toDate"/></label>
         </div>
       </div>
     </form>
     <button type="button" class="nav-link btn btn-secondary btn-block" routerLink="/trip-form"
-            (click)="removeUpdateTrip()">Add new
-    </button>
+            (click)="removeUpdateTrip()">Add new</button>
     <mat-paginator [pageSize]="pageSize" [length]="totalItems" (page)="pageEvent($event)"></mat-paginator>
     <div id="scroll">
       <div *ngFor="let trip of tripsView" class="card " style="max-width: 25rem;">
@@ -38,7 +39,7 @@
   </div>
   <div class="col-md-7 offset-md-1" id="content">
     <div *ngIf="isDetails">
-    <app-trip-view [tripView]="trip"></app-trip-view>
+      <app-trip-view [tripView]="trip"></app-trip-view>
     </div>
   </div>
 </div>

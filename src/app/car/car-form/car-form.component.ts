@@ -23,7 +23,6 @@ export class CarFormComponent implements OnInit {
   }
 
   private populateFormCell(carUpdate: Car) {
-    console.log(carUpdate.id);
     this.form = new FormGroup({
       id: new FormControl(carUpdate.id),
       plate: new FormControl(carUpdate.plate, {

@@ -7,18 +7,16 @@
         <li class="list-group-item">First Name: {{driver.firstName}}</li>
         <li class="list-group-item">Last Name: {{driver.lastName}}</li>
       </ul>
-<!--      <div class="row card-body">-->
-<!--      </div>-->
       <div class="card-footer">
         <button type="button" (click)="openUpdateForm(driver)" class="btn btn-outline-success btn-block">Update</button>
-        <button type="button" (click)="openDetailsView(driver)" class="btn btn-outline-success btn-block">Details</button>
+        <button type="button" (click)="openDetailsView(driver)" class="btn btn-outline-success btn-block">Details
+        </button>
       </div>
     </div>
   </div>
-<!--  <p class="p-md-1"></p>-->
 </div>
 <button type="button" routerLink="/driver-form" class="nav-link btn btn-outline-primary btn-block">Add new driver
 </button>
-<mat-paginator [pageSize]="pageSize" [length]="totalItems" (page)="pageEvent2($event)"></mat-paginator>
+<mat-paginator [pageSize]="pageSize" [length]="totalItems" (page)="naextObjectsPage($event)"></mat-paginator>
 
 

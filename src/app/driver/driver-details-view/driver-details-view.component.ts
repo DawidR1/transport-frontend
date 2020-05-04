@@ -13,6 +13,5 @@ export class DriverDetailsViewComponent implements OnInit {
 
   ngOnInit() {
     this.driver = this.service.getAndRemoveCarDetails();
-    console.log(this.driver)
   }
 }

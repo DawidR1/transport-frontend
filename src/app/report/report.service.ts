@@ -56,7 +56,7 @@ export class ReportService extends AppService {
   }
 
   downloadDriverInJson(startDate: any, endDate: any, format: any, driverId: any): Observable<any>{
-    let url = this.createUrlToDriverReport(startDate, endDate, format, driverId);
+    const url = this.createUrlToDriverReport(startDate, endDate, format, driverId);
     return this.getObject(url);
   }
 

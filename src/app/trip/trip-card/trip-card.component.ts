@@ -12,7 +12,6 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 })
 export class TripCardComponent implements OnInit {
 
-  // trips = [];
   tripsView = [];
   trip: TripDto;
   isDetails = false;
@@ -86,13 +85,11 @@ export class TripCardComponent implements OnInit {
       const toDate = this.form.get('toDate').value;
       this.service.getObjectPageFilter(TripService.TRIP_URL, 0, 5, fromDate, toDate)
         .subscribe(resourceTrip => {
-            console.log(resourceTrip);
             this.tripsView = [];
             this.populateFields(resourceTrip);
           },
           (error: HttpErrorResponse) => {
             this.tripsView = [];
-            console.log(error.status);
           });
       this.showDataButton = false;
     }
