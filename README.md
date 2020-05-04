@@ -2,8 +2,9 @@
 
 ## Short description
 One of two applications belonging to the transport project.  
-It is client layer, responsible for displaying data received from api(server) and Google Maps API.  
+It is client layer, responsible for displaying data received from api(server) and Google Maps API.    
 
+Second application: ![Server Layer](https://github.com/DawidR1/transport/tree/master)
 ### Description of transport project
 Project is used to manage of road transport company. It allows to create and archive transport orders and driver routes.
 
