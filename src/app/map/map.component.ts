@@ -2,6 +2,8 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {Location, TripDto} from '../trip/trip.service';
 import {MapsAPILoader} from '@agm/core';
+import {CustomResponse} from "../car/car.service";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-map',
@@ -10,6 +12,13 @@ import {MapsAPILoader} from '@agm/core';
 })
 export class MapComponent implements OnInit {
 
+  @Input() trip: TripDto;
+  @Input() isForm = false;
+  @ViewChild('location', {static: false}) searchEl: ElementRef;
+  @Output() event = new EventEmitter<TripDto>();
+  @ViewChild('error', {static: false}) contentRef: ElementRef;
+
+  response = new CustomResponse();
   lat;
   lng;
   origin;
@@ -18,20 +27,11 @@ export class MapComponent implements OnInit {
   locationResult = [];
   distance;
   duration;
-  @Input()
-  trip: TripDto;
-  @ViewChild('location', {static: false})
-  searchEl: ElementRef;
-  @Output()
-  event = new EventEmitter<TripDto>();
   loaded = false;
   loading: boolean;
   private optimizationWaypoints = false;
-  private searchAddress: string;
-  @Input()
-  isForm = false;
 
-  constructor(private mapsApiLoader: MapsAPILoader) {
+  constructor(private mapsApiLoader: MapsAPILoader, private modalService: NgbModal) {
   }
 
   ngOnInit() {
@@ -58,7 +58,6 @@ export class MapComponent implements OnInit {
   }
 
   private createMap(trip, optimization) {
-    console.log('trzeci,2');
     let isCorrect = true;
     trip.loadingPlaces.forEach(place => {
       if (place.nr == null || place.location == null) {
@@ -84,28 +83,41 @@ export class MapComponent implements OnInit {
         stopover: true
       });
     });
-    const directionsService = new google.maps.DirectionsService();
-    directionsService.route({
-      optimizeWaypoints: optimization,
-      origin: origin,
-      destination: destination,
-      waypoints: viewPoints,
-      travelMode: google.maps.TravelMode.DRIVING,
-      unitSystem: google.maps.UnitSystem.METRIC
-    }, (result, status) => {
-      if(status === 'OK'){
-        console.log(result)
+
+    new google.maps.DirectionsService()
+      .route({
+        optimizeWaypoints: optimization,
+        origin: origin,
+        destination: destination,
+        waypoints: viewPoints,
+        travelMode: google.maps.TravelMode.DRIVING,
+        unitSystem: google.maps.UnitSystem.METRIC
+      }, this.handleResponseFromDirectionApi(optimization, origin, destination, viewPoints, trip));
+  }
+
+  private handleResponseFromDirectionApi(optimization, origin: string, destination: string, viewPoints: any[], trip) {
+    return (result, status) => {
+      if (status === 'OK') {
         this.optimizationWaypoints = optimization;
         this.origin = origin;
         this.destination = destination;
         this.viewPoints = viewPoints;
         this.populateMapContent(result);
         this.performOptimization(optimization, trip);
-      }else {
-        console.log('Error');
+      } else if (status === 'REQUEST_DENIED') {
+        this.displayWindowWithError('Google Maps were switched off');
+      } else {
+        this.displayWindowWithError('Error during loading Google Maps');
       }
-    });
+    };
+  }
 
+  private displayWindowWithError(message: string) {
+    this.response.alertType = 'alert-danger';
+    this.response.message = message;
+    this.loading = false;
+    this.loaded = true;
+    this.modalService.open(this.contentRef, {size: 'lg'});
   }
 
   private performOptimization(optimization, trip) {
@@ -158,6 +170,7 @@ export class MapComponent implements OnInit {
 
   private getLocationInText(location: Location) {
     console.log(location);
+
     if (location == null) {
       return '';
     }

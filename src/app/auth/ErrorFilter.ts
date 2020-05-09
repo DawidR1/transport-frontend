@@ -7,17 +7,20 @@ import {Router} from '@angular/router';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor(private authenticationService: AuthenticationService, private router: Router) {
+  constructor(private authenticationService: AuthenticationService) {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(catchError(err => {
-      if (!request.url.match('auth') && (err.status === 401 || err.status === 403)) {
-        this.authenticationService.logout();
-        location.reload(true);
+        if (!request.url.match('auth') && (err.status === 401)) {
+          this.authenticationService.logout();
+          location.reload(true);
+        } else if (!request.url.match('auth') && err.status === 403) {
+          return throwError('You do not have a permission to perform this operation');
+        }
+        const error = err.error.message || err.statusText;
+        return throwError(error);
       }
-      const error = err.error.message || err.statusText;
-      return throwError(error);
-    }));
+    ));
   }
 }

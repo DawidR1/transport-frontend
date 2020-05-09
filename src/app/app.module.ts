@@ -41,10 +41,10 @@ import { DriverPanelComponent } from './driver-panel/driver-panel.component';
 import { MainPageComponent } from './mainPage/mainPage.component';
 import {FinishedPipe} from './finished.pipe';
 import {ScrollingModule} from '@angular/cdk/scrolling';
-import {AgmCoreModule} from "@agm/core";
-import {AgmDirectionModule} from "agm-direction";
-import {MatProgressBarModule} from "@angular/material/progress-bar";
-import {MapComponent} from "./map/map.component";
+import {AgmCoreModule} from '@agm/core';
+import {AgmDirectionModule} from 'agm-direction';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MapComponent} from './map/map.component';
 
 @NgModule({
   declarations: [
