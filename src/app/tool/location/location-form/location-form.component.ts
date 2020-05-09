@@ -18,13 +18,13 @@ export class LocationFormComponent implements OnInit {
 
   @ViewChild('location', {static: false})
   searchEl: ElementRef;
-  private place: google.maps.places.PlaceResult;
+  place: google.maps.places.PlaceResult;
   correctForm = false;
 
   constructor(private tripService: TripService,
               private mapsAPILoader: MapsAPILoader,
               private ngZone: NgZone,
-              private activeModal: NgbActiveModal) {
+              public activeModal: NgbActiveModal) {
   }
 
   ngOnInit() {

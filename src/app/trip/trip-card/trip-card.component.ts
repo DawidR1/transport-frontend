@@ -15,8 +15,8 @@ export class TripCardComponent implements OnInit {
   tripsView = [];
   trip: TripDto;
   isDetails = false;
-  private pageSize: number;
-  private totalItems: number;
+  public pageSize: number;
+  public totalItems: number;
   showDataButton = false;
   form: FormGroup;
   isFromDataChange = false;

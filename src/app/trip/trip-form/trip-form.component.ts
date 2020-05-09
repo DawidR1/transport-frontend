@@ -30,7 +30,7 @@ export class TripFormComponent implements OnInit {
 
   @ViewChild(MapComponent, {static: false}) mapComponent: MapComponent;
   @ViewChild('content', {static: false}) contentRef: ElementRef;
-  private locations: Array<Location>;
+  public locations: Array<Location>;
   locationForm: FormGroup;
   location: any;
   private message: string;
@@ -80,7 +80,7 @@ export class TripFormComponent implements OnInit {
   }
 
 
-  private populateFormCell(trip: TripDto) {
+  populateFormCell(trip: TripDto) {
     const formLoadingPlaceGroups = trip.loadingPlaces == null ? [] : this.populateLoadingPlaces(trip.loadingPlaces);
     this.form = this.fd.group({
       id: trip.id,
@@ -105,7 +105,7 @@ export class TripFormComponent implements OnInit {
     return loadingPlaces.map(loadingPlace => this.getLoadingPlaces(loadingPlace));
   }
 
-  private addLoadingPlace() {
+  addLoadingPlace() {
     const loadingPlaces = this.form.get('loadingPlaces') as FormArray;
     loadingPlaces.push(this.getLoadingPlaces(new LoadingPlace()));
     console.log(this.form.get('loadingPlaces')['controls'][0]['controls']['nr'].invalid);

@@ -29,7 +29,7 @@ export class MapComponent implements OnInit {
   duration;
   loaded = false;
   loading: boolean;
-  private optimizationWaypoints = false;
+  optimizationWaypoints = false;
 
   constructor(private mapsApiLoader: MapsAPILoader, private modalService: NgbModal) {
   }

@@ -1,3 +1,5 @@
+
 export const environment = {
-  production: true
+  production: true,
+  apiUrl: `${'HEROKU_SERVICE_URL'}`
 };

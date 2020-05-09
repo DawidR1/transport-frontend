@@ -10,7 +10,7 @@ import {Router} from '@angular/router';
 })
 export class NavbarComponent implements OnInit {
 
-  private user: User;
+  public user: User;
 
   constructor(private service: AuthenticationService, private router: Router) {
   }

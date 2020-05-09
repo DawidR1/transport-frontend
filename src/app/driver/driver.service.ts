@@ -11,7 +11,7 @@ export class DriverService extends AppService {
   private driverDetails: Driver;
 
   sendFile(form: FormData, id: string): Observable<HttpResponse<any>> {
-    return this.http.post<HttpResponse<any>>('http://localhost:8080/file/driver/' + id, form, {observe: 'response'});
+    return this.http.post<HttpResponse<any>>(AppService.CAR_FILE_URL + id, form, {observe: 'response'});
   }
 
   addDriverToUpdateForm(driver: Driver) {
