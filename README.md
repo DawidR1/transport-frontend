@@ -1,27 +1,22 @@
-# Transport
+# Transport Project
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.5.
+## Short description
+One of two applications belonging to the transport project.  
+It is client layer, responsible for displaying data received from api(server) and Google Maps API.    
 
-## Development server
+Second application: ![Server Layer](https://github.com/DawidR1/transport/tree/master)
+### Description of transport project
+Project is used to manage of road transport company. It allows to create and archive transport orders and driver routes.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## Code scaffolding
+## Technologies:
+- TypeScript
+- Angular 8
+- Google Maps API
+- Bootstrap
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+## Examples:
+1.
+![not_found](https://github.com/DawidR1/transport-frontend/blob/master/examples/example1.png)
+2.
+![not_found](https://github.com/DawidR1/transport-frontend/blob/master/examples/example2.png)
