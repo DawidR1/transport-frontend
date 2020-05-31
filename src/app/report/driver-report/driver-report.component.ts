@@ -11,7 +11,7 @@ export class DriverReportComponent implements OnChanges {
   @Input()
   report: ReportDriver;
   imageUrl: string;
-  constructor(private service: ReportService) { }
+  constructor() { }
 
   ngOnChanges(changes: SimpleChanges) {
       this.imageUrl = ReportService.PICTURE_URL + this.report.driverDto.imageName;

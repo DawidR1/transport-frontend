@@ -2,7 +2,6 @@
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
-import { MainNavsComponent } from './main-navs/main-navs.component';
 import { DriverService } from './driver/driver.service';
 import { DriverComponent } from './driver/driver-view/driver.component';
 import { CarComponent } from './car/view/car.component';
@@ -37,8 +36,6 @@ import { DriverDetailsViewComponent } from './driver/driver-details-view/driver-
 import { AuthComponent } from './auth/auth.component';
 import {JwtInterceptor} from './auth/JwtFilter';
 import {ErrorInterceptor} from './auth/ErrorFilter';
-import { DriverPanelComponent } from './driver-panel/driver-panel.component';
-import { MainPageComponent } from './mainPage/mainPage.component';
 import {FinishedPipe} from './finished.pipe';
 import {ScrollingModule} from '@angular/cdk/scrolling';
 import {AgmCoreModule} from '@agm/core';
@@ -50,7 +47,6 @@ import {MapComponent} from './map/map.component';
   declarations: [
     AppComponent,
     NavbarComponent,
-    MainNavsComponent,
     DriverComponent,
     CarComponent,
     CarFormComponent,
@@ -68,8 +64,6 @@ import {MapComponent} from './map/map.component';
     LocationFormComponent,
     DriverDetailsViewComponent,
     AuthComponent,
-    DriverPanelComponent,
-    MainPageComponent,
     MapComponent
   ],
   imports: [

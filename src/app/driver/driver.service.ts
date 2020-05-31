@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {HttpClient, HttpResponse} from '@angular/common/http';
+import {HttpResponse} from '@angular/common/http';
 import {AppService} from '../app.service';
-import {Car} from '../car/car.service';
 
 @Injectable()
 export class DriverService extends AppService {

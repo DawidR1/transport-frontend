@@ -35,7 +35,7 @@ export class DriverComponent implements OnInit {
 
   populateFields(resource: any): void {
     const data = new Array<Driver>();
-    resource._embedded.resources.forEach(driver => {
+    resource._embedded.entityModels.forEach(driver => {
       driver._links.image != null ? driver.imageUrl = driver._links.image.href : driver.imageUrl = '';
       data.push(driver);
     });

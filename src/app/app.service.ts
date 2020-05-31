@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpResponse} from '@angular/common/http';
 import {Observable} from 'rxjs';
-// import {environment} from "../environments/environment.prod";
 import {environment} from '../environments/environment';
 
 
@@ -10,23 +9,17 @@ import {environment} from '../environments/environment';
 })
 export class AppService {
 
-  protected static WEB_URL = environment.apiUrl;
+  public static WEB_URL = environment.apiUrl;
   public static RESOURCE_URL = 'resource/';
-
   public static TRIP_URL = AppService.WEB_URL + 'trip/';
-
   public static CAR_FILE_URL = AppService.WEB_URL + '/file/driver/';
-
   public static LOCATION_URL = AppService.WEB_URL + 'location/';
   public static RESOURCE_LOCATION_URL = AppService.WEB_URL + AppService.RESOURCE_URL + 'location/';
-
   public static DRIVER_URL = AppService.WEB_URL + 'driver/';
   public static RESOURCE_DRIVER_URL = AppService.WEB_URL + AppService.RESOURCE_URL + 'driver/';
-
   public static CAR_URL = AppService.WEB_URL + 'car/';
   public static RESOURCE_CAR_URL = AppService.WEB_URL + AppService.RESOURCE_URL + 'car';
-
-  static MAPS_URL = 'https://www.google.com/maps/dir/';
+  public static MAPS_URL = 'https://www.google.com/maps/dir/';
   public static USER_AUTH_URL = AppService.WEB_URL + 'auth';
 
   constructor(protected http: HttpClient) {

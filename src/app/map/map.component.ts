@@ -1,4 +1,3 @@
-// /<reference path="../../../node_modules/@types/googlemaps/index.d.ts"/>
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {Location, TripDto} from '../trip/trip.service';
 import {MapsAPILoader} from '@agm/core';
@@ -12,6 +11,7 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 })
 export class MapComponent implements OnInit {
 
+
   @Input() trip: TripDto;
   @Input() isForm = false;
   @ViewChild('location', {static: false}) searchEl: ElementRef;
@@ -21,7 +21,7 @@ export class MapComponent implements OnInit {
   response = new CustomResponse();
   lat;
   lng;
-  origin;
+  origin = '';
   destination;
   viewPoints = [];
   locationResult = [];
@@ -30,6 +30,8 @@ export class MapComponent implements OnInit {
   loaded = false;
   loading: boolean;
   optimizationWaypoints = false;
+  showRoute = false;
+  zoom: any;
 
   constructor(private mapsApiLoader: MapsAPILoader, private modalService: NgbModal) {
   }
@@ -52,8 +54,8 @@ export class MapComponent implements OnInit {
     }
   }
 
-  draw(trip, optimization = false) {
-    this.loaded = false;
+  public draw(trip: TripDto, optimization = false) {
+    this.setLoaded(false);
     this.createMap(trip, optimization);
   }
 
@@ -68,7 +70,7 @@ export class MapComponent implements OnInit {
       .filter(place => place.nr != null && place.location != null)
       .sort((v1, v2) => v1.nr - v2.nr);
     if (trip.placeStart == null || !isCorrect || (trip.placeFinish == null && sortedLoadingPlaces.length === 0)) {
-      this.loaded = true;
+      this.setLoaded(true);
       this.loading = false;
       return;
     }
@@ -83,16 +85,17 @@ export class MapComponent implements OnInit {
         stopover: true
       });
     });
-
-    new google.maps.DirectionsService()
-      .route({
-        optimizeWaypoints: optimization,
-        origin: origin,
-        destination: destination,
-        waypoints: viewPoints,
-        travelMode: google.maps.TravelMode.DRIVING,
-        unitSystem: google.maps.UnitSystem.METRIC
-      }, this.handleResponseFromDirectionApi(optimization, origin, destination, viewPoints, trip));
+    setTimeout(() => {
+      new google.maps.DirectionsService()
+        .route({
+          optimizeWaypoints: optimization,
+          origin: origin,
+          destination: destination,
+          waypoints: viewPoints,
+          travelMode: google.maps.TravelMode.DRIVING,
+          unitSystem: google.maps.UnitSystem.METRIC
+        }, this.handleResponseFromDirectionApi(optimization, origin, destination, viewPoints, trip));
+    }, 500);
   }
 
   private handleResponseFromDirectionApi(optimization, origin: string, destination: string, viewPoints: any[], trip) {
@@ -103,9 +106,12 @@ export class MapComponent implements OnInit {
         this.destination = destination;
         this.viewPoints = viewPoints;
         this.populateMapContent(result);
+        this.showRoute = true;
         this.performOptimization(optimization, trip);
       } else if (status === 'REQUEST_DENIED') {
         this.displayWindowWithError('Google Maps were switched off');
+      } else if (status === 'OVER_QUERY_LIMIT') {
+        this.displayWindowWithError('The request quota have exceeded');
       } else {
         this.displayWindowWithError('Error during loading Google Maps');
       }
@@ -116,13 +122,13 @@ export class MapComponent implements OnInit {
     this.response.alertType = 'alert-danger';
     this.response.message = message;
     this.loading = false;
-    this.loaded = true;
+    this.setLoaded(true);
     this.modalService.open(this.contentRef, {size: 'lg'});
   }
 
   private performOptimization(optimization, trip) {
     if (optimization === false) {
-      this.loaded = true;
+      this.setLoaded(true);
       return;
     }
     const routes = Object.assign([], this.locationResult);
@@ -139,7 +145,12 @@ export class MapComponent implements OnInit {
     }
     this.event.next(trip);
     this.loading = false;
-    this.loaded = true;
+    this.setLoaded(true);
+  }
+
+  private setLoaded(b: boolean) {
+    this.loaded = b;
+    this.zoom = 5;
   }
 
   private populateMapContent(result) {
@@ -169,7 +180,6 @@ export class MapComponent implements OnInit {
   }
 
   private getLocationInText(location: Location) {
-    console.log(location);
 
     if (location == null) {
       return '';

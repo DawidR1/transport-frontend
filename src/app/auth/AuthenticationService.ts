@@ -9,7 +9,7 @@ import {AppService} from '../app.service';
 export class AuthenticationService {
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
-  constructor(private http: HttpClient, private service: AppService) {
+  constructor(private http: HttpClient) {
     this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
   }
@@ -17,8 +17,6 @@ export class AuthenticationService {
   public get currentUserValue(): User {
     return this.currentUserSubject.value;
   }
-
-
 
   login(username: string, password: string) {
     return this.http.post<any>( AppService.USER_AUTH_URL, { username, password })

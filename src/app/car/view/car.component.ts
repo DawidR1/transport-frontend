@@ -29,7 +29,7 @@ export class CarComponent implements OnInit {
   private requestObjects(index: number = 0) {
     const cars = new Array<Car>();
     this.service.getObjectPage(CarService.CAR_URL, index).subscribe(resource => {
-        resource._embedded.resources.forEach(car => {
+        resource._embedded.entityModels.forEach(car => {
           cars.push(car);
         });
         this.pageSize = resource.page.size;

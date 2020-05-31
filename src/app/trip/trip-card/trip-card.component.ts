@@ -12,11 +12,11 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 })
 export class TripCardComponent implements OnInit {
 
+  public pageSize: number;
+  public totalItems: number;
   tripsView = [];
   trip: TripDto;
   isDetails = false;
-  public pageSize: number;
-  public totalItems: number;
   showDataButton = false;
   form: FormGroup;
   isFromDataChange = false;
@@ -52,7 +52,7 @@ export class TripCardComponent implements OnInit {
   populateFields(resource: any): void {
     const trips = [];
     if (resource._embedded != null) {
-      resource._embedded.resources.forEach(trip => {
+      resource._embedded.entityModels.forEach(trip => {
         trips.push(trip);
       });
     }

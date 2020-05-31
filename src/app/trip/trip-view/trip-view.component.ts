@@ -12,7 +12,9 @@ export class TripViewComponent implements OnInit {
 
   @Input()
   tripView: TripDto;
-  constructor(private service: TripService,  private router: Router, private modalService: NgbModal) { }
+
+  constructor(private service: TripService, private router: Router, private modalService: NgbModal) {
+  }
 
   ngOnInit() {
   }
@@ -20,13 +22,6 @@ export class TripViewComponent implements OnInit {
   updateTrip(tripView: TripDto) {
     this.service.addTripToUpdateForm(tripView);
     this.router.navigate(['trip-form']);
-  }
-
-  showInMaps(tripView: TripDto) {
-    const locations = [tripView.placeStart];
-    tripView.loadingPlaces.forEach(place => locations.push(place.location));
-    locations.push(tripView.placeFinish);
-    this.service.showInMaps(locations);
   }
 
   openMap(content) {

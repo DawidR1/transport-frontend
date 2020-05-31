@@ -1,5 +1,5 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {Component, OnInit} from '@angular/core';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {ReportCompany, ReportDriver, ReportService} from './report.service';
 import {Router} from '@angular/router';
@@ -55,8 +55,11 @@ export class ReportComponent implements OnInit {
     return (result) => {
       const startDate = this.form.get('start').value;
       const endDate = this.form.get('end').value;
-      const format = this.form.get('format').value;
+      let format = this.form.get('format').value;
       const driverId = this.form.get('driver').value;
+      if(startDate === '' || endDate === '' || driverId === ''){
+        return;
+      }
       if (format === 'PDF') {
         this.showReportDriver = false;
         this.service.downloadDriverInPdf(startDate, endDate, format, driverId).subscribe(resource => {
@@ -65,8 +68,8 @@ export class ReportComponent implements OnInit {
           window.open(url, '_blank');
         });
       } else {
+        format = 'JSON';
         this.service.downloadDriverInJson(startDate, endDate, format, driverId).subscribe(resource => {
-          console.log(resource);
           this.reportDriver = resource;
           this.showReportDriver = true;
         });
@@ -87,7 +90,10 @@ export class ReportComponent implements OnInit {
     return (result) => {
       const startDate = this.form.get('start').value;
       const endDate = this.form.get('end').value;
-      const format = this.form.get('format').value;
+      let format = this.form.get('format').value;
+      if(startDate === '' || endDate === ''){
+        return;
+      }
       if (format === 'PDF') {
         this.showReport = false;
         this.service.downloadCompanyInPdf(startDate, endDate, format).subscribe(resource => {
@@ -96,8 +102,8 @@ export class ReportComponent implements OnInit {
           window.open(url, '_blank');
         });
       } else {
+        format = 'JSON';
         this.service.downloadCompanyInJson(startDate, endDate, format).subscribe(resource => {
-          console.log(resource);
           this.reportCompany = resource;
           this.showReport = true;
         });
