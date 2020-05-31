@@ -1,5 +1,6 @@
 
 export const environment = {
   production: true,
-  apiUrl: `${'HEROKU_SERVICE_URL'}`
+  apiUrl: 'https://dawid-transport-back.herokuapp.com/'
+
 };
