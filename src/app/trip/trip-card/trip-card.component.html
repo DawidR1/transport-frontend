@@ -1,15 +1,15 @@
 <div class="row scroll pl-md-3">
-  <div class="col-md-6" style="max-width: 25rem;">
+  <div class="col-lg-4" style="max-width: 25rem;">
     <form [formGroup]="form" (ngSubmit)="filterData()">
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-sm-6">
           <label class="justify-content-center">from
             <input (blur)="filterData()" (change)="isFromDataChange = true" type="date" class="form-control w-100"
                    id="date-start"
                    placeholder="date"
                    formControlName="fromDate"/></label>
         </div>
-        <div class="col-md-6">
+        <div class="col-sm-6">
           <label class="">to
             <input (blur)="filterData()" (change)="isToDataChange = true" type="date" class="form-control w-100"
                    id="date-finish"
@@ -37,7 +37,7 @@
       </div>
     </div>
   </div>
-  <div class="col-md-7 offset-md-1" id="content">
+  <div class="col-sm-6 offset-lg-2" id="content">
     <div *ngIf="isDetails">
       <app-trip-view [tripView]="trip"></app-trip-view>
     </div>

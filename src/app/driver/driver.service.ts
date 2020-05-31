@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {HttpClient, HttpResponse} from '@angular/common/http';
+import {HttpResponse} from '@angular/common/http';
 import {AppService} from '../app.service';
-import {Car} from '../car/car.service';
 
 @Injectable()
 export class DriverService extends AppService {
@@ -11,7 +10,7 @@ export class DriverService extends AppService {
   private driverDetails: Driver;
 
   sendFile(form: FormData, id: string): Observable<HttpResponse<any>> {
-    return this.http.post<HttpResponse<any>>('http://localhost:8080/file/driver/' + id, form, {observe: 'response'});
+    return this.http.post<HttpResponse<any>>(AppService.CAR_FILE_URL + id, form, {observe: 'response'});
   }
 
   addDriverToUpdateForm(driver: Driver) {

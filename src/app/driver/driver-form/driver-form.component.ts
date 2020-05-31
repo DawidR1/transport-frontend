@@ -16,7 +16,7 @@ export class DriverFormComponent implements OnInit {
   fileForm = new FormData();
   response = new CustomResponse();
   driverLicenses: DriverLicense[] = [DriverLicense.A, DriverLicense.B, DriverLicense.C];
-  private fileName: string;
+  public fileName: string;
 
   constructor(private service: DriverService) {
   }

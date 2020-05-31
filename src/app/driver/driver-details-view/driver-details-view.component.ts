@@ -7,7 +7,7 @@ import {Driver, DriverService} from '../driver.service';
   styleUrls: ['./driver-details-view.component.css']
 })
 export class DriverDetailsViewComponent implements OnInit {
-  private driver: Driver;
+  driver: Driver;
 
   constructor(private service: DriverService) { }
 

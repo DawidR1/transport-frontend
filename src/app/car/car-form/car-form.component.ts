@@ -38,16 +38,14 @@ export class CarFormComponent implements OnInit {
     this.car.plate = this.form.get('plate').value;
     this.car.brand = this.form.get('brand').value;
     this.car.model = this.form.get('model').value;
-    console.log(this.car);
     this.service.sendObject(this.car, CarService.CAR_URL).subscribe(resource => {
-      console.log(resource.headers.get('Location'));
         this.response.alertType = 'alert-success';
         this.response.message = 'Done';
         this.form.reset();
       },
       (error: HttpErrorResponse) => {
         this.response.alertType = 'alert-danger';
-        this.response.message = error +'';
+        this.response.message = error + '';
       });
   }
 }

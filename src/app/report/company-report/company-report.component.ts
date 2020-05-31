@@ -17,6 +17,5 @@ export class CompanyReportComponent implements OnChanges{
     this.trips = new Array<TripDto>();
     this.report.reportDrivers
       .map(rep => rep.trips.forEach(trip => this.trips.push(trip)));
-    console.log(this.trips);
   }
 }

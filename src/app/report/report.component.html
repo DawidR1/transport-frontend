@@ -31,9 +31,9 @@
         </select>
         </div>
         <p></p>
-        <div>
-        <label id="example-radio-group-label">Choose the format</label>
-        <mat-radio-group class="radio-group" formControlName="format" aria-labelledby="example-radio-group-label">
+        <div [hidden]="true">
+        <label>Choose the format</label>
+        <mat-radio-group class="radio-group" formControlName="format"><br>
           <mat-radio-button class="radio-button"  value="PDF">PDF</mat-radio-button>
           <mat-radio-button class="radio-button" value="JSON">STRONA WEB</mat-radio-button>
         </mat-radio-group>

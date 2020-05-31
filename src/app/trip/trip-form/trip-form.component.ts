@@ -1,4 +1,3 @@
-///<reference path="../../../../node_modules/@types/googlemaps/index.d.ts"/>
 import {Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
 import {Cargo, LoadingPlace, Location, TripDto, TripFormData, TripService, TripStatus} from '../trip.service';
 import {HttpErrorResponse} from '@angular/common/http';
@@ -18,6 +17,9 @@ import {Router} from '@angular/router';
 })
 export class TripFormComponent implements OnInit {
 
+  @ViewChild(MapComponent, {static: false}) mapComponent: MapComponent;
+  @ViewChild('content', {static: false}) contentRef: ElementRef;
+  public locations: Array<Location>;
   tripFormData: TripFormData = new TripFormData();
   tripDto: TripDto = new TripDto();
   tripStatus: TripStatus[] = [TripStatus.OPEN, TripStatus.FINISHED, TripStatus.IN_PROGRESS];
@@ -27,10 +29,6 @@ export class TripFormComponent implements OnInit {
   isMainInformationCollapse = true;
   isAdditionalInformationCollapse = true;
   isLoadPlaceInformationCollapse = true;
-
-  @ViewChild(MapComponent, {static: false}) mapComponent: MapComponent;
-  @ViewChild('content', {static: false}) contentRef: ElementRef;
-  private locations: Array<Location>;
   locationForm: FormGroup;
   location: any;
   private message: string;
@@ -80,7 +78,7 @@ export class TripFormComponent implements OnInit {
   }
 
 
-  private populateFormCell(trip: TripDto) {
+  populateFormCell(trip: TripDto) {
     const formLoadingPlaceGroups = trip.loadingPlaces == null ? [] : this.populateLoadingPlaces(trip.loadingPlaces);
     this.form = this.fd.group({
       id: trip.id,
@@ -105,10 +103,9 @@ export class TripFormComponent implements OnInit {
     return loadingPlaces.map(loadingPlace => this.getLoadingPlaces(loadingPlace));
   }
 
-  private addLoadingPlace() {
+  addLoadingPlace() {
     const loadingPlaces = this.form.get('loadingPlaces') as FormArray;
     loadingPlaces.push(this.getLoadingPlaces(new LoadingPlace()));
-    console.log(this.form.get('loadingPlaces')['controls'][0]['controls']['nr'].invalid);
   }
 
   removeLoadingPlace(i: number) {
@@ -164,6 +161,7 @@ export class TripFormComponent implements OnInit {
   private sendFailureToView(error: any) {
     this.response.alertType = 'alert-danger';
     this.response.message = error;
+    this.modalService.open(this.contentRef);
   }
 
   submit() {
@@ -182,9 +180,7 @@ export class TripFormComponent implements OnInit {
       });
     });
 
-    console.log(this.form.get('loadingPlaces')['controls']);
     if (this.form.invalid === true) {
-      console.log(this.form);
       return;
     }
     this.tripDto = this.form.value;
@@ -192,16 +188,16 @@ export class TripFormComponent implements OnInit {
     this.service.sendObject(this.tripDto, TripService.TRIP_URL).subscribe(response => {
         this.done = true;
         this.message = 'Saved';
-      this.response.alertType = 'alert-success';
-      this.modalService.open(this.contentRef);
+        this.response.alertType = 'alert-success';
+        this.modalService.open(this.contentRef);
         setTimeout(() => {
           this.modalService.dismissAll();
           this.router.navigate(['trip']);
         }, 3000);
       }, (error: HttpErrorResponse) => {
-      this.response.alertType = 'alert-danger';
-      this.message = error.message;
-      this.modalService.open(this.contentRef);
+        this.response.alertType = 'alert-danger';
+        this.message = error + '';
+        this.modalService.open(this.contentRef);
       }
     );
   }
@@ -244,7 +240,6 @@ export class TripFormComponent implements OnInit {
   }
 
   getLocationFromString(location: Location) {
-    console.log(location);
     if (location == null) {
       return '';
     }

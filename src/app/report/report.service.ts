@@ -46,7 +46,6 @@ export class ReportService extends AppService {
 
   downloadDriverInPdf(startDate: string, endDate: string, format: string, driverId: number) {
     const url = this.createUrlToDriverReport(startDate, endDate, format, driverId);
-    console.log(url);
     return this.getObjectBlob(url);
   }
 
